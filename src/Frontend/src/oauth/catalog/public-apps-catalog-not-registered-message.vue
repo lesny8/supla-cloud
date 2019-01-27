@@ -1,6 +1,6 @@
 <template>
     <whole-screen-message icon="pe-7s-mouse"
-        header="Your private SUPLA Cloud is not registered.">
+        header-i18n="Your private SUPLA Cloud is not registered.">
         <p>
             <component :is="registerCloudMessage"></component>
         </p>
@@ -25,12 +25,12 @@
                 return {template: `<span>${message}</span>`};
             },
             onlyCatalogMessage() {
-                const message = this.$t('If you wish to see the available integrations only, head over to [cloud.supla.org/apps].')
+                const message = this.$t('If you wish to see the available integrations, go to [cloud.supla.org/apps].')
                     .replace(/\[(.+?)\]/, `<a href="https://cloud.supla.org/apps">$1</a>`);
                 return {template: `<span>${message}</span>`};
             },
             otherwiseMessage() {
-                const message = this.$t('Go to [the homepage] otherwise.')
+                const message = this.$t('Otherwise go to [the homepage].')
                     .replace(/\[(.+?)\]/, `<router-link to="/">$1</router-link>`);
                 return {template: `<span>${message}</span>`};
             }

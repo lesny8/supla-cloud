@@ -3,7 +3,7 @@
         <loading-cover :loading="loading">
             <div v-if="app">
                 <div class="container">
-                    <pending-changes-page :header="$t(app.id ? 'OAuth application' : 'New OAuth application') + (app.id ? ' ID'+ app.id : '')"
+                    <pending-changes-page :header="app.id ? $t('OAuth application') : $t('New OAuth application') + (app.id ? ' ID'+ app.id : '')"
                         @cancel="cancelChanges()"
                         @save="saveOauthApp()"
                         :deletable="app.id"
@@ -27,14 +27,16 @@
                                                 <textarea
                                                     class="form-control"
                                                     @keydown="appChanged()"
+                                                    v-autosize
                                                     v-model="app.description"></textarea>
                                         </dt>
-                                        <dd>{{ $t('Authorization callback URL') }}</dd>
+                                        <dd>{{ $t('Authorization callback URLs (one per line)') }}</dd>
                                         <dt>
-                                            <input type="text"
+                                            <textarea type="text"
                                                 class="form-control"
                                                 @keydown="appChanged()"
-                                                v-model="app.redirectUris[0]">
+                                                v-autosize
+                                                v-model="redirectUris"></textarea>
                                         </dt>
                                     </dl>
                                 </div>
@@ -56,7 +58,7 @@
                                 </div>
                                 <h4>{{ $t('Secret') }}</h4>
                                 <div class="flex-left-full-width">
-                                    <pre><code>{{ app.secret }}</code></pre>
+                                    <pre style="user-select: none"><code>{{ secretPreview }}</code></pre>
                                     <copy-button :text="app.secret"></copy-button>
                                 </div>
                                 <h4>{{ $t('Example Auth URL') }}</h4>
@@ -95,7 +97,8 @@
                 app: undefined,
                 error: false,
                 deleteConfirm: false,
-                hasPendingChanges: false
+                hasPendingChanges: false,
+                redirectUris: ''
             };
         },
         mounted() {
@@ -109,15 +112,16 @@
                     this.error = false;
                     this.$http.get(`oauth-clients/${this.id}?include=secret`, {skipErrorHandler: [403, 404]})
                         .then(response => this.app = response.body)
+                        .then(() => this.redirectUris = this.app.redirectUris.join("\n"))
                         .catch(response => this.error = response.status)
                         .finally(() => this.loading = false);
-                }
-                else {
-                    this.app = {redirectUris: []};
+                } else {
+                    this.app = {};
                 }
             },
             saveOauthApp() {
                 const toSend = Vue.util.extend({}, this.app);
+                toSend.redirectUris = this.redirectUris.split("\n").map(u => u.trim()).filter(u => u);
                 this.loading = true;
                 if (this.isNew) {
                     this.$http.post('oauth-clients', toSend).then(response => {
@@ -148,13 +152,17 @@
                 return !this.app.id;
             },
             exampleAuthUrl() {
-                return Vue.config.external.suplaUrl + '/oauth/v2/auth?' + $.param({
+                return this.$user.serverUrl + '/oauth/v2/auth?' + $.param({
                     client_id: this.app.publicId,
                     scope: 'account_r',
                     state: 'example-state',
                     response_type: 'code',
                     redirect_uri: this.app.redirectUris[0],
                 });
+            },
+            secretPreview() {
+                const stars20 = '********************';
+                return this.app.secret.substr(0, 5) + stars20 + stars20 + this.app.secret.substr(this.app.secret.length - 5);
             }
         },
         watch: {

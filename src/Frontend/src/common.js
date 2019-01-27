@@ -5,9 +5,8 @@ import "pixeden-stroke-7-icon/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Vue from "vue";
 import Vuex from "vuex";
-import {i18n, checkUserLanguage} from './locale';
+import {i18n, setGuiLocale} from './locale';
 import router from './router';
-import VueLocalStorage from 'vue-localstorage';
 import VueMoment from "vue-moment";
 import VueResource from "vue-resource";
 import vMediaQuery from 'v-media-query';
@@ -20,19 +19,21 @@ import "./common/filters";
 import "style-loader!css-loader!sass-loader!./styles/styles.scss";
 import "./polyfills";
 import {CurrentUser} from "./login/current-user";
+import {LocalStorageWithMemoryFallback} from "./common/local-storage";
 
 Vue.use(Vuex);
 Vue.use(VueMoment);
 Vue.use(VueResource);
-Vue.use(VueLocalStorage);
 Vue.use(vMediaQuery, {variables: {xs: 768}});
 
 Vue.config.external = window.FRONTEND_CONFIG || {};
+Vue.prototype.$frontendConfig = Vue.config.external;
 if (!Vue.config.external.baseUrl) {
     Vue.config.external.baseUrl = '';
 }
-Vue.http.options.root = Vue.config.external.baseUrl + '/api';
 Vue.http.headers.common['X-Accept-Version'] = '2.3.0';
+
+Vue.prototype.$localStorage = new LocalStorageWithMemoryFallback();
 
 // synchronize browser time with server's
 (function () {
@@ -44,10 +45,10 @@ Vue.http.headers.common['X-Accept-Version'] = '2.3.0';
     };
 })();
 
-Vue.http.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem('id_token');
 Vue.prototype.$user = new CurrentUser();
+Vue.prototype.$user.synchronizeAuthState();
 Vue.prototype.$user.fetchUser()
-    .then((userData) => checkUserLanguage(userData))
+    .then((userData) => setGuiLocale(userData))
     .then(() => {
         $(document).ready(() => {
             if ($('.vue-container').length) {

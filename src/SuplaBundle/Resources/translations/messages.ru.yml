@@ -1,481 +1,541 @@
-# src/SuplaBundle/Resources/translations/messages.ru.yml
-
-Hi: Привет
-Delete: Удалить
-Caption: Подпись
-Enabled: Используется
-Disabled: Неиспользуется
-Search: Поиск
-Assigned Locations: Подключенные Области
-Password change: Изменение пароля
-Registration: Регистрация
-Password Reset: Сброс пароля
-Enter new password: Введите новый пароль
-The password should be 8 or more characters.: Пароль должен быть 8 или более символов.
+# Do not add new translation keys manually. Run npm run collect-translations in order to update this file.
+#<editor-fold desc="Complete translations" defaultstate="collapsed">
+...and start your adventure with building automation today!: ...и начни творить свою домашнюю автоматику!
+...open and shut roller shutters: ...открывать и закрывать роллеты
+'...open gateways, gates or doors': '...открыть ворота, калитки или двери'
+...or control home appliances: ...или управлять бытовой техникой
+...you can monitor temperature: ...узнать температуру
+ACTIVE: АКТИВНА
+AM2301 Temperature & Humidity Sensor: Датчик температуры и влажности AM2301
+AM2302 Temperature & Humidity Sensor: Датчик температуры и влажности AM2302
+Access ID: ID доступа
+Access Identifier: Ключи доступа
+Access Identifiers: Ключ Доступа
+Access identifier limit has been exceeded: Достигнут лимит Ключей Доступа
 Account: Учетка
-Forgot your password?: Не помнишь пароль?
-Server address: Адрес сервера
+Account access when you are unavailable: 'Доступ к учетной записи, когда вы недоступны'
+Account has been activated. You can Sign In now.: Аккаунт создан. Можете войти
+Action: Акция
+Action execution: Выполнение действий
+Active: Активные
+Add: Добавь
+Add a new icon: Добавить новый значок
+Add first channel to set channel group function and save it: Выбрать первый канал для определения функции группы и ее сохранения
+Add new channel group: Добавить новую группу каналов
+Add new channel to this group: Добавить новый канал в группу
+Adjust parameters: Задать параметры
+'After deletion of this icon all channels and channel groups that use this icon, will receive default icons.': 'Все каналы и группы каналов, которые используют этот значок, после его удаления получат значки по умолчанию.'
+'After granting the access, you can always remove it by adjusting the settings in your account settings section.': 'После предоставления доступа вы всегда можете изменить свое мнение, получив доступ в настройках учетной записи.'
+'After you choose a subject, a direct link will be generated. You will be able to set all other options after its creation.': Ссылка будет создана сразу после выбора субъекта. Все остальные опции можно запускать сразу после ее создания.
+All: Все
+All the above and many more can be done from your phone or tablet: Все это и даже больше управляется со сартфона или планшета
+Allowed actions: Допустимые действия
+Allows to perform an action only using the HTTP PATCH request.: Позволяет выполнять действия только с помощью запроса HTTP PATCH.
+And more: И прочее
+Application requirements: Требования приложения
+Are you lost?: Вы потерялись? Что-то ищете?
+Are you sure you want to change channel’s function?: Вы действительно хотите изменить функцию канала?
+Are you sure you want to delete the entire measurement history saved for this channel?: 'Вы уверены, что хотите удалить всю историю измерений, созданную для этого канала ?'
+Are you sure you want to delete this OAuth application?: 'Вы уверены, что хотите удалить это приложение OAuth ?'
+Are you sure you want to delete this channel group?: Вы действительно хотите удалить эту группу?
+Are you sure you want to delete this client?: 'Вы уверены, что хотите удалить это клиентское приложение?'
+Are you sure you want to delete this direct link?: 'Вы уверены, что хотите удалить эту прямую ссылку?'
+Are you sure you want to delete this icon?: 'Вы уверены, что хотите удалить этот значок?'
+Are you sure you want to delete this schedule?: 'Ты уверен, что хочешь удалить этот график?'
+Are you sure you want to disable this device?: 'Ты уверен, что хочешь выключить это оборудование?'
+Are you sure you want to revoke permissions granted to this OAuth application?: 'Вы уверены, что хотите отменить разрешения для этого приложения OAuth?'
+Are you sure you want to revoke this token?: 'CВы уверены, что хотите отозвать токен?'
+Are you sure?: Вы уверены?
+Assign Access Identifiers: Приписать Ключи Доступа
+Assign Client apps: Назначить клиентские приложения
+Assign Locations: Подключенные Области
+Authorization callback URLs (one per line): URL-адреса возврата авторизации (по одному в строке)
+'Authorize the application, so that it can access your account.': 'Авторизуйте приложение, чтобы оно могло получить доступ к вашей учетной записи.'
+Authorized: Авторизовано
+Authorized OAuth apps: Авторизованные приложения OAuth
+Automation: Автоматика
+Back to apps list: Вернуться к списку приложений
+Brightness: Яркость
+CLICK TO DISABLE: ОТКЛЮЧИТЬ
+CLICK TO ENABLE: ИСПОЛЬЗОВАТЬ
+Calibration: калибровка
 Cancel: Отмена
-CANCEL: ОТМЕНА
-Are you sure you want to delete?: Точно удалить ?
-Relay switching time: Время переключения реле
-Full opening time: Общее время открытия
-Full closing time: Общее время закрытия
-sec.: сек.
-Download the history of measurement: Скачать историю измерений
-Open sensor : Датчик открытия
-None: Нет
-Channel for the sensor: Канал датчика
+Cancel changes: Отменить изменения
+Cancelled: Аннулировано
+Caption: Подпись
+Change Password: Смена пароля
+Change icon: Сменить значок
+Changing channel’s function will also result in the following changes.: Изменение функции канала повлечет также следующие изменения.
 Channel: Канал
 Channel No: Номер канала
-Channel properties: Свойства канала
-Device: Устройство
-Access Identifier: Ключи доступа
-Location Identifier: ID Позиции
-Type: Тип
-Number: Номер
-I/O: Ввод/Вывод
-Function: Назначение
-Name: Название
-Location: Область
-Locations: Область
-No Locations assigned: Нет назначенных областей
-Lack of Locations: Нет свободных областей
-SoftVer: Версия
-All: Все
-Electric: Электрика
-Doors, Gates: Двери, Калитки
-Liquid, Temp: Жидкость, Темп
-Sensors: Датчики
-No function: Не назначено
-Connected: Подключено
-Disconnected: Отключено
-unknown: неизвестно
-Comment: Коментарий
+Channel for the partial opening sensor: Канал для датчика промежуточного открытия
+Channel for the sensor: Канал датчика
+Channel group: Группа каналов
+Channel group limit has been exceeded: Лимит групп каналов превышен
+Channel groups: Группы каналов
+Channel is assigned to the I/O device location: Канал назначен по местоположению устройства
+Channel will be deleted from the channel group below: Канал будет удален из следующих групп каналов
 Channels: Каналы
-I/O Devices: Устройства
-Assigned Access Identifiers: Присвоенные ключи доступа
-Start Here: Начни отсюда
-Sign In: Войти
-Sign Out: Выйти
-Generate new password: Создать новый пароль
-Password: Пароль
-Confirm Password: Подтвердить пароль
-SAVE: СОХРАНИТЬ
-GENERATE: СОЗДАТЬ
-ENABLED: ИСПОЛЬЗУЕТСЯ
-CLICK TO DISABLE: ОТКЛЮЧИТЬ
-DISABLED: НЕ ИСПОЛЬЗУЕТСЯ
-CLICK TO ENABLE: ИСПОЛЬЗОВАТЬ
-DELETE: УДАЛИТЬ
-Assign Locations: Подключенные Области
-Confirm if you want to remove Access Identifier: Подтвердите удаление Ключа Доступа
-Further connection with this Identifier will be impossible: Подключится с этим Ключем будет невозможно
-Choose locations to be assigned to Access Identifier: Выберите области доступные для данного ключа доступа
-Access Identifiers: Ключ Доступа
-Create New Access Identifier: Создать новый ключ доступа
-No Locations to be assigned to this Access Identifier.<br />Go to Locations and add one.: Нет Областей для назначения этому Ключу.<br />Создайте хотябы одну Позицию.
-No Access Identifiers to be assigned to this<br /> Location. Go to Access Identifier and add one.: Нет свободных Ключей доступа<br /> Создайте хотябы один Ключ Доступа. 
-Create New Location: Создать новую Область
-Assign Access Identifiers: Приписать Ключи Доступа
-Languages: Язык
-No I/O Devices: Устройства
-Choose Access Identifiers to be assigned to this Location: Выберите Ключи Доступа для этой Позиции
-Are you sure?: Вы уверены?
-Lighting: Освещение
-Temperature: Температура
-Doors and gates: Двери и калитки
-Roller shutters: Роллеты
-Home appliances: Бытовая техника
-And more: И прочее
-From anywhere: Отовсюду
-With SUPLA you can operate the lights in your home or office: С SUPLĄ можно управлять светом в доме или офисе
-...you can monitor temperature: ...узнать температуру
-...open gateways, gates or doors: ...открыть ворота, калитки или двери
-...open and shut roller shutters: ...открывать и закрывать роллеты
-...or control home appliances: ...или управлять бытовой техникой
-All the above and many more can be done from your phone or tablet: Все это и даже больше управляется со сартфона или планшета
-SUPLA is available from anywhere at any time, so do not worry, if you forget to turn the lights off next time: SUPLA доступна везде и всегда, так что не бойтесь забыть выключить свет или утюг
-Registered: Зарегистрирован
-Last connection: Последнее соединение
-Confirm if you want to remove {deviceName} device: Подтвердите удаление {deviceName}
-All Your I/O Devices: Все Ваши устройства
-Please select function for this channel: Выберете назначение канала
-No Access Identifiers assigned: Не присвоен Ключ Доступа
-Lack of Access Identifiers: Нехватает Ключей Доступа
-Change Your Password: Сменить пароль
-On your computer...: На Вашем компьютере...
-On your smartphone...: На Вашем смартфоне...
-Enter the data below in the settings of your control device (I/O Device).: Введите данные ниже в настройки вашего устройства управления (устройство входа/выхода).
-Enter the data below in your mobile SUPLA application on your smartphone.: Введите данные ниже в мобильное приложение SUPLA, установленное на вашем смартфоне.
-Make it work: Заставь работать
-You can not connect your I/O Devices unless at least one Access Identifier is assigned to any Location: Нельзя подключить устройства пока не назначен хоть один Ключ Доступа к любой Позиции
-Install SUPLA on your smartphone.: Установи SUPLА на смартфон.
-Open SUPLA app.: Открой приложение SUPLA.
-Fill in the fields with settings provided above.: Запролни поля с настройками как на картике сверху.
-Tap <strong>Done</strong> and wait until the app connects.: Кликни <strong>Готово</strong> и подожди соединения с сервером.
-Download RaspberryPI <a href="https://www.supla.org/download">SD Card Image</a>.: Скачай образ <a href="https://www.supla.org/download">карты SD</a> для Raspberry PI.
-Transfer downloaded image onto the SD Card.: Перепиши скачанный образ на SD карту.
-Open <strong>boot\location.txt</strong> file. Copy and paste the above settings.: Скопируй в файл <strong>boot\location.txt</strong> приведенные выше настройки.
-Done.: Готово.
-For more details please go to <a href="https://www.supla.org">www.supla.org</a>: Подробнее на <a href="https://www.supla.org">www.supla.org</a>
-Download and flash <a href="https://www.supla.org/download">Firmware</a> for the microcontroller: Скачай и прошей <a href="https://www.supla.org/download">два файла</a> в ESP8266
-Turn the device on: Включи микроконроллер
-Press and hold the P1 button for 5 sec. (Default GPIO2): Нажми на кнопку P1 на 5 секунд. (GPIO2 на землю)
-Connect the computer to WiFi called SUPLA-ESP8266: ПОдключись к сети WiFi с названием SUPLA-ESP8266
-Go to http://192.168.4.1: Открой страницу http://192.168.4.1
-Enter location settings provided above: Введи установки как на картинке сверху
-Enter access data to your WiFi: Впиши название и пароль к твоей сети Wi-Fi
-Click "Save": Нажми "Save"
-Restart the device or press the P1 button: Перезапусти устройство или нажми кнопку P1
-
-Download <a href="https://www.supla.org/download/ArduinoSuplaDevice.zip">SuplaDevice library</a> for Arduino: Скачай <a href="https://www.supla.org/download/ArduinoSuplaDevice.zip">библиотеку SUPLA</a> для Arduino
-Run Arduino IDE: Запусти Arduino IDE
-Click Sketch -> Include library -> Add .ZIP Library: Нажми Скетч -> Добавить библиотеку -> Добавить .ZIP библиотеку
-Open one of the examples. File -> Examples -> SuplaDevice: Открой один из примеров.  Файл -> Примеры -> SuplaDevice
-Complete the code (GUID, Server, Location ID, Location Password): Вставвь в код (GUID, Адрес сервера, ID Позиции, Пароль Позиции)
-Upload program to Arduino: Загрузи код в Arduino
-
-Previous login: Предидущий вход
-From IP: C IP
-Current Password: Текущий пароль
-New password: Новый пароль
-Change Password: Смена пароля
-Coming soon: Скоро будет
-register-slide1-title: Разработай собственную домашнюю автоматику
-register-slide1-text: С помощью простой и доступной электроники с помощью SUPLA можно создать устройства управляющие домашней автоматикой. Двери, роллеты, гаражные ворота и калитки, розетки и лампочкм, бытовая тезника и контроль температуры станут подвластны простому прикосновению пальца.
-register-slide2-title: SUPLA везде!
-register-slide2-text: Основное достоинство проекта это простота и доступность. SUPLA дает возможность управлять своим домом в любом месте Земли где есть интернет для вашего планшета или смартфона. SUPLA проект с открытым програмным кодом и дизайном электрических схем. Вы даже можете внести свой вклад в развитие SUPLA
-register-slide3-title: Бесплатно и с открыто дляя всех!
-register-slide3-text: Системы Умного Дома зачастую слишком сложны и требуют монтажа во время строительства. SUPLA проста и бесплатна. Возможно построение элементов на платформах RaspberryPI, Arduino а также ESP8266 объединяя их с помощью LAN или WiFi. Присоединяйтесь к нам и постройте собственную систему автоматики своего здания!
-
-#inside php code
-Data saved: Данные сохранены
-Save: Сохранить
-Save and enable: Сохранить и включить
-Location limit has been exceeded: Достигнуто ограничение числа Областей
-Success: Успешно
-New location has been created: Создана новая Область
-Error: Ошибка
-Location has been deleted: Область удалена
-Data saved!: Данные сохранены!
-Access identifier limit has been exceeded: Достигнут лимит Ключей Доступа
-New access identifier has been created: Создан новый Ключ Доступа
-Information: Информация
-Access identifier has been deleted: Ключ Доступа Удален
-I/O Device has been deleted: Устройство удалено
-Account has been activated. You can Sign In now.: Аккаунт создан. Можете войти
-Unknown error: Непонятная ошибка
-Token does not exist: индификатор не существует
-Access identifier has been enabled: Ключ Доступа задействован
-Access identifier has been disabled: Ключ Доступа отключен
-Caption has been changed: Название изменено
-Password has been changed: Пароль изменен
-Location has been enabled: Область используется
-Location has been disabled: Область неиспользуется
-Comment has been modified: Пояснение изменено
-I/O Device has been disabled: Устройство неипользуется
-I/O Device has been enabled: Устройство используется
-Password field cannot be left empty: Пароль не может быть пустым
-Current password is incorrect: Введенный пароль неправилен
-Password has been changed!: Пароль изменен!
-Create an account: Создать учетку
-Your email: Введите почту
-Enter your email: Введите почту
-Enter your email address: Введите адрес почты
-Repeat your email: Повторите адрес
-Enter password: Введите пароль
-Enter strong password: Введите сложный пароль
-Repeat password: Повторите пароль
-Don't worry, you can always reset your password via email. Click here to do so.: Не беспокойтесь, Вы сможете восстановить пароль по почте. Для этого нажмите здесь.
-RESET: СБРОС
-Click RESET button when visible: Нажмите на СБРОС как появится
 Check your email box: Проверьте почтовый ящик
-Please fill the field before continuing: Заполните поля для продолжения
-Please fill a valid email address: Впишите корретный почтовый адрес
-Whoops, that's not an email address!: Не похоже на правильный адрес
-Supla for devices: Supla для устройств
-Next: Далее
-Get SUPLA on your devices: Загрузи SUPLА на свое устройство
-...and start your adventure with building automation today!: ...и начни творить свою домашнюю автоматику!
-Mobile Apps: Мобильное приложение
-Sources available from: Исходный код доступен на
-
-Input: Вход
-Output: Выход
-Sensor (normal open): Датчик (нормально открытый)
-Sensor (normal closed): Датчик (нормально закрытый)
-Relay: Реле
-HFD4 Relay: Реле HFD4
+Choose: выберите
+Choose Access Identifiers to be assigned to this Location: Выберите Ключи Доступа для этой Позиции
+Choose location: Выбрать местоположение
+Chosen hour: Заданное время
+Client’s Apps: Клиентские приложения
+Client’s app has been deleted: Клиентское приложение было удалено
+Close: Закрыть
+Color: Цвет
+Color brightness: Яркость цвета
+Coming Soon: Скоро будет
+Comment: Коментарий
+Configuration: Конфигурация
+Confirm Password: Подтвердить пароль
+Confirm if you want to remove Access Identifier: Подтвердите удаление Ключа Доступа
+'Confirm if you want to remove the Location ID{locationId}. You will no longer be able to connect the i/o devices to this Location.': 'Подтвердить удаление Местоположения ID{locationId}. Дальнейшее подключение устройств ввода-вывода к этому местоположению будет невозможно.'
+'Confirm if you want to remove {deviceName} device': 'Подтвердите удаление {deviceName}'
+Connected: Подключено
+Connection with a private instance of the SUPLA cloud: Подключение к персональной инстанции облака SUPLA.
+Constraints: Ограничения
+Could not reset the password. Please try again later.: Не удается сбросить пароль. Повторите попытку позже.
+Create New Access Identifier: Создать новый ключ доступа
+Create New Location: Создать новую Область
+Create New Schedule: Создай новый график
+Create an account: Создать учетку
+Create new direct link: Создать новую прямую ссылку
+Currency: Валюта
+Current Password: Текущий пароль
+Current password is incorrect: Введенный пароль неправилен
+Custom: Нестандартный
+Custom execution limit: Нестандартный лимит исполнений
+DHT11 Temperature & Humidity Sensor: Датчик температуры и влажности DHT11
+DHT21 Temperature & Humidity Sensor: Датчик температуры и влажности DHT21
+DHT22 Temperature & Humidity Sensor: Датчик температуры и влажности DHT22
+DISABLED: НЕ ИСПОЛЬЗУЕТСЯ
+DS18B20 Thermometer: Термометр DS18B20
+Data saved: Данные сохранены
+Days: Дней
+Decline: Отказать
+Delete: Удалить
+Delete measurement history: Удалить историю измерений
+Depth: Глубина
+Depth sensor: датчик глубины
+Description: Описание
+Details: Подробная информация
+Device: Устройство
+Device unavailable: Оборудование недоступно
+Dimmer: Диммер
+Dimmer & RGB led controller: Диммер и контроллер освещения RGB
+Dimmer and RGB lighting: Диммер и освещение RGB
+Direct link: Прямая ссылка
+Direct link has been created successfully!: Прямая ссылка успешно создана!
+Direct link has expired.: Прямая ссылка просрочена
+Direct link is disabled.: Прямая ссылка отключена
+Direct link is not active yet.: Прямая ссылка еще не активна
+'Direct link is not working right now. Reason:': 'Прямая ссылка в данный момент не работает. Причина:'
+Direct links: Прямые ссылки
+Direct links below will be deleted: 'Прямые ссылки, перечисленные ниже, будут удалены'
+Disabled: Неиспользуется
+Disconnected: Отключено
+Distance: Расстояние
+Distance sensor: датчик расстояния
+'Don’t worry, you can always reset your password via email. Click here to do so.': 'Не беспокойтесь, Вы сможете восстановить пароль по почте. Для этого нажмите здесь.'
+Door lock operation: Открытие двери
+Door opening sensor: Датчик открытия двери
+Doors and gates: Двери и калитки
+'Doors, Gates': 'Двери, Калитки'
+Download the history of measurement: Скачать историю измерений
+Drag your image(s) here or click to select from the disk: 'Перетащите изображение сюда или нажмите, чтобы выбрать с диска'
+ENABLED: ИСПОЛЬЗУЕТСЯ
+Edit: Изменить
+Electric: Электрика
+Electricity meter: Счетчик электроэнергии
+Email already exists: Адрес электронной почты уже существует
+Empty!: Пусто!
+Enabled: Используется
+End date: Дата окончания
+Enter new password: Введите новый пароль
+Enter strong password: Введите сложный пароль
+Enter the data below in the settings of your control device (I/O Device).: Введите данные ниже в настройки вашего устройства управления (устройство входа/выхода).
+Enter the data below in your mobile SUPLA application on your smartphone.: 'Введите данные ниже в мобильное приложение SUPLA, установленное на вашем смартфоне.'
+Enter the domain with the port only if it is not standard (443). We require HTTPS connection.: 'Введите только домен вместе с портом, если он не является стандартным (443). Требуется соединение HTTPS.'
+Enter your email address: Введите адрес почты
+Error: Ошибка
+Error when communicating the server. Try again in a while.: Произошла ошибка во время связи с сервером. Повторите попытку позже.
+Every: каждые
+Example Auth URL: Примерный URL авторизации
+Executed action: Выполненное действие
+Executed without confirmation: Выполнено без подтверждения
+Execution history: История исполнений
+Execution limit: Лимит исполнений
+Execution limit has been exceeded.: Лимит исполнений превышен
+Executions: Реализации
+Existing schedules: Существующие графики
+Expired: Просрочен
+Failed: Не получилось
+Failed (zombie): Не получилось (зомби)
+File is too large: Размер файла слишком большой
+For devices: Для устройств
+'For security reasons, the full URL of this direct link will be displayed only once, during creation.': 'По соображениям безопасности, полный URL этой прямой ссылки будет отображаться только один раз при ее создании.'
+Forgot your password?: Не помнишь пароль?
+Fridays: Пятницы
+From IP: C IP
+From anywhere: Отовсюду
+Full closing time: Общее время закрытия
+Full documentation: Полная документация
+Full opening time: Общее время открытия
+Function: Назначение
 G5LA1A Relay: Реле G5LA1A
 G5LA1A Relay x2: Двойное реле G5LA1A
-DS18B20 Thermometer: Термометр DS18B20
-Thermometer: Термометр
-DHT11 Temperature & Humidity Sensor: Датчик температуры и влажности DHT11  
-DHT21 Temperature & Humidity Sensor: Датчик температуры и влажности DHT21  
-DHT22 Temperature & Humidity Sensor: Датчик температуры и влажности DHT22  
-AM2301 Temperature & Humidity Sensor: Датчик температуры и влажности AM2301
-AM2302 Temperature & Humidity Sensor: Датчик температуры и влажности AM2302  
-Dimmer: Диммер  
-RGB led controller: Контроллер освещения RGB  
-Dimmer & RGB led controller: Диммер и контроллер освещения RGB  
-Distance sensor: датчик расстояния
-Depth sensor: датчик глубины
-Gateway lock operation: Открытие калитки
-Gate operation: Открытие/закрытие ворот
-Garage door operation: Открытие/закрытие гаражных ворот
-Door lock operation: Открытие двери
-Roller shutter operation: Управление роллетами
-Gateway opening sensor: Датчик открытия калитки
-Gate opening sensor: Датчик открытия ворот
+GENERATE: СОЗДАТЬ
 Garage door opening sensor: Датчик открытия гаража
-Door opening sensor: Датчик открытия двери
-Roller shutter opening sensor: Датчик роллет
-No liquid sensor: Датчик наличия жидкости
-On/Off switch: Выключатель
-Light switch: Выключатель света
+Garage door operation: Открытие/закрытие гаражных ворот
+Gas meter: Счетчик газа
+Gate opening sensor: Датчик открытия ворот
+Gate operation: Открытие/закрытие ворот
+Gateway lock operation: Открытие калитки
+Gateway opening sensor: Датчик открытия калитки
+Generate new token: Создать новый токен
+Generate token: Создать токен
+Get SUPLA on your devices: Загрузи SUPLА на свое устройство
+Go to I/O device details: Перейти к подробной информации устройства
+Go to channel details: Перейти к подробной информации канала
+Go to your account: Перейди в свой аккаунт
+Grant access: Предоставить доступ
+HFD4 Relay: Реле HFD4
+History of measurements: История измерений
+Home appliances: Бытовая техника
+Hours: Часов
+Humidity Sensor: Датчик влажности
+Humidity adjustment: Регулировка влажности
 Humidity sensor: Датчик влажности
-Temperature and humidity sensor: Датчик температуры и влажности 
-RGB lighting: Освещение RGB  
-Dimmer and RGB lighting: Диммер и освещение RGB  
-
+'I accept the [Terms and Conditions] and hereby agree for processing of my personal data for the purposes included in the said [Terms and Conditions].': 'Я принимаю [правила] и даю согласие на обработку моих персональных данных в целях и объеме, указанном в [Правилах].'
+I agree: Я согласен
+'I aree, taske me to the app': 'Я согласен, перейти к приложению'
+'I do not agree, get me out of here': 'Я не согласен, уберите меня отсюда'
+I/O Devices: Устройства
+INACTIVE: НЕАКТИВНА
+Idle: Бездействующие
+'If you are a developer who wants to provide additional features for SUPLA, create an OAuth application that users can authorize and use.': 'Если вы программист и хотите предоставить дополнительные возможности для SUPLI, создайте приложение OAuth, которое пользователи смогут авторизовать и использовать.'
+'If you are sure you have an account on cloud.supla.org, check if the application you are trying to authorize is public.': 'Если вы уверены, что у вас есть учетная запись на cloud.supla.org, убедитесь, что приложение, которое вы пытаетесь авторизовать, является публичным.'
+'If you want to integrate your Cloud with public OAuth applications, you must [register your instance].': 'Если вы хотите интегрировать персональное облако SUPLA с публичным приложением OAuth, вам необходимо [зарегистрировать свою инстанцию].'
+'If you want to stay here, do something!': 'Если хочешь здесь остаться, сделай что-нибудь!'
+'If you wish to see the available integrations, go to [cloud.supla.org/apps].': 'Если вы хотите увидеть доступные интеграции, перейдите на [cloud.supla.org/apps].'
+Impulse counter: Счетчик импульсов
+Impulses: Импульсы
+Incorrect direct link parameters: Неверные параметры прямой ссылки
+Information: Информация
+Inherit I/O Device location: Использовать местоположение устройства
+Integrations: Интеграции
+Interval: Интервал
+'Invalid redirect URI: {uri}': 'Invalid redirect URI: {uri}'
+Invalid request: Неверный запрос
+Inverted logic: Реверсивная логика
+Invisible: Невидимые
+Last access: Последний звонок
+Last connection: Последнее соединение
+Last used: Поледним использовался
+Let me choose later: Позвольте мне выбрать позже
+Light switch: Выключатель света
+Lighting: Освещение
+Limit has been exceeded: Лимит был превышен
+'Liquid, Temp': 'Жидкость, Темп'
+Location: Область
+Location Identifier: ID Позиции
+Location limit has been exceeded: Достигнуто ограничение числа Областей
+Locations: Область
+Mail sensor: Сигнализатор наличия почты
+Make sure to save it in a secure place if you wish to access it in the future. The link won’t be again displayed after you leave this page.: 'Убедитесь, что он сохранен в надежном месте, если вы хотите использовать его снова в будущем. Ссылка не будет отображаться, когда вы покинете эту страницу.'
+'Maximum filesize limit is {limit}.': 'Максимальный размер файла - {limit}.'
+Minute: Минута
+Mobile Apps: Мобильное приложение
+Mode: Режим
+Modification: Модификация
+Mondays: Понедельники
+My OAuth apps: Мои приложения OAuth
+My SUPLA: Моя SUPLA
+Name: Название
+Never: Никогда
+New OAuth application: Новое приложение OAuth
+New channel group: Новая группа каналов
+New direct link: Новая прямая ссылка
+New password: Новый пароль
+Newer: Новые
+Next run date: Ближайшее исполнение
+'No access identifier enabled. Go to [access identifier list] or [add a new access identifier].': 'У вас нет активных идентификаторов доступа. Перейти к [списку идентификаторов доступа] или [добавить новый идентификатор доступа].'
+No allowed actions have been chosen.: Никаких допустимых действий не выбрано
+No function: Не назначено
+No future executions - schedule disabled: Нет запланированных исполнений – график выключен
+No limit: Без лимита
+No liquid sensor: Датчик наличия жидкости
+'No location enabled. Go to [location list] or [add a new location].': 'У вас нет активных местоположений. Перейти к [списку местоположений] или [добавить новое местоположение].'
+'No results match {0}': 'Результаты не подходят для {0}'
+No. of Client’s apps: Количество клиентских приложений
+No. of access identifiers: Количество идентификаторов доступа
+No. of channel groups: Количество групп каналов
+No. of channels: Количество каналов
+No. of devices: Количество устройств
+No. of locations: Количество местоположений
+None: Нет
+OAuth application: Приложение OAuth
+OAuth authorization: Авторизация OAuth
+'Off': Выключить
+Offline access: Доступ офлайн
+Older: Старые
+'On': Включить
+On/Off switch: Выключатель
+'Only domain names with an optional port number are allowed. E.g. mysupla.org or mysupla.org:88. HTTPS is required.': 'Разрешены только доменные имена с дополнительным номером порта. Например, mysupla.org или mysupla.org:88. HTTPS обязателен.'
+Open: Открыть
+Opening sensor: Датчик открытия
+Original location: Исходное локализацию
+'Otherwise go to [the homepage].': 'В противном случае перейдите на [домашнюю страницу].'
+Partial opening sensor: Датчик промежуточного открытия
+Password: Пароль
+Password Reset: Сброс пароля
+Password has been changed: Пароль изменен
+Percentage of closing: Процент закрытия
+Personal access tokens: Персональные токены доступа
+Personal access tokens function like ordinary OAuth access tokens but they have no expiration time.: 'Личные токены доступа работают так же, как и обычные, но являются бессрочными.'
+Personal token name is required.: Необходимо указать имя персонального токена.
+Please enter a valid email address: Введите правильный адрес электронной почты
+Please fill a valid email address: Впишите корретный почтовый адрес
+Please provide a valid domain name for your private SUPLA Cloud: Введите правильное имя домена для вашего персонального облака SUPLA
+Please select the schedules that should also be enabled.: 'Отметь графики, которые тоже должны быть включены.'
+Please wait a moment before the next login attempt.: Подождите минуту перед следующей попыткой входа.
+Pressure sensor: Датчик давления
+Previous login: Предидущий вход
+Price per: Цена за
+Private Cloud domain name: Доменное имя персонального облака
+Proceed: Продолжить
+Processing: В реализации
+Public ID: Публичный ID
+RESET: СБРОС
+RGB led controller: Контроллер освещения RGB
+RGB lighting: Освещение RGB
+Rain sensor: Датчик дождя
+Random: Произвольный
+Read: Показание
+Register: Регистрация
+Register a new OAuth application: Зарегистрировать новое приложение OAuth
+Register private SUPLA Cloud: Зарегистрировать персональное облако SUPLA
+Registered: Зарегистрирован
+Registration of new I/O devices: Регистрация устройств
+Registration of new clients: Регистрация клиентов
+Relay: Реле
+Relay switching time: Время переключения реле
+'Relocate all the associated channel groups before you delete this location. Ids: {relatedIds}.': 'Перед удалением местоположения необходимо переместить группы каналов, которые в нем находятся. Идентификаторы: {relatedIds}.'
+'Relocate all the associated channels before you delete this location. Ids: {relatedIds}.': 'Перед удалением местоположения необходимо переместить каналы, которые в нем находятся. Идентификаторы: {relatedIds}.'
+'Remove all the associated devices before you delete this location. Ids: {relatedIds}.': 'Удалите связанные устройства перед удалением этого местоположения. Идентификаторы: {relatedIds}.'
+'Remove all the devices using this location as an official before you delete it. Ids: {relatedIds}.': 'Сначала удалите все устройства, использующие это местоположение как исходное. Идентификаторы: {relatedIds}.'
+Repeat password: Повторите пароль
+Retry on failure: Повторить при невыполнении
+Reveal: Открыть
+Reveal partially: Открыть частично
+Revoke: Аннулировать
+Roller shutter opening sensor: Датчик роллет
+Roller shutter operation: Управление роллетами
+Roller shutters: Роллеты
+'SUPLA is available from anywhere at any time, so do not worry, if you forget to turn the lights off next time': 'SUPLA доступна везде и всегда, так что не бойтесь забыть выключить свет или утюг'
+Saturdays: Субботы
+Save: Сохранить
+Save and enable: Сохранить и включить
+Save changes: Сохранить изменения
+Save changes to see Access IDs: Сохранить изменения для получения идентификаторов доступа
+Schedule: График
+Schedule cannot be enabled: Не получилось запустить график
+Schedule limit has been exceeded: Лимит графиков превышен
+Schedule mode: Режим графика
+Schedules: Графики
+Schedules below will be deleted: Следующие графики будут удалены
+Scope: Диапазон (scope)
+Scopes: Диапазоны
+Scopes define which sections of your account can be accessed when using the token.: 'Диапазоны определяют, к каким ресурсам учетной записи можно получить доступ с помощью токена.'
+Search: Поиск
+Secret: Секретный ключ (secret)
+Seems like a secret place: 'Что-то нам подсказывает, что вас здесь быть не должно'
+Select icon: Выбрать значок
+Select the item (subject) you want to control using this link: 'Выберите элемент (субъект), который хотите контролировать с помощью этой ссылки'
+Sensor (normal closed): Датчик (нормально закрытый)
+Sensor (normal open): Датчик (нормально открытый)
+Sensor disconnected: Нет датчика
+Sensors: Датчики
+Server address: Адрес сервера
+Server unreachable: Соединить с сервером невозможно
+Service temporarily unavailable: Сервис временно недоступен
+Show on the Client’s devices: Показать на клиентских устройствах
+Shut: Закрыть
+Sign In: Войти
+Sign Out: Выйти
+Sign in temporarily unavailable. Please try again later.: Вход временно недоступен. Повторите попытку позже.
+Smartphones: Смартфоны
+SoftVer: Версия
+Sources available from: Исходный код доступен на
+Staircase timer: Лестничный автомат
+Start Here: Начни отсюда
+Start date: Дата начала
+State: Состояние
+Subject: Субъект
+Subject type: Тип субъекта
+Success: Успешно
+Successful: Выполнено успешно
+Sundays: Воскресенья
+Sunrise / Sunset: Восход/Закат
+Supla for devices: Supla для устройств
+Temperature: Температура
+Temperature & Humidity Sensor: Датчик температуры и влажности
+Temperature Sensor: Датчик температуры
+Temperature adjustment: Регулировка температуры
+Temperature and humidity sensor: Датчик температуры и влажности
+'Thanks to integrations, you can easily add new features to your account using solutions provided by external suppliers, developers or by yourself.': 'Благодаря интеграциям вы можете легко добавлять новые функции в свою учетную запись, используя решения, предоставляемые сторонними поставщиками, разработчиками, или свои собственные.'
+The Terms and Conditions have changed: Правила изменились
+The Terms and Conditions have changed – please read them and accept.: Правила сайта изменились - требуется согласие.
+The action was prevented from being performed using an HTTP GET method that is not permitted.: Не удалось выполнить действия с использованием запрещенного метода HTTP GET.
+The client will be automatically logged out when deleted.: Удаление клиента приведет к его немедленному выходу из системы.
+The device is disabled: Оборудование выключено
+The gate sensor must function properly in order to execute the scheduled action.: 'Чтобы выполнить задачу, датчик открытия ворот должен работать правильно.'
+The latest execution: Последнее исполнение
+The measurement history has been deleted.: История измерений удалена.
+The next available executions: Ближайшие исполнения
+The password and its confirm are not the same.: Пароль и его подтверждение не совпадают.
+The password should be 8 or more characters.: Пароль должен быть 8 или более символов.
+The server has returned an HTTP 400 Error. It means that the request you tried to perform is invalid.: 'Сервер вернул ошибку 400, означающую, что высланный запрос неверен.'
+The server has returned an HTTP 403 Error. It means that you are not authorized to display the item you are looking for.: 'Сервер вернул ошибку HTTP 403. Это означает, что у вас нет достаточных прав для просмотра данного ресурса.'
+The server has returned an HTTP 404 Error. It means that the item you are looking for does not exist.: 'Сервер вернул ошибку HTTP 404. Это означает, что ресурс, который вы ищете, не существует.'
+'The set of icons you have chosen is too large. Maximum upload limit is {limit}.': 'Выбранный Вами файлы икон превышают максимальный размер. Максимальный размер загружаемого файла - {limit}.'
+There are no more channels you can add to this group: 'Нет других каналов, которые можно добавить в эту группу'
+Thermometer: Термометр
+This direct link requires further parameters in order to be executed properly. See the examples below to get an idea of what you might do.: 'Эта прямая ссылка требует уточнения параметров выполняемого действия. Смотрите приведенные ниже примеры, чтобы узнать, какие параметры вы можете задать.'
+This is the list of applications you have granted access to your account.: 'Это список приложений, которым вы предоставили доступ к вашей учетной записи.'
+Thursdays: Четверги
 Timezone: Часовой пояс
+Toggle: переключать
+Token does not exist: индификатор не существует
+Too many channels in this group: Слишком много каналов в этой группе
+Tuesdays: Вторники
+Turning this device off will result in disabling all the associated schedules.: 'Выключение этого оборудования приведет  к одновременному выключению графиков, которые с ним соединены.'
+Type: Тип
+Unit: Единица
+Unknown: неизвестно
+'Uploaded files do not contain any inappropriate or copyrighted content, nor do they violate Third Party Rights and I have the right to use them.': 'Загруженные файлы не нарушают норм нравственности, авторских прав и прав третьих лиц, и я имею право их использовать.'
+Visible: идимые
 WELCOME_MESSAGE: |
   Подключить Твой дом или офис к SUPLA очень легко.
   Для этого Тебе достаточно всего лишь перезаписать в своих устройствах управления (Вход/Выход) и смартфонах нижеприведенные данные.
-Choose new device location for the: Выбери новую локализацию для устройства
-Original location: Исходное локализацию
-Change location: Выбери локализацию
-Choose the location: Выбери локализацию
-Go to your account: Перейди в свой аккаунт 
-Service temporarily unavailable: Сервис временно недоступен
-Try again later: Попытайся повторно задать команду
-Welcome Software Developer! RESTfulAPI has been designed having your needs in mind! With this interface you can integrate your own IT solutions with SUPLA.: Привет, Программист!  Специально для Тебя мы создали интерфейс RESTfulAPI, благодаря  которому сможешь интегрировать собственные IT -решения с  SUPLA.
-RESTful API has been enabled: RESTful API включен
-RESTful API has been disabled: RESTful API выключен
-The password should be 24 or more characters.: Пароль должен состоять из минимум 24 печатных знаков.
-OAuth 2.0 Authentication: Авторизация OAuth 2.0 
-copy: копировать
-Schedule: График
-Schedules: Графики
-Create New Schedule: Создай новый график
-No future executions - schedule disabled: Нет запланированных исполнений – график выключен
-Enable schedule: Запусти график
-Schedule cannot be enabled: Не получилось запустить график 
-Disable schedule: Выключи график
-Delete schedule: Удали график
-Executions: Реализации
-Action: Акция
-Subject: Субъект
-Mode: Режим
-Schedule has been deleted: Режим устранен
-Schedule mode: Режим графика
-Your timezone: Ваш часовой пояс
-Choose your timezone: Выбери свой часовой пояс
-change: изменить
-When: Когда
-Start date: Дата начала
-Start hour: Время начала
-End date: Дата окончания
-End hour: Время окончания
-calculating the next available executions: вычисляю ближайшие исполнения  
-The next available executions: Ближайшие исполнения
-choose the channel: выбери канал
-Add: Добавь
-Date: Дата
-Hour: Час
-Interval: Интервал
-Every: каждые
-minutes: Минут
-Hours: Часов
-Minute: Минута
-Days: Дней
-Are you sure you want to delete this schedule?: Ты уверен, что хочешь удалить этот график?
-Next run date: Ближайшее исполнение
-The latest execution: Последнее исполнение
-Mondays: Понедельники
-Tuesdays: Вторники
-Wednesdays: Среды
-Thursdays: Четверги
-Fridays: Пятницы
-Saturdays: Субботы
-Sundays: Воскресенья
-once: Одноразовый
-minutely: Ежеминутный цикл
-hourly: Ежечасный цикл
-daily: Дневной цикл
-Close: Закрыть
-Open: Открыть
-Adjust parameters: Задать параметры
-Brightness: Яркость
-Color brightness: Яркость цвета
-Color: Цвет
-Random: Произвольный
-Off: Выключить
-On: Включить
-Shut: Закрыть
-Reveal: Открыть
-Reveal partially: Открыть частично
-Successful: Выполнено успешно
-Device unavailable: Оборудование недоступно
-Sensor disconnected: Нет датчика
-Server unreachable: Соединить с сервером невозможно
-Failed: Не получилось
-Failed (zombie): Не получилось (зомби)
-Cancelled: Аннулировано 	
-Expired: Просрочен
-Processing: В реализации
-The gate sensor must function properly in order to execute the scheduled action.: Чтобы выполнить задачу, датчик открытия ворот должен работать правильно.
-You will be logged out shortly: В течение нескольких секунд система удалит тебя как пользователя
-If you want to stay here, do something!: Если хочешь здесь остаться, сделай что-нибудь!
-Chosen hour: Заданное время
-before: до
-after: после
-sunrise-before: восхода 
-sunset-before: заката
-sunrise-after: восхода 
-sunset-after: заката
-Sunrise / Sunset: Восход/Закат
-The device is disabled: Оборудование выключено
-Existing schedules: Существующие графики
-Turning this device off will result in disabling all the associated schedules.: Выключение этого оборудования приведет  к одновременному выключению графиков, которые с ним соединены.
-Are you sure you want to disable this device?: Ты уверен, что хочешь выключить это оборудование?
-If you change the function of the channel, the following schedules will be removed: Если ты поменяешь задачи данного канала, заданные ему графики будут удалены 
-Please select the schedules that should also be enabled.: Отметь графики, которые тоже должны быть включены.
-You have no devices that can be added to the schedule: У тебя нет никакого оборудования, которое можно добавить к графику 
-You will be redirected back to the schedules list now.: Сейчас ты будешь перенаправлен к списку графиков.
-
-Choose: выберите
-White: белый
-
-Smartphones: Смартфоны
-Client's Apps: Клиентские приложения
-smartphones, tablets, etc.: смартфоны, планшеты и т.д.
-Active: Активные
-Idle: Бездействующие
-Client's app has been deleted: Клиентское приложение было удалено
-Error when communicating the server. Try again in a while.: Произошла ошибка во время связи с сервером. Повторите попытку позже.
-Loading: Зарядка
-if it takes too long, check if the JS scripts are loaded correctly: если это длится слишком долго, проверьте, загружаются ли скрипты JS правильно
-SUPLA-Cloud will not work without Javascript: SUPLA-Cloud не будет работать без включенного Javascript
-will expire: Истечет
-Registration of new clients: Регистрация клиентов
-Registration of new I/O devices: Регистрация устройств
-Empty!: Пусто!
-Last access: Последний звонок
-from the IP: с адреса
-Access ID: ID доступа
-Are you sure you want to delete this client?: Вы уверены, что хотите удалить это клиентское приложение?
-The client will be automatically logged out when deleted.: Удаление клиента приведет к его немедленному выходу из системы.
-ACTIVE: АКТИВНА
-INACTIVE: НЕАКТИВНА
-Sign in temporarily unavailable. Please try again later.: Вход временно недоступен. Повторите попытку позже.
-
-Temperature Sensor: Датчик температуры
-Humidity Sensor: Датчик влажности
-Temperature & Humidity Sensor: Датчик температуры и влажности
-Mail sensor:  Сигнализатор наличия почты
-Wind sensor: Датчик ветра
-Pressure sensor: Датчик давления
-Rain sensor: Датчик дождя
-Weight sensor: Весы
+Water meter: Счетчик воды
+We could not connect to your SUPLA Cloud instance.: Не удалось подключиться к персональной инстанции облака SUPLA Cloud.
+'We store some data (e.g. cookies) in your browser to remember your preferences and to make the application usage easier [Please read the Terms and Conditions].': 'Мы сохраняем в вашем браузере информацию о ваших предпочтениях для облегчения использования приложения (например, с помощью механизма куки). [Читать правила].'
+We were not able to find your account.: Не удалось найти вашу учетную запись.
+'We will try to display the received icons the best possible way, however you will obtain the greatest results by sending us over a PNG file with a transparent background, width {width}px and height {height}.': 'Мы сделаем все возможное, чтобы загруженные значки отображались оптимально, но наилучшие результаты вы получите, загрузив PNG-файлы с прозрачным фоном и шириной {width} и высотой {height} пикселей.'
+We will use it only in justified situations.: Он используется только в обоснованных случаях.
 Weather Station: Метеостанция
+Wednesdays: Среды
+Weight sensor: Весы
+What this token is for?: Для чего служит этот токен?
+When: Когда
+Where is your SUPLA Cloud?: Где находится ваша SUPLA?
+White: белый
+Wind sensor: Датчик ветра
 Window opening sensor: Датчик открытия окна
-Staircase timer: Лестничный автомат
-Change icon: Сменить значок
-Select icon: Выбрать значок
-
-Edit: Изменить
-Automation: Автоматика
-Channel group: Группа каналов
-Channel groups: Группы каналов
-Show on the Client’s devices: Показать на клиентских устройствах
-Disable: Выключить
-Enable: Включить
-Add new channel group: Добавить новую группу каналов
-No. of channels: Количество каналов
-Details: Подробная информация
-No. of devices: Количество устройств
-Add new channel to this group: Добавить новый канал в группу
-Remove: Удалить
-Go to channel details: Перейти к подробной информации канала
-Go to I/O device details: Перейти к подробной информации устройства
-Choose location: Выбрать местоположение
-There are no more channels you can add to this group: Нет других каналов, которые можно добавить в эту группу
-New channel group: Новая группа каналов
-Add first channel to set channel group function and save it: Выбрать первый канал для определения функции группы и ее сохранения
-choose: выбрать
-Are you sure you want to delete this channel group?: Вы действительно хотите удалить эту группу?
-
-Retry on failure: Повторить при невыполнении
-Status: Статус
-RESTful API: RESTful API
-State: Состояние
-Depth: Глубина
-Distance: Расстояние
-History of measurements: История измерений
-Humidity adjustment: Регулировка влажности
-Temperature adjustment: Регулировка температуры
-Opening sensor: Датчик открытия
-Partial opening sensor: Датчик промежуточного открытия 
-Channel for the partial opening sensor: Канал для датчика промежуточного открытия
-Inverted logic: Реверсивная логика
-
-Are you sure you want to change channel's function?: Вы действительно хотите изменить функцию канала?
-Changing channel's function will also result in the following changes.: Изменение функции канала повлечет также следующие изменения.
-Channel will be deleted from the channel group below: Канал будет удален из следующих групп каналов
-Schedules below will be deleted: Следующие графики будут удалены
-Cancel changes: Отменить изменения
-Save changes: Сохранить изменения
-Channel is assigned to the I/O device location: Канал назначен по местоположению устройства
-Inherit I/O Device location: Использовать местоположение устройства
-No. of channel groups: Количество групп каналов
-Channel group limit has been exceeded: Лимит групп каналов превышен
-Schedule limit has been exceeded: Лимит графиков превышен
-Too many channels in this group: Слишком много каналов в этой группе
-
-Invisible: Невидимые
-Visible: идимые
+With SUPLA you can operate the lights in your home or office: С SUPLĄ можно управлять светом в доме или офисе
+With function: С функцией
+Working period: Срок действия
 You cannot delete your last access identifier.: Невозможно удалить свой последний идентификатор доступа.
 You cannot delete your last location.: Невозможно удалить свое последнее местоположение.
-No. of access identifiers: Количество идентификаторов доступа
-No. of locations: Количество местоположений
-No. of Client’s apps: Количество клиентских приложений
-Assign Client apps: Назначить клиентские приложения
-
-My SUPLA: Моя SUPLA
-Save changes to see Access IDs: Сохранить изменения для получения идентификаторов доступа
-The password and its confirm are not the same.: Пароль и его подтверждение не совпадают.
-If you create new password, reconfiguration of  all the connected 3rd party applications will be required.: Создание нового пароля приведет к необходимости перенастройки всех приложений, использующих API.
-
-Are you lost?: Вы потерялись? Что-то ищете?
-The server has returned an HTTP 404 Error. It means that the item you are looking for does not exist.: Сервер вернул ошибку HTTP 404. Это означает, что ресурс, который вы ищете, не существует.
-Seems like a secret place: Что-то нам подсказывает, что вас здесь быть не должно
-The server has returned an HTTP 403 Error. It means that you are not authorized to display the item you are looking for.: Сервер вернул ошибку HTTP 403. Это означает, что у вас нет достаточных прав для просмотра данного ресурса.
-
-Confirm if you want to remove the Location ID{locationId}. You will no longer be able to connect the i/o devices to this Location.: Подтвердить удаление Местоположения ID{locationId}. Дальнейшее подключение устройств ввода-вывода к этому местоположению будет невозможно.
-"Remove all the associated devices before you delete this location. Ids: {relatedIds}.": "Удалите связанные устройства перед удалением этого местоположения. Идентификаторы: {relatedIds}."
-"Remove all the devices using this location as an official before you delete it. Ids: {relatedIds}.": "Сначала удалите все устройства, использующие это местоположение как исходное. Идентификаторы: {relatedIds}."
-"Relocate all the associated channels before you delete this location. Ids: {relatedIds}.": "Перед удалением местоположения необходимо переместить каналы, которые в нем находятся. Идентификаторы: {relatedIds}."
-"Relocate all the associated channel groups before you delete this location. Ids: {relatedIds}.": "Перед удалением местоположения необходимо переместить группы каналов, которые в нем находятся. Идентификаторы: {relatedIds}."
-
-No location enabled. Go to [location list] or [add a new location].: У вас нет активных местоположений. Перейти к [списку местоположений] или [добавить новое местоположение].
-No access identifier enabled. Go to [access identifier list] or [add a new access identifier].: У вас нет активных идентификаторов доступа. Перейти к [списку идентификаторов доступа] или [добавить новый идентификатор доступа].
-
-I accept the [Terms and Conditions] and hereby agree for processing of my personal data for the purposes included in the said [Terms and Conditions].: Я принимаю [правила] и даю согласие на обработку моих персональных данных в целях и объеме, указанном в [Правилах].
-The Terms and Conditions have changed – please read them and accept.: Правила сайта изменились - требуется согласие.
-The Terms and Conditions have changed: Правила изменились
-I do not agree, get me out of here: Я не согласен, уберите меня отсюда
-I aree, taske me to the app: Я согласен, перейти к приложению
-We store some data (e.g. cookies) in your browser to remember your preferences and to make the application usage easier [Please read the Terms and Conditions].: Мы сохраняем в вашем браузере информацию о ваших предпочтениях для облегчения использования приложения (например, с помощью механизма куки). [Читать правила].
-I agree: Я согласен
+You just need to execute the following command inside your host terminal.: Достаточно выполнить следующую команду внутри терминала вашего хоста.
 You must agree to the Terms and Conditions.: Принятие правил является обязательным.
-Limit has been exceeded: Лимит был превышен
-
+You need to provide icons for all states.: Вы должны назначить значки для всех состояний.
+You will be logged out shortly: В течение нескольких секунд система удалит тебя как пользователя
+You will not be able to generate a direct link with the same URL again.: Создание ссылки с одинаковым URL невозможно.
 Your account has been locked.: Ваша учетная запись заблокирована.
-Please wait a moment before the next login attempt.: Подождите минуту перед следующей попыткой входа.
+Your email: Введите почту
+Your instance is not registered or you are trying to authorize an application that is not public.: 'Ваша инстанция не зарегистрирована или вы пытаетесь авторизовать приложение, которое не является публичным.'
+Your private SUPLA Cloud is almost registered.: Ваше персональное облако SUPLA почти зарегистрировано.
+after: после
+before: до
+choose: выбрать
+choose a currency: выбрать валюту
+choose the channel: выбери канал
+choose the channel group: выбрать группу каналов
+choose the timezone: выбрать часовой пояс
+copied: скопировано
+copy: копировать
+daily: Дневной цикл
+from IP: c IP
+from the IP: с адреса
+hourly: Ежечасный цикл
+minutely: Ежеминутный цикл
+minutes: Минут
+once: Одноразовый
+register-slide1-text: 'С помощью простой и доступной электроники с помощью SUPLA можно создать устройства управляющие домашней автоматикой. Двери, роллеты, гаражные ворота и калитки, розетки и лампочкм, бытовая тезника и контроль температуры станут подвластны простому прикосновению пальца.'
+register-slide1-title: Разработай собственную домашнюю автоматику
+register-slide2-text: Основное достоинство проекта это простота и доступность. SUPLA дает возможность управлять своим домом в любом месте Земли где есть интернет для вашего планшета или смартфона. SUPLA проект с открытым програмным кодом и дизайном электрических схем. Вы даже можете внести свой вклад в развитие SUPLA
+register-slide2-title: SUPLA везде!
+register-slide3-text: 'Системы Умного Дома зачастую слишком сложны и требуют монтажа во время строительства. SUPLA проста и бесплатна. Возможно построение элементов на платформах RaspberryPI, Arduino а также ESP8266 объединяя их с помощью LAN или WiFi. Присоединяйтесь к нам и постройте собственную систему автоматики своего здания!'
+register-slide3-title: Бесплатно и с открыто дляя всех!
+sec.: сек.
+'smartphones, tablets, etc.': 'смартфоны, планшеты и т.д.'
+state-closed: Закрыто
+state-default: По умолчанию
+state-empty: Пустые
+state-full: Полные
+state-off: Выключено
+state-on: Включено
+state-opened: Открыто
+state-partially_closed: Частично закрыто
+state-revealed: Открытые
+state-rgb_off_dim_off: RGB и диммер выключены
+state-rgb_off_dim_on: 'RGB выключен, диммер включен'
+state-rgb_on_dim_off: 'RGB включен, диммер выключен'
+state-rgb_on_dim_on: RGB и диммер включены
+state-shut: Закрытые
+sunrise-after: восхода
+sunrise-before: восхода
+sunset-after: заката
+sunset-before: заката
+will expire: Истечет
+'{applicationName} will not be able to interact with your account until you grant the access again.': '{applicationName} мы не можем взаимодействовать с вашей учетной записью до повторного предоставления доступа.'
+'{clientName} wants to access your account.': '{clientName} хочет получить доступ к вашей учетной записи.'
 
-Calibration: калибровка
-Percentage of closing: Процент закрытия
+#</editor-fold>
+#<editor-fold desc="Extra translations">
+# Translations below have not been found in sources. You might want to delete them.
+Assigned Locations: Подключенные Области
+Date: Дата
+Disable: Выключить
+Enable: Включить
+Hi: Привет
+Hour: Час
+I/O: Ввод/Вывод
+Input: Вход
+Languages: Язык
+Loading: Зарядка
+Next: Далее
+Number: Номер
+Output: Выход
+Registration: Регистрация
+Remove: Удалить
+Status: Статус
+Try again later: Попытайся повторно задать команду
+Your private SUPLA Cloud instance is not available. Make sure your server is online and your https connection works properly.: 'Ваша пользовательская установка SUPLA cloud недоступна. Убедитесь в том, что сервер доступен, а соединение HTTPS действует корректно.'
 
-Email already exists: Адрес электронной почты уже существует
+#</editor-fold>
+#<editor-fold desc="Missing translations">
+# Translations below are missing. You want to translate them.
+Access identifier password must be at least 8 characters.: Пароль для идентификатора доступа должен быть не менее 8 символов.
+Access identifier password must be no longer than 32 characters.: Пароль для идентификатора доступа не может быть длиннее 32 символов.
+'Any application or device that uses the {tokenName} token will not work anymore.': 'Все программы или устройства, которые используют токен {tokenName}, перестанут работать.'
+Application name cannot be blank.: Название приложения не может быть пустым
+Channel group must consist of at least one channel.: Группа каналов должна содержать, по крайней мере, один канал.
+Choose client apps: Выберите клиентские приложения
+Could not reset the password.: Не удалось сбросить пароль.
+Humidity: Влажность
+Language is not available: Язык недоступен
+Location password must be at least 4 characters.: Пароль для локализации должен быть не менее 4 символов.
+Location password must be no longer than 32 characters.: Пароль для локализации не может быть длиннее 32 символов.
+Login: Вход в систему
+Open / close: Открыть / закрыть
+Stop: Остановить
+'The server has returned an HTTP {statusCode} error.': 'Сервер вернул ошибку {statusCode}.'
+Visit app webpage: 'Открыть веб-сайт приложения'
+Your private SUPLA Cloud is not registered.: Ваше личное облако SUPLA не зарегистрировано.
+
+#</editor-fold>

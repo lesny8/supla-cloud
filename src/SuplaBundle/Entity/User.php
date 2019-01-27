@@ -46,8 +46,17 @@ class User implements AdvancedUserInterface, EncoderAwareInterface {
     private $id;
 
     /**
-     * @ORM\Column(name="salt", type="string", length=32)
+     * @ORM\Column(name="short_unique_id", type="string", length=32, unique=true, options={"fixed" = true})
+     * @Groups({"basic"})
      */
+    private $shortUniqueId;
+
+    /** @ORM\Column(name="long_unique_id", type="string", length=200, unique=true, options={"fixed" = true})
+     *  @Groups({"longUniqueId"})
+     */
+    private $longUniqueId;
+
+    /** @ORM\Column(name="salt", type="string", length=32) */
     private $salt;
 
     /**
@@ -265,6 +274,8 @@ class User implements AdvancedUserInterface, EncoderAwareInterface {
         $this->clientApps = new ArrayCollection();
         $this->apiClientAuthorizations = new ArrayCollection();
         $this->salt = base_convert(sha1(uniqid(mt_rand(), true)), 16, 36);
+        $this->shortUniqueId = bin2hex(random_bytes(16));
+        $this->longUniqueId = bin2hex(random_bytes(100));
         $this->regDate = new \DateTime();
         $this->passwordRequestedAt = null;
         $this->enabled = false;
@@ -274,6 +285,14 @@ class User implements AdvancedUserInterface, EncoderAwareInterface {
 
     public function getId() {
         return $this->id;
+    }
+
+    public function getShortUniqueId(): string {
+        return $this->shortUniqueId;
+    }
+
+    public function getLongUniqueId(): string {
+        return $this->longUniqueId;
     }
 
     public function getUsername() {
@@ -572,12 +591,6 @@ class User implements AdvancedUserInterface, EncoderAwareInterface {
             return 'legacy_encoder';
         }
         return null; // uses the default encoder
-    }
-
-    public function fill(array $data) {
-        $this->setEmail($data['email']);
-        $this->setTimezone($data['timezone']);
-        $this->setPlainPassword($data['password']);
     }
 
     public function getOauthCompatUserName() {

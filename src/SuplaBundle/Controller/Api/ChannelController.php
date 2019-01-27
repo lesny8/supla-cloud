@@ -102,7 +102,7 @@ class ChannelController extends RestController {
             $this->setSerializationGroups(
                 $view,
                 $request,
-                ['iodevice', 'location', 'connected', 'state', 'supportedFunctions', 'measurementLogsCount']
+                ['iodevice', 'location', 'connected', 'state', 'supportedFunctions', 'measurementLogsCount', 'relationsCount']
             );
             return $view;
         } else {
@@ -127,10 +127,12 @@ class ChannelController extends RestController {
         if (ApiVersions::V2_2()->isRequestedEqualOrGreaterThan($request)) {
             $functionHasBeenChanged = $channel->getFunction() != $updatedChannel->getFunction();
             if ($functionHasBeenChanged) {
-                if (!$request->get('confirm') && (count($channel->getSchedules()) || count($channel->getChannelGroups()))) {
+                $hasRelations = count($channel->getSchedules()) || count($channel->getChannelGroups()) || count($channel->getDirectLinks());
+                if ($hasRelations && !$request->get('confirm')) {
                     return $this->view([
                         'schedules' => $channel->getSchedules(),
                         'groups' => $channel->getChannelGroups(),
+                        'directLinks' => $channel->getDirectLinks(),
                     ], Response::HTTP_CONFLICT);
                 }
                 $channel->setFunction($updatedChannel->getFunction());
@@ -146,17 +148,21 @@ class ChannelController extends RestController {
             $channel->setCaption($updatedChannel->getCaption());
             $channel->setHidden($updatedChannel->getHidden());
             $this->channelParamsUpdater->updateChannelParams($channel, $updatedChannel);
-            return $this->transactional(function (EntityManagerInterface $em) use ($functionHasBeenChanged, $request, $channel) {
+            $result = $this->transactional(function (EntityManagerInterface $em) use ($functionHasBeenChanged, $request, $channel) {
                 $em->persist($channel);
                 if ($functionHasBeenChanged) {
                     foreach ($channel->getSchedules() as $schedule) {
                         $this->scheduleManager->delete($schedule);
                     }
+                    foreach ($channel->getDirectLinks() as $directLink) {
+                        $em->remove($directLink);
+                    }
                     $channel->removeFromAllChannelGroups($em);
                 }
-                $this->suplaServer->reconnect();
                 return $this->getChannelAction($request, $channel);
             });
+            $this->suplaServer->reconnect();
+            return $result;
         } else {
             $data = json_decode($request->getContent(), true);
             $this->channelActionExecutor->executeAction($channel, ChannelFunctionAction::SET_RGBW_PARAMETERS(), $data);

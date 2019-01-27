@@ -32,10 +32,10 @@
     import "bootstrap-select";
     import "bootstrap-select/dist/css/bootstrap-select.css";
     import ButtonLoadingDots from "../common/gui/loaders/button-loading-dots.vue";
-    import {channelTitle} from "../common/filters";
+    import {channelIconUrl, channelTitle} from "../common/filters";
 
     export default {
-        props: ['params', 'value', 'hiddenChannels', 'hideNone', 'initialId'],
+        props: ['params', 'value', 'hiddenChannels', 'hideNone', 'initialId', 'filter'],
         components: {ButtonLoadingDots},
         data() {
             return {
@@ -50,7 +50,7 @@
             fetchChannels() {
                 this.channels = undefined;
                 this.$http.get('channels?include=iodevice,location&' + (this.params || '')).then(({body: channels}) => {
-                    this.channels = channels;
+                    this.channels = channels.filter(this.filter || (() => true));
                     if (this.initialId) {
                         this.chosenChannel = this.channels.filter(ch => ch.id == this.initialId)[0];
                     }
@@ -63,13 +63,13 @@
             },
             channelHtml(channel) {
                 let content = `<div class='channel-dropdown-option flex-left-full-width'>`
-                    + `<div class="labels"><h4>ID${channel.id} ${ this.$t(channel.function.caption) }`;
+                    + `<div class="labels"><h4>ID${channel.id} ${this.$t(channel.function.caption)}`;
                 if (channel.caption) {
                     content += ` <span class='small text-muted'>${channel.caption}</span>`;
                 }
                 content += '</h4>';
                 content += `<p>${channel.location.caption} / ${channel.iodevice.name}</p></div>`;
-                content += `<div class="icon"><img src='assets/img/functions/${channel.function.id}.svg'></div></div>`;
+                content += `<div class="icon"><img src="${channelIconUrl(channel)}"></div></div>`;
                 return content;
             },
             updateDropdownOptions() {
@@ -128,8 +128,11 @@
     }
 
     .channel-dropdown-option {
+        padding: 5px 3px;
         .icon {
-            img { height: 60px; }
+            img {
+                height: 60px;
+            }
         }
     }
 </style>

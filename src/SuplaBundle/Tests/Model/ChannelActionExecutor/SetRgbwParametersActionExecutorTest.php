@@ -40,12 +40,18 @@ class SetRgbwParametersActionExecutorTest extends \PHPUnit_Framework_TestCase {
             [['hue' => -1, 'color_brightness' => 100], false],
             [['hue' => 0, 'color_brightness' => 101], false],
             [['hue' => 0, 'color_brightness' => -1], false],
-            [['hue' => 0], false],
-            [['color' => 1], false],
+            [['hue' => 0], true],
+            [['color' => 1], true],
             [['hue' => 'black', 'color_brightness' => 100], false],
             [['brightness' => -1], false],
             [['brightness' => 101], false],
             [['brightness' => 'ala'], false],
+            [['brightness' => 100, 'alexaCorrelationToken' => 'abcd'], true],
+            [['color' => 1, 'color_brightness' => 0, 'alexaCorrelationToken' => 'abcd'], true],
+            [['color' => 1, 'color_brightness' => 0, 'brightness' => 100, 'alexaCorrelationToken' => 'abcd'], true],
+            [['brightness' => 100, 'googleRequestId' => 'abcd'], true],
+            [['color' => 1, 'color_brightness' => 0, 'googleRequestId' => 'abcd'], true],
+            [['color' => 1, 'color_brightness' => 0, 'brightness' => 100, 'googleRequestId' => 'abcd'], true],
         ];
     }
 

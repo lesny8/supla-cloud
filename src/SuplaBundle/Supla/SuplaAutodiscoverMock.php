@@ -24,6 +24,7 @@ use SuplaBundle\Model\UserManager;
 class SuplaAutodiscoverMock extends SuplaAutodiscover {
     public static $isBroker = true;
     public static $isTarget = true;
+    public static $requests = [];
 
     public static $publicClients = [
         '100_public' => [
@@ -85,7 +86,8 @@ class SuplaAutodiscoverMock extends SuplaAutodiscover {
         return self::$isTarget;
     }
 
-    protected function remoteRequest($endpoint, $post = false, &$responseStatus = null, array $headers = []) {
+    protected function remoteRequest($endpoint, $post = false, &$responseStatus = null, array $headers = [], string $method = null) {
+        self::$requests[] = ['endpoint' => $endpoint, 'post' => $post, 'headers' => $headers];
         if (preg_match('#/users/(.+)#', $endpoint, $match)) {
             $server = self::$userMapping[urldecode($match[1])] ?? null;
             if ($server) {
@@ -95,32 +97,33 @@ class SuplaAutodiscoverMock extends SuplaAutodiscover {
         } elseif (preg_match('#/new-account-server/#', $endpoint)) {
             $responseStatus = 200;
             return ['server' => current(self::$userMapping)];
-        } elseif (preg_match('#/mapped-client-id/(.+)/(.+)#', $endpoint, $match)) {
+        } elseif (preg_match('#/mapped-client/(.+)/(.+)#', $endpoint, $match)) {
             $domainMaps = self::$clientMapping[urldecode($match[2])] ?? [];
-            $mapping = $domainMaps[urldecode($match[1])] ?? [];
+            $publicId = urldecode($match[1]);
+            $mapping = $domainMaps[$publicId] ?? [];
             $mappedClientId = $mapping['clientId'] ?? null;
-            if ($mappedClientId) {
+            if ($post) {
+                $secret = $post['secret'];
+                if (isset(self::$publicClients[$publicId]) && self::$publicClients[$publicId]['secret'] == $secret) {
+                    if (isset($domainMaps[$publicId])) {
+                        return ['mappedClientId' => $mappedClientId, 'secret' => $domainMaps[$publicId]['secret']];
+                    }
+                }
+            } elseif ($mappedClientId) {
                 $responseStatus = 200;
                 return ['mappedClientId' => $mappedClientId];
             }
-        } elseif (preg_match('#/mapped-client-public-id/(.+)/(.+)#', $endpoint, $match)) {
+        } elseif (preg_match('#/mapped-client-public-id/(.+)#', $endpoint, $match)) {
             $responseStatus = 200;
-            $domainMaps = self::$clientMapping[urldecode($match[2])] ?? [];
+            $domainMaps = self::$clientMapping[$this->localSuplaCloud->getAddress()] ?? [];
             $targetMapping = array_filter($domainMaps, function ($mapping) use ($match) {
                 return $mapping['clientId'] == urldecode($match[1]);
             });
             $publicId = $targetMapping ? key($targetMapping) : null;
             return $publicId ? ['publicClientId' => $publicId] : null;
-        } elseif (preg_match('#/mapped-client-credentials/(.+)/(.+)#', $endpoint, $match)) {
+        } elseif (preg_match('#/mapped-client-credentials/(.+)#', $endpoint, $match)) {
             $responseStatus = 204;
             return '';
-        } elseif (preg_match('#/mapped-client-secret/(.+)/(.+)#', $endpoint, $match)) {
-            $publicId = urldecode($match[1]);
-            $secret = $post['secret'];
-            if (isset(self::$publicClients[$publicId]) && self::$publicClients[$publicId]['secret'] == $secret) {
-                $domainMaps = self::$clientMapping[urldecode($match[2])] ?? [];
-                return $domainMaps[$publicId] ?? [];
-            }
         } elseif (preg_match('#/(register-target-cloud)|(target-cloud-registration-token)#', $endpoint, $match)) {
             $randomBytes = bin2hex(random_bytes(20));
             $token = preg_replace('#[1lI0O]#', '', preg_replace('#[^a-zA-Z0-9]#', '', base64_encode($randomBytes)));
@@ -130,21 +133,26 @@ class SuplaAutodiscoverMock extends SuplaAutodiscover {
             return array_values(array_map(function ($client, $id) {
                 unset($client['secret']);
                 $client['id'] = $id;
+                $client['clientId'] = $id;
                 return $client;
             }, self::$publicClients, array_keys(self::$publicClients)));
+        } elseif (preg_match('#/broker-clouds#', $endpoint, $match)) {
+            return [
+                ['id' => 1, 'url' => 'https://broker1.supla', 'ip' => '127.0.0.2'],
+                ['id' => 2, 'url' => 'https://broker2.supla', 'ip' => '127.0.0.3'],
+            ];
         }
         $responseStatus = 404;
         return false;
     }
 
-    public static function clear($shouldBeEnabled = true) {
+    public static function clear(bool $shouldBeBroker = true, bool $shouldBeTarget = true) {
         self::$userMapping = [];
         self::$clientMapping = [];
         self::$publicClients = [];
-        self::$isBroker = true;
-        self::$isTarget = true;
-        if ($shouldBeEnabled) {
-            self::$userMapping['user@supla.org'] = 'supla.local';
-        }
+        self::$isBroker = $shouldBeBroker;
+        self::$isTarget = $shouldBeTarget || $shouldBeBroker;
+        self::$requests = [];
+        self::$userMapping['user@supla.org'] = 'supla.local';
     }
 }

@@ -80,7 +80,7 @@ services:
 
   SuplaBundle\Supla\SuplaAutodiscoverReal:
     arguments:
-      $autodiscoverUrl: "%supla_autodiscover_server%"
+      $autodiscoverUrl: "%supla.autodiscover_url%"
       $actAsBrokerCloud: '%act_as_broker_cloud%'
     tags:
       - {name: monolog.logger, channel: supla_autodiscover}
@@ -118,13 +118,14 @@ services:
     resource: '../../src/SuplaBundle/Serialization'
 
   SuplaBundle\Mailer\SuplaMailer:
-    $mailer_from: "%mailer_from%"
-    $email_admin: "%admin_email%"
-    $locale: "%locale%"
+    $mailerFrom: "%mailer_from%"
+    $adminEmail: "%admin_email%"
+    $defaultLocale: "%locale%"
 
   twig.extension.intl:
     class: Twig_Extensions_Extension_Intl
 
+  SuplaBundle\Twig\FrontendConfig: ~
   SuplaBundle\Twig\IoDeviceAttributesToStringExtension: ~
 
   SuplaBundle\Repository\AccessIdRepository:
@@ -174,6 +175,14 @@ services:
   SuplaBundle\Repository\IODeviceChannelRepository:
     factory: ["@doctrine.orm.entity_manager", getRepository]
     arguments: [SuplaBundle\Entity\IODeviceChannel]
+
+  SuplaBundle\Repository\AmazonAlexaRepository:
+    factory: ["@doctrine.orm.entity_manager", getRepository]
+    arguments: [SuplaBundle\Entity\AmazonAlexa]
+
+  SuplaBundle\Repository\GoogleHomeRepository:
+    factory: ["@doctrine.orm.entity_manager", getRepository]
+    arguments: [SuplaBundle\Entity\GoogleHome]
 
   fos_oauth_server.server:
     class: SuplaBundle\Auth\SuplaOAuth2

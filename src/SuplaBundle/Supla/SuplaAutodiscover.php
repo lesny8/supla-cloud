@@ -32,6 +32,7 @@ use Symfony\Component\HttpFoundation\Response;
 abstract class SuplaAutodiscover {
     const TARGET_CLOUD_TOKEN_SAVE_PATH = \AppKernel::VAR_PATH . '/local/target-cloud-token';
     const PUBLIC_CLIENTS_SAVE_PATH = \AppKernel::VAR_PATH . '/local/public-clients';
+    const BROKER_CLOUDS_SAVE_PATH = \AppKernel::VAR_PATH . '/local/broker-clouds';
 
     protected $autodiscoverUrl = null;
 
@@ -40,7 +41,7 @@ abstract class SuplaAutodiscover {
     /** @var bool */
     private $actAsBrokerCloud;
     /** @var LocalSuplaCloud */
-    private $localSuplaCloud;
+    protected $localSuplaCloud;
     /** @var LoggerInterface */
     private $logger;
 
@@ -56,6 +57,9 @@ abstract class SuplaAutodiscover {
         $this->localSuplaCloud = $localSuplaCloud;
         $this->actAsBrokerCloud = $actAsBrokerCloud;
         $this->logger = $logger;
+        if (strpos($this->autodiscoverUrl, 'http') !== 0) {
+            $this->autodiscoverUrl = 'https://' . $this->autodiscoverUrl;
+        }
     }
 
     public function enabled(): bool {
@@ -70,35 +74,49 @@ abstract class SuplaAutodiscover {
         return file_exists(self::TARGET_CLOUD_TOKEN_SAVE_PATH);
     }
 
-    abstract protected function remoteRequest($endpoint, $post = false, &$responseStatus = null, array $headers = []);
+    abstract protected function remoteRequest(
+        $endpoint,
+        $post = false,
+        &$responseStatus = null,
+        array $headers = [],
+        string $method = null
+    );
 
     public function getAuthServerForUser(string $username): TargetSuplaCloud {
-        $domainFromAutodiscover = false;
-        if (!$this->userManager->userByEmail($username) && filter_var($username, FILTER_VALIDATE_EMAIL) && $this->enabled()) {
-            $result = $this->remoteRequest('/users/' . urlencode($username));
-            $this->logger->debug(__FUNCTION__, ['response' => $result]);
-            $domainFromAutodiscover = $result ? ($result['server'] ?? false) : false;
+        if ($this->isBroker()) {
+            $domainFromAutodiscover = false;
+            if (!$this->userManager->userByEmail($username) && filter_var($username, FILTER_VALIDATE_EMAIL) && $this->enabled()) {
+                $result = $this->remoteRequest('/users/' . urlencode($username));
+                $this->logger->debug(__FUNCTION__, ['response' => $result]);
+                $domainFromAutodiscover = $result ? ($result['server'] ?? false) : false;
+            }
+            if ($domainFromAutodiscover) {
+                $serverUrl = $domainFromAutodiscover;
+                if (strpos($serverUrl, 'http') !== 0) {
+                    $serverUrl = $this->localSuplaCloud->getProtocol() . '://' . $serverUrl;
+                }
+                return new TargetSuplaCloud($serverUrl);
+            }
         }
-        if ($domainFromAutodiscover) {
-            $serverUrl = $this->localSuplaCloud->getProtocol() . '://' . $domainFromAutodiscover;
-            return new TargetSuplaCloud($serverUrl);
-        } else {
-            return $this->localSuplaCloud;
-        }
+        return $this->localSuplaCloud;
     }
 
     public function getRegisterServerForUser(Request $request): TargetSuplaCloud {
-        $domainFromAutodiscover = false;
-        if ($this->enabled()) {
-            $result = $this->remoteRequest('/new-account-server/' . urlencode($request->getClientIp()));
-            $domainFromAutodiscover = $result ? ($result['server'] ?? false) : false;
+        if ($this->isBroker()) {
+            $domainFromAutodiscover = false;
+            if ($this->enabled()) {
+                $result = $this->remoteRequest('/new-account-server/' . urlencode($request->getClientIp()));
+                $domainFromAutodiscover = $result ? ($result['server'] ?? false) : false;
+            }
+            if ($domainFromAutodiscover) {
+                $serverUrl = $domainFromAutodiscover;
+                if (strpos($serverUrl, 'http') !== 0) {
+                    $serverUrl = $this->localSuplaCloud->getProtocol() . '://' . $serverUrl;
+                }
+                return new TargetSuplaCloud($serverUrl);
+            }
         }
-        if ($domainFromAutodiscover) {
-            $serverUrl = $this->localSuplaCloud->getProtocol() . '://' . $domainFromAutodiscover;
-            return new TargetSuplaCloud($serverUrl);
-        } else {
-            return $this->localSuplaCloud;
-        }
+        return $this->localSuplaCloud;
     }
 
     public function userExists($username) {
@@ -106,7 +124,7 @@ abstract class SuplaAutodiscover {
             if ($this->userManager->userByEmail($username)) {
                 return true;
             }
-            if ($this->enabled()) {
+            if ($this->enabled() && $this->isBroker()) {
                 $authServer = $this->getAuthServerForUser($username);
                 return !$authServer->isLocal();
             }
@@ -115,8 +133,19 @@ abstract class SuplaAutodiscover {
     }
 
     public function registerUser(User $user) {
-        $this->logger->debug(__FUNCTION__);
-        $this->remoteRequest('/users', ['email' => $user->getUsername()]);
+        if ($this->isBroker()) {
+            $this->logger->debug(__FUNCTION__);
+            $this->remoteRequest('/users', ['email' => $user->getUsername()]);
+        }
+    }
+
+    public function deleteUser(User $user): bool {
+        if ($this->isBroker()) {
+            $this->logger->debug(__FUNCTION__);
+            $this->remoteRequest('/users/' . urlencode($user->getUsername()), false, $responseStatus, [], 'DELETE');
+            return $responseStatus === 204;
+        }
+        return true;
     }
 
     /** @return string|null */
@@ -124,21 +153,21 @@ abstract class SuplaAutodiscover {
         if (!$this->isBroker()) {
             return null;
         }
-        $url = '/mapped-client-id/' . urlencode($clientPublicId) . '/' . urlencode($targetCloud->getAddress());
+        $url = '/mapped-client/' . urlencode($clientPublicId) . '/' . urlencode($targetCloud->getAddress());
         $response = $this->remoteRequest($url);
         $this->logger->debug(__FUNCTION__, ['url' => $url, 'response' => $response]);
         return $response['mappedClientId'] ?? null;
     }
 
     public function getPublicIdBasedOnMappedId(string $clientId): string {
-        $url = '/mapped-client-public-id/' . urlencode($clientId) . '/' . urlencode($this->localSuplaCloud->getAddress());
+        $url = '/mapped-client-public-id/' . urlencode($clientId);
         $response = $this->remoteRequest($url);
         $this->logger->debug(__FUNCTION__, ['url' => $url, 'response' => $response]);
         return is_array($response) && isset($response['publicClientId']) ? $response['publicClientId'] : '';
     }
 
     public function updateTargetCloudCredentials(string $mappedClientId, ApiClient $client) {
-        $url = '/mapped-client-credentials/' . urlencode($mappedClientId) . '/' . urlencode($this->localSuplaCloud->getAddress());
+        $url = '/mapped-client-credentials/' . urlencode($mappedClientId);
         $this->remoteRequest($url, ['clientId' => $client->getPublicId(), 'secret' => $client->getSecret()], $responseStatus);
         $this->logger->debug(__FUNCTION__, ['url' => $url, 'responseStatus' => $responseStatus, 'clientId' => $client->getPublicId()]);
         if (!in_array($responseStatus, [Response::HTTP_OK, Response::HTTP_NO_CONTENT])) {
@@ -150,7 +179,7 @@ abstract class SuplaAutodiscover {
         if (!$this->isBroker()) {
             return false;
         }
-        $url = '/mapped-client-secret/' . urlencode($client->getPublicId()) . '/' . urlencode($targetCloud->getAddress());
+        $url = '/mapped-client/' . urlencode($client->getPublicId()) . '/' . urlencode($targetCloud->getAddress());
         $response = $this->remoteRequest($url, ['secret' => $client->getSecret()], $responseStatus);
         $this->logger->debug(__FUNCTION__, ['url' => $url, 'responseStatus' => $responseStatus]);
         return is_array($response) && isset($response['secret']) ? $response : false;
@@ -158,7 +187,7 @@ abstract class SuplaAutodiscover {
 
     public function issueRegistrationTokenForTargetCloud(TargetSuplaCloud $targetCloud, $email): string {
         $response = $this->remoteRequest('/target-cloud-registration-token', [
-            'targetCloud' => $targetCloud->getAddress(),
+            'targetCloudUrl' => $targetCloud->getAddress(),
             'email' => $email,
         ]);
         $this->logger->debug(__FUNCTION__, ['targetCloud' => $targetCloud->getAddress()]);
@@ -169,12 +198,19 @@ abstract class SuplaAutodiscover {
 
     public function registerTargetCloud(string $registrationToken): string {
         $response = $this->remoteRequest('/register-target-cloud', [
-            'targetCloud' => $this->localSuplaCloud->getAddress(),
+            'targetCloudUrl' => $this->localSuplaCloud->getAddress(),
             'registrationToken' => $registrationToken,
-        ]);
-        $this->logger->debug(__FUNCTION__, ['targetCloud' => $this->localSuplaCloud->getAddress()]);
+        ], $responseStatus);
+        $this->logger->debug(
+            __FUNCTION__,
+            [
+                'targetCloud' => $this->localSuplaCloud->getAddress(),
+                'responseStatus' => $responseStatus,
+                'response' => array_diff_key(is_array($response) ? $response : [], ['token' => '']),
+            ]
+        );
         $token = is_array($response) && isset($response['token']) ? $response['token'] : '';
-        Assertion::notEmpty($token, 'Could not contact Autodiscover service. Try again in a while.');
+        Assertion::notEmpty($token, "Could not contact Autodiscover service. Try again in a while. (Error: $responseStatus)");
         return $token;
     }
 
@@ -183,18 +219,18 @@ abstract class SuplaAutodiscover {
         if (file_exists(self::PUBLIC_CLIENTS_SAVE_PATH)) {
             $publicClients = json_decode(file_get_contents(self::PUBLIC_CLIENTS_SAVE_PATH), true);
         }
-        if (!is_array($publicClients) || !isset($publicClients['lastFetchedTimestamp'])) {
-            $publicClients = ['lastFetchedTimestamp' => 0, 'clients' => []];
+        if (!is_array($publicClients) || !isset($publicClients['lastFetchedDatetime'])) {
+            $publicClients = ['lastFetchedDatetime' => 0, 'clients' => []];
         }
         $response = $this->remoteRequest(
             '/public-clients',
             false,
             $responseStatus,
-            ['If-Modified-Since' => $publicClients['lastFetchedTimestamp']]
+            ['If-Modified-Since' => $publicClients['lastFetchedDatetime']]
         );
         $this->logger->debug(__FUNCTION__, ['responseStatus' => $responseStatus]);
         if ($responseStatus == Response::HTTP_OK) {
-            $publicClients = ['lastFetchedTimestamp' => time(), 'clients' => $response];
+            $publicClients = ['lastFetchedDatetime' => (new \DateTime())->format(\DateTime::RFC822), 'clients' => $response];
             $saved = file_put_contents(self::PUBLIC_CLIENTS_SAVE_PATH, json_encode($publicClients));
             Assertion::greaterThan($saved, 0, 'Could not save the public clients list from Autodiscover');
         } else {
@@ -210,5 +246,25 @@ abstract class SuplaAutodiscover {
             return $publicClientData['id'] == $publicClientId;
         });
         return count($publicClient) ? current($publicClient) : null;
+    }
+
+    public function getBrokerClouds(): array {
+        if (!$this->isBroker()) {
+            return [];
+        }
+        if (file_exists(self::BROKER_CLOUDS_SAVE_PATH)) {
+            $brokerClouds = json_decode(file_get_contents(self::BROKER_CLOUDS_SAVE_PATH), true);
+            if (is_array($brokerClouds)) {
+                return $brokerClouds;
+            }
+        }
+        $url = '/broker-clouds';
+        $response = $this->remoteRequest($url, null, $responseStatus);
+        $brokerClouds = is_array($response) ? $response : [];
+        $this->logger->debug(__FUNCTION__, ['url' => $url, 'responseStatus' => $responseStatus, 'brokersCount' => count($brokerClouds)]);
+        if ($brokerClouds) {
+            file_put_contents(self::BROKER_CLOUDS_SAVE_PATH, json_encode($brokerClouds));
+        }
+        return $brokerClouds;
     }
 }

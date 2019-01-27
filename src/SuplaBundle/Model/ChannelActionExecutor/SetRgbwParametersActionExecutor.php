@@ -21,9 +21,10 @@ class SetRgbwParametersActionExecutor extends SingleChannelActionExecutor {
     }
 
     public function validateActionParams(HasFunction $subject, array $actionParams): array {
-        Assertion::between(count($actionParams), 1, 3, 'Invalid number of action parameters');
+        Assertion::between(count($actionParams), 1, 4, 'Invalid number of action parameters');
         Assertion::count(
-            array_intersect_key($actionParams, array_flip(['hue', 'color_brightness', 'brightness', 'color'])),
+            array_intersect_key($actionParams, array_flip(['hue', 'color_brightness', 'brightness', 'color',
+                'alexaCorrelationToken', 'googleRequestId'])),
             count($actionParams),
             'Invalid action parameters'
         );
@@ -45,9 +46,9 @@ class SetRgbwParametersActionExecutor extends SingleChannelActionExecutor {
                     $actionParams['color'] = intval($color);
                 }
             }
-            Assertion::keyExists($actionParams, 'color_brightness');
-            Assert::that($actionParams['color_brightness'])->numeric()->between(0, 100);
-            $actionParams['color_brightness'] = intval($actionParams['color_brightness']);
+            $colorBrightness = $actionParams['color_brightness'] ?? 100;
+            Assert::that($colorBrightness)->numeric()->between(0, 100);
+            $actionParams['color_brightness'] = intval($colorBrightness);
         }
         if (isset($actionParams['brightness'])) {
             Assert::that($actionParams['brightness'])->numeric()->between(0, 100);
@@ -60,7 +61,10 @@ class SetRgbwParametersActionExecutor extends SingleChannelActionExecutor {
         $color = $actionParams['color'] ?? 1;
         $colorBrightness = $actionParams['color_brightness'] ?? 0;
         $brightness = $actionParams['brightness'] ?? 0;
-        $command = $subject->buildServerSetCommand('RGBW', [$color, $colorBrightness, $brightness]);
+        $command = $subject->buildServerSetCommand(
+            'RGBW',
+            $this->assignCommonParams([$color, $colorBrightness, $brightness], $actionParams)
+        );
         if ($color == 'random') {
             $command = $subject->buildServerSetCommand('RAND-RGBW', [$colorBrightness, $brightness]);
         }

@@ -4,8 +4,8 @@
             <whole-screen-message v-if="token"
                 class="container"
                 icon="pe-7s-global"
-                header="Your private SUPLA Cloud is almost registered."
-                message="You just need to execute the following command inside your host terminal.">
+                header-i18n="Your private SUPLA Cloud is almost registered."
+                :message="$t('You just need to execute the following command inside your host terminal.')">
                 <div class="flex-left-full-width">
                     <pre style="overflow: hidden"><code style="white-space: nowrap; overflow: hidden">{{ tokenCommand }}</code></pre>
                     <copy-button :text="tokenCommand"
@@ -15,7 +15,8 @@
         </transition>
         <transition name="fade-router">
             <div v-if="!token">
-                <register-slider :texts="['register-target-cloud-slide1', 'register-target-cloud-slide2', 'register-target-cloud-slide3']"></register-slider>
+                <!-- i18n:['register-slide1-text','register-slide1-title','register-slide2-text','register-slide2-title','register-slide3-text','register-slide3-title'] -->
+                <register-slider :texts="['register-slide1', 'register-slide2', 'register-slide3']"></register-slider>
                 <div class="create-form">
                     <div class="wrapper">
                         <h1 class="page-title"
@@ -36,7 +37,7 @@
                                 required
                                 :placeholder="$t('Enter your email address')"
                                 v-model="email">
-                            <span class="help-block">Użyjemy go wyłącznie w uzasadnionych przypadkach.</span>
+                            <span class="help-block">{{ $t('We will use it only in justified situations.') }}</span>
 
 
                             <input type="text"
@@ -46,7 +47,7 @@
                                 autocapitalize="none"
                                 :placeholder="$t('Where is your SUPLA Cloud?')"
                                 v-model="targetCloud">
-                            <span class="help-block">Podaj tylko domenę lub adres IP, razem z portem jeśli nie jest standardowy (443). Wymagamy połączenia HTTPS.</span>
+                            <span class="help-block">{{ $t('Enter the domain with the port only if it is not standard (443). We require HTTPS connection.') }}</span>
 
                             <regulations-checkbox v-model="regulationsAgreed"></regulations-checkbox>
 
@@ -110,7 +111,7 @@
             computedErrorMessage() {
                 let errorMessage;
                 if (this.email.indexOf('@') <= 0) {
-                    errorMessage = this.$t('Please fill a valid email address');
+                    errorMessage = this.$t('Please enter a valid email address');
                 } else if (this.targetCloud.indexOf('.') <= 0) {
                     errorMessage = this.$t('Please provide a valid domain name for your private SUPLA Cloud');
                 } else if (!this.regulationsAgreed) {

@@ -18,39 +18,45 @@
 namespace SuplaBundle\Supla;
 
 use SuplaBundle\Exception\ApiException;
+use SuplaBundle\Model\ApiVersions;
 use Symfony\Component\HttpFoundation\Response;
 
 class SuplaAutodiscoverReal extends SuplaAutodiscover {
-    protected function remoteRequest($endpoint, $post = false, &$responseStatus = null, array $headers = []) {
+    protected function remoteRequest($endpoint, $post = false, &$responseStatus = null, array $headers = [], string $method = null) {
         if (!$this->enabled()) {
             return null;
         }
-        $ch = curl_init('https://' . $this->autodiscoverUrl . $endpoint);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $post ? 'POST' : 'GET');
+        $endpointUrl = $this->autodiscoverUrl . $endpoint;
+        $ch = curl_init($endpointUrl);
+        $method = $method ?: ($post ? 'POST' : 'GET');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
+        $headers['X-Cloud-Version'] = ApiVersions::LATEST;
         if ($post) {
             $content = json_encode($post);
-            $headers = array_merge(['Content-Type: application/json', 'Content-Length: ' . strlen($content)], $headers);
+            $headers = array_merge(['Content-Type' => 'application/json', 'Content-Length' => strlen($content)], $headers);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
         }
         if (file_exists(self::TARGET_CLOUD_TOKEN_SAVE_PATH)) {
             $headers['Authorization'] = 'Bearer ' . file_get_contents(self::TARGET_CLOUD_TOKEN_SAVE_PATH);
         }
-        if ($headers) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        }
+        $headers = array_map(function ($headerName, $headerValue) {
+            return "$headerName: $headerValue";
+        }, array_keys($headers), $headers);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+//        curl_setopt($ch, CURLOPT_COOKIE, 'XDEBUG_SESSION=PHPUNIT'); // uncomment to enable XDEBUG debugging in dev
         $result = curl_exec($ch);
         $responseStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         if (curl_errno($ch) != 0) {
-            throw new ApiException('Service temporarily unavailable.', Response::HTTP_SERVICE_UNAVAILABLE);
+            throw new ApiException('Service temporarily unavailable', Response::HTTP_SERVICE_UNAVAILABLE); // i18n
         }
         curl_close($ch);
-        if ($result) {
+        if ($responseStatus >= 200 && $responseStatus <= 304) {
             return json_decode($result, true);
         } elseif ($responseStatus == 404) {
             return false;
         } else {
-            throw new ApiException('Service temporarily unavailable.', Response::HTTP_SERVICE_UNAVAILABLE);
+            throw new ApiException('Service temporarily unavailable', $responseStatus ?: Response::HTTP_SERVICE_UNAVAILABLE); // i18n
         }
     }
 }

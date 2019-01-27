@@ -34,9 +34,9 @@ class IODeviceChannelGroupParamConverter extends AbstractBodyParamConverter {
 
     public function convert(array $data) {
         $user = $this->getCurrentUserOrThrow();
-        $channelIds = $data['channelIds'] ?? [];
+        $channelIds = $data['channelsIds'] ?? [];
         Assertion::isArray($channelIds);
-        Assertion::greaterThan(count($channelIds), 0, 'Channel group must consist of at least one channel.');
+        Assertion::greaterThan(count($channelIds), 0, 'Channel group must consist of at least one channel.'); // i18n
         $channels = array_map(function ($channelId) use ($user) {
             return $this->channelRepository->findForUser($user, $channelId);
         }, $channelIds);

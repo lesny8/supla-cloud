@@ -3,7 +3,8 @@
         <loading-cover :loading="loading">
             <div v-if="directLink">
                 <div class="container">
-                    <pending-changes-page :header="$t(directLink.id ? 'Direct link' : 'New direct link') + (directLink.id ? ' ID'+ directLink.id : '')"
+                    <pending-changes-page
+                        :header="directLink.id ? (directLink.caption || `${$t('Direct link')} ID${directLink.id}`) : $t('New direct link')"
                         @cancel="cancelChanges()"
                         @save="saveDirectLink()"
                         :deletable="!isNew"
@@ -40,7 +41,7 @@
                                             <dt>
                                                 <input type="text"
                                                     class="form-control"
-                                                    @keydown="channelGroupChanged()"
+                                                    @keydown="directLinkChanged()"
                                                     v-model="directLink.caption">
                                             </dt>
                                             <dd>{{ $t('Enabled') }}</dd>
@@ -61,6 +62,16 @@
                                                     </div>
                                                 </div>
                                             </dt>
+                                            <dd>
+                                                {{ $t('For devices') }}
+                                                <i class="pe-7s-help1"
+                                                    :title="$t('Allows to perform an action only using the HTTP PATCH request.')"></i>
+                                            </dd>
+                                            <dt>
+                                                <toggler
+                                                    @input="directLinkChanged()"
+                                                    v-model="directLink.disableHttpGet"></toggler>
+                                            </dt>
                                         </dl>
                                     </div>
                                 </div>
@@ -74,7 +85,7 @@
                                     </div>
                                 </div>
                                 <div class="col-sm-4">
-                                    <h3>{{ $t('Executions history') }}</h3>
+                                    <h3>{{ $t('Execution history') }}</h3>
                                     <direct-link-audit :direct-link="directLink"></direct-link-audit>
                                 </div>
                             </div>
@@ -90,14 +101,14 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="well">
-                                            <h4 class="text-center">{{ $t('Executions limit') }}</h4>
+                                            <h4 class="text-center">{{ $t('Execution limit') }}</h4>
 
                                             <div class="executions-limit">
                                                 {{ directLink.executionsLimit }}
                                             </div>
-                                            <div class="btn-group btn-group-justified">
+                                            <div class="text-center">
                                                 <a class="btn btn-default"
-                                                    @click="setExecutionsLimit(undefined)">No limit</a>
+                                                    @click="setExecutionsLimit(undefined)">{{ $t('No limit') }}</a>
                                                 <a class="btn btn-default"
                                                     @click="setExecutionsLimit(1)">1</a>
                                                 <a class="btn btn-default"
@@ -107,11 +118,11 @@
                                                 <a class="btn btn-default"
                                                     @click="setExecutionsLimit(100)">100</a>
                                                 <a :class="'btn btn-default ' + (choosingCustomLimit ? 'active' : '')"
-                                                    @click="choosingCustomLimit = !choosingCustomLimit">Custom</a>
+                                                    @click="choosingCustomLimit = !choosingCustomLimit">{{ $t('Custom') }}</a>
                                             </div>
                                             <div v-if="choosingCustomLimit">
                                                 <div class="form-group"></div>
-                                                <label>{{ $t('Custom executions limit') }}</label>
+                                                <label>{{ $t('Custom execution limit') }}</label>
                                                 <input v-model="directLink.executionsLimit"
                                                     class="form-control"
                                                     type="number"
@@ -126,12 +137,13 @@
                     </pending-changes-page>
                 </div>
                 <div v-if="isNew">
-                    <h3 class="text-center">{{ $t('Choose an item that should be managed by this link') }}</h3>
+                    <h3 class="text-center">{{ $t('Select the item (subject) you want to control using this link') }}</h3>
                     <div class="row">
                         <div class="col-lg-4 col-lg-offset-4">
-                            <subject-dropdown @input="chooseSubjectForNewLink($event)"></subject-dropdown>
+                            <subject-dropdown @input="chooseSubjectForNewLink($event)"
+                                channels-dropdown-params="hasFunction=1"></subject-dropdown>
                             <span class="help-block">
-                                {{ $t('After you choose a subject, direct link will be generated. You will set all other options after creation.') }}
+                                {{ $t('After you choose a subject, a direct link will be generated. You will be able to set all other options after its creation.') }}
                             </span>
                         </div>
                     </div>
@@ -163,6 +175,7 @@
     import DateRangePicker from "./date-range-picker";
     import DirectLinkAudit from "./direct-link-audit";
     import SubjectDropdown from "../devices/subject-dropdown";
+    import AppState from "../router/app-state";
 
     export default {
         props: ['id', 'item'],
@@ -205,9 +218,12 @@
                         .then(() => this.calculateAllowedActions())
                         .catch(response => this.error = response.status)
                         .finally(() => this.loading = false);
-                }
-                else {
+                } else {
                     this.directLink = {};
+                    const subjectForNewLink = AppState.shiftTask('directLinkCreate');
+                    if (subjectForNewLink) {
+                        this.chooseSubjectForNewLink({subject: subjectForNewLink, type: subjectForNewLink.type});
+                    }
                 }
             },
             calculateAllowedActions() {
@@ -217,17 +233,18 @@
                 });
             },
             chooseSubjectForNewLink({subject, type}) {
-                const toSend = {
-                    subjectType: type,
-                    subjectId: subject.id,
-                    caption: this.$t('Direct Link for #') + subject.id, // TODO generate it on backend when user has language in db
-                    allowedActions: ['read'],
-                };
-                this.loading = true;
-                this.$http.post('direct-links?include=subject', toSend).then(response => {
-                    const newLink = response.body;
-                    this.$emit('add', newLink);
-                }).catch(() => this.$emit('delete'));
+                if (subject) {
+                    const toSend = {
+                        subjectType: type,
+                        subjectId: subject.id,
+                        allowedActions: ['read'],
+                    };
+                    this.loading = true;
+                    this.$http.post('direct-links?include=subject', toSend).then(response => {
+                        const newLink = response.body;
+                        this.$emit('add', newLink);
+                    }).catch(() => this.$emit('delete'));
+                }
             },
             directLinkChanged() {
                 this.hasPendingChanges = true;
@@ -253,6 +270,7 @@
                 this.directLink = undefined;
             },
             setExecutionsLimit(limit) {
+                this.choosingCustomLimit = false;
                 this.directLink.executionsLimit = limit;
                 this.directLinkChanged();
             },
@@ -274,7 +292,7 @@
                 return actions;
             },
             possibleActions() {
-                if (this.directLink) {
+                if (this.directLink && this.directLink.subject) {
                     // OPEN and CLOSE actions are not supported for gates via API
                     const isGate = ['CONTROLLINGTHEGATE', 'CONTROLLINGTHEGARAGEDOOR'].indexOf(this.directLink.subject.function.name) >= 0;
                     return [{

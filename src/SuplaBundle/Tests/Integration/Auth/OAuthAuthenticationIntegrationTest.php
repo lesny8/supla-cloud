@@ -19,6 +19,8 @@ namespace SuplaBundle\Tests\Integration\Auth;
 
 use FOS\OAuthServerBundle\Model\ClientManagerInterface;
 use OAuth2\OAuth2;
+use SuplaBundle\Entity\EntityUtils;
+use SuplaBundle\Entity\OAuth\AccessToken;
 use SuplaBundle\Entity\OAuth\ApiClient;
 use SuplaBundle\Entity\OAuth\AuthCode;
 use SuplaBundle\Entity\User;
@@ -64,6 +66,7 @@ class OAuthAuthenticationIntegrationTest extends IntegrationTestCase {
             /** @var Crawler $crawler */
             $crawler = $client->apiRequest('POST', '/oauth/v2/auth_login', ['_username' => 'supler@supla.org', '_password' => 'supla123']);
             if ($testCase['grant']) {
+                $client->followRedirects(false);
                 $form = $crawler->selectButton('accepted')->form();
                 $client->submit($form);
             }
@@ -78,6 +81,16 @@ class OAuthAuthenticationIntegrationTest extends IntegrationTestCase {
         $authorization = $user->getApiClientAuthorizations()[0];
         $this->assertEquals($this->client->getId(), $authorization->getApiClient()->getId());
         $this->assertEquals('account_r offline_access', $authorization->getScope());
+    }
+
+    public function testRedirectionAfterGrantingAccess() {
+        $client = $this->makeOAuthAuthorizeRequest(['state' => 'horse']);
+        $response = $client->getResponse();
+        $this->assertTrue($response->isRedirection());
+        $targetUrl = $response->headers->get('Location');
+        $this->assertContains('https://unicorns.pl?', $targetUrl);
+        $this->assertContains('state=horse', $targetUrl);
+        $this->assertContains('code=', $targetUrl);
     }
 
     public function testLogsOutAfterGrantingAccess() {
@@ -115,6 +128,7 @@ class OAuthAuthenticationIntegrationTest extends IntegrationTestCase {
         $this->assertArrayHasKey('access_token', $response);
         $this->assertArrayHasKey('refresh_token', $response);
         $this->assertArrayHasKey('scope', $response);
+        $this->assertArrayHasKey('target_url', $response);
         $this->assertEquals('account_r offline_access', $response['scope']);
     }
 
@@ -195,6 +209,18 @@ class OAuthAuthenticationIntegrationTest extends IntegrationTestCase {
         $this->assertStatusCode(403, $client->getResponse());
         $client->request('GET', '/api/unicorns');
         $this->assertStatusCode(404, $client->getResponse());
+    }
+
+    public function testAccessingApiWithExpiredToken() {
+        $this->makeOAuthAuthorizeRequest(['scope' => 'account_r']);
+        $response = $this->issueTokenBasedOnAuthCode();
+        $token = $this->getEntityManager()->find(AccessToken::class, 2);
+        EntityUtils::setField($token, 'expiresAt', strtotime('-1hour'));
+        $this->getEntityManager()->persist($token);
+        $this->getEntityManager()->flush();
+        $client = self::createClient(['debug' => false], ['HTTP_AUTHORIZATION' => 'Bearer ' . $response['access_token'], 'HTTPS' => true]);
+        $client->request('GET', '/api/users/current');
+        $this->assertStatusCode(401, $client->getResponse());
     }
 
     public function testRefreshingToken() {

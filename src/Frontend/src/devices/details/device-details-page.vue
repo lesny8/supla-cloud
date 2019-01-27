@@ -24,7 +24,7 @@
                                 </div>
                                 <div class="hover-editable text-left">
                                     <dl>
-                                        <dd>{{ $t('GUID') }}</dd>
+                                        <dd>GUID</dd>
                                         <dt>{{ this.device.gUIDString }}</dt>
                                         <dd>{{ $t('Registered') }}</dd>
                                         <dt>{{ this.device.regDate | moment("LT L")}}</dt>
@@ -87,7 +87,7 @@
         </loading-cover>
         <channel-list-page :device-id="id"
             v-if="device"></channel-list-page>
-        <disabling-schedules-modal message="Turning this device off will result in disabling all the associated schedules."
+        <disabling-schedules-modal message-i18n="Turning this device off will result in disabling all the associated schedules."
             v-if="showSchedulesDisablingConfirmation"
             :schedules="schedules"
             @confirm="saveChanges(true)"
@@ -108,7 +108,7 @@
 </template>
 
 <script>
-    import {deviceTitle, withBaseUrl} from "../../common/filters";
+    import {deviceTitle} from "../../common/filters";
     import DotsRoute from "../../common/gui/dots-route.vue";
     import throttle from "lodash/throttle";
     import Toggler from "../../common/gui/toggler";
@@ -187,7 +187,9 @@
             }, 1000),
             deleteDevice() {
                 this.loading = true;
-                this.$http.delete(`iodevices/${this.id}`).then(() => window.location.assign(withBaseUrl('me')));
+                this.$http.delete(`iodevices/${this.id}`)
+                    .then(() => this.$router.push({name: 'me'}))
+                    .catch(() => this.loading = false);
             },
             onLocationChange(location) {
                 this.$set(this.device, 'location', location);

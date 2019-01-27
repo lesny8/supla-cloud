@@ -4,7 +4,7 @@ export function withBaseUrl(url) {
     if (url[0] != '/') {
         url = '/' + url;
     }
-    return Vue.config.external.baseUrl + url;
+    return (Vue.prototype.$user ? (Vue.prototype.$user.serverUrl || '') : '') + Vue.config.external.baseUrl + url;
 }
 
 export function withDownloadAccessToken(url) {
@@ -25,12 +25,35 @@ export function channelTitle(channel, vue, withDevice = false) {
         + (withDevice && channel.iodevice ? ' (' + deviceTitle(channel.iodevice) + ')' : '');
 }
 
+export function channelIconUrl(channel) {
+    if (channel.userIconId) {
+        return withDownloadAccessToken(`/api/user-icons/${channel.userIconId}/0?`);
+    } else {
+        const alternative = channel.altIcon ? '_' + channel.altIcon : '';
+        return withBaseUrl(`assets/img/functions/${channel.function.id}${alternative}.svg`);
+    }
+}
+
 export function deviceTitle(device) {
     return `${device.location.caption} / ${device.comment || device.name}`;
 }
 
 export function ellipsis(string, length = 20) {
     return string.length > length ? string.substr(0, length - 3) + '...' : string;
+}
+
+export function prettyBytes(bytes) {
+    if (typeof bytes !== 'number' || isNaN(bytes)) {
+        throw new TypeError('Expected a number');
+    }
+    const units = ['B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+    if (bytes < 1024) {
+        return bytes + ' B';
+    }
+    const exponent = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+    bytes = (bytes / Math.pow(1024, exponent)).toFixed(2) * 1;
+    const unit = units[exponent];
+    return `${bytes} ${unit}`;
 }
 
 Vue.filter('withBaseUrl', withBaseUrl);
@@ -40,3 +63,4 @@ Vue.filter('channelTitle', channelTitle);
 Vue.filter('deviceTitle', deviceTitle);
 Vue.filter('toUpperCase', (text) => text.toUpperCase());
 Vue.filter('ellipsis', ellipsis);
+Vue.filter('prettyBytes', prettyBytes);

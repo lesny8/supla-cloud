@@ -7,10 +7,10 @@
                 <img src="assets/img/logo.svg"
                     alt="SUPLA">
             </div>
-            <h3 class="text-center">{{ $t('Authorize application to use your SUPLA account')}}</h3>
+            <h3 class="text-center">{{ $t('Authorize the application, so that it can access your account.')}}</h3>
             <div class="form-group clearfix">
                 <div class="list-group scope-selector">
-                    <div class="list-group-item col-xs-12 col-sm-6"
+                    <div class="list-group-item"
                         v-for="scope in desiredAvailableScopes">
                         <h4>{{ $t(scope.label) }}</h4>
                         <div class="permissions">
@@ -25,7 +25,7 @@
 
             <div class="alert alert-info">
                 <span class="pe-7s-info"></span>
-                {{ $t('After granting access, you can always change your mind in the account settings.') }}
+                {{ $t('After granting the access, you can always remove it by adjusting the settings in your account settings section.') }}
             </div>
 
             <div class="buttons">
@@ -43,7 +43,7 @@
 
     export default {
         components: {ButtonLoadingDots, LoginFooter},
-        props: ['desiredScopes', 'clientName'],
+        props: ['desiredScopes', 'clientName', 'locale'],
         data() {
             return {
                 desiredAvailableScopes: [],
@@ -63,6 +63,9 @@
                 scope => scope.suffixes = scope.suffixes.filter(suffix => desiredScopes.indexOf(scopeId(scope, suffix)) !== -1)
             );
             this.desiredAvailableScopes = desiredAvailableScopes.filter(scope => scope.suffixes.length > 0);
+            if (this.locale) {
+                this.$setLocale(this.locale);
+            }
         },
         methods: {
             scopeId,
@@ -103,16 +106,13 @@
             margin-top: 30px;
         }
         .scope-selector {
-            .list-group-item {
+            display: flex;
+            flex-flow: row wrap;
+            > div {
+                flex-grow: 1;
                 border-radius: 0 !important;
                 h4 {
                     margin-top: 0;
-                }
-                &:nth-child(even) {
-                    border-left: 0;
-                }
-                &:last-child:nth-child(odd) {
-                    width: 100%;
                 }
                 .permissions {
                     display: flex;

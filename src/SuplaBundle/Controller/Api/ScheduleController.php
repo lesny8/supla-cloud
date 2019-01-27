@@ -112,7 +112,7 @@ class ScheduleController extends RestController {
 
     /** @Security("has_role('ROLE_SCHEDULES_RW')") */
     public function postScheduleAction(Request $request) {
-        Assertion::false($this->getCurrentUser()->isLimitScheduleExceeded(), 'Schedule limit has been exceeded');
+        Assertion::false($this->getCurrentUser()->isLimitScheduleExceeded(), 'Schedule limit has been exceeded'); // i18n
         $data = $request->request->all();
         if (!ApiVersions::V2_3()->isRequestedEqualOrGreaterThan($request)) {
             $data['subjectId'] = $data['channelId'] ?? null;
@@ -121,7 +121,7 @@ class ScheduleController extends RestController {
         $schedule = $this->fillSchedule(new Schedule($this->getCurrentUser()), $data);
         $this->getDoctrine()->getManager()->persist($schedule);
         $this->getDoctrine()->getManager()->flush();
-        if ($schedule->isSubjectChannel() && $schedule->getSubject()->getIoDevice()->getEnabled()) {
+        if ($schedule->isSubjectEnabled()) {
             $this->scheduleManager->enable($schedule);
         }
         return $this->view($schedule, Response::HTTP_CREATED);
@@ -138,8 +138,7 @@ class ScheduleController extends RestController {
             $em->persist($schedule);
             if (!$schedule->getEnabled() && ($request->get('enable') || ($data['enabled'] ?? false))) {
                 $this->scheduleManager->enable($schedule);
-            } elseif ($schedule->getEnabled() && (!($data['enabled'] ?? true)
-                    || ($schedule->isSubjectChannel() && !$schedule->getSubject()->getIoDevice()->getEnabled()))) {
+            } elseif ($schedule->getEnabled() && (!($data['enabled'] ?? true) || !$schedule->isSubjectEnabled())) {
                 $this->scheduleManager->disable($schedule);
             }
             if ($schedule->getEnabled()) {
@@ -163,12 +162,11 @@ class ScheduleController extends RestController {
         } elseif ($data['subjectType'] == ActionableSubjectType::CHANNEL_GROUP) {
             $subject = $this->channelGroupRepository->findForUser($this->getUser(), $data['subjectId']);
         }
-        $channel = $this->get('iodevice_manager')->channelById($data['subjectId']);
         Assertion::notNull($subject, 'Invalid schedule subject.');
         $data['subject'] = $subject;
         if (isset($data['actionParam']) && $data['actionParam']) {
             $data['actionParam'] = $this->channelActionExecutor->validateActionParams(
-                $channel,
+                $subject,
                 new ChannelFunctionAction($data['actionId'] ?? ChannelFunctionAction::TURN_ON),
                 $data['actionParam']
             );
@@ -177,7 +175,7 @@ class ScheduleController extends RestController {
         $errors = iterator_to_array($this->get('validator')->validate($schedule));
         Assertion::count($errors, 0, implode(', ', $errors));
         $nextRunDates = $this->scheduleManager->getNextRunDates($schedule, '+5days', 1, true);
-        Assertion::notEmpty($nextRunDates, 'Schedule cannot be enabled');
+        Assertion::notEmpty($nextRunDates, 'Schedule cannot be enabled'); // i18n
         return $schedule;
     }
 
@@ -209,7 +207,6 @@ class ScheduleController extends RestController {
      * @Security("has_role('ROLE_SCHEDULES_R')")
      */
     public function getNextRunDatesAction(Request $request) {
-        Assertion::true($request->isXmlHttpRequest());
         $data = $request->request->all();
         $temporarySchedule = new Schedule($this->getCurrentUser(), $data);
         $nextRunDates = $this->scheduleManager->getNextRunDates($temporarySchedule, '+7days', 3);

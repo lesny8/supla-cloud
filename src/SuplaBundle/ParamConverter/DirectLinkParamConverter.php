@@ -32,7 +32,9 @@ class DirectLinkParamConverter extends AbstractBodyParamConverter {
         Assertion::keyExists($data, 'subjectId', 'You must set subjectId for the direct link.');
         Assertion::keyExists($data, 'subjectType', 'You must set subjectType for the direct link.');
         Assertion::inArray($data['subjectType'], ActionableSubjectType::toArray(), 'Invalid subject type.');
-        Assertion::keyExists($data, 'allowedActions', 'AllowedActions must be set.');
+        if (!isset($data['allowedActions'])) {
+            $data['allowedActions'] = [];
+        }
         Assertion::isArray($data['allowedActions'], 'AllowedActions must be an array.');
         $subject = $data['subjectType'] === ActionableSubjectType::CHANNEL
             ? $this->channelRepository->findForUser($user, $data['subjectId'])
@@ -40,6 +42,7 @@ class DirectLinkParamConverter extends AbstractBodyParamConverter {
         $link = new DirectLink($subject);
         $link->setCaption($data['caption'] ?? '');
         $link->setEnabled($data['enabled'] ?? false);
+        $link->setDisableHttpGet($data['disableHttpGet'] ?? false);
         $possibleActions = EntityUtils::mapToIds($subject->getFunction()->getPossibleActions());
         $possibleActions[] = ChannelFunctionAction::READ;
         $allowedActions = array_map(function ($allowedActionName) use ($possibleActions) {

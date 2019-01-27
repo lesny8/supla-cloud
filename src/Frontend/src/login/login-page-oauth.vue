@@ -9,13 +9,19 @@
             :oauth="true"
             :error="error"
             :intitial-username="lastUsername"
-            :submit-button-text="askForTargetCloud ? 'Proceed to authentication' : ''">
+            :submit-button-text="askForTargetCloud ? $t('Proceed') : ''">
+            <template slot="aboveForm">
+                <h4 v-if="clientName"
+                    class="client-name-prompt">
+                    {{ $t('{clientName} wants to access your account.', {clientName: clientName}) }}
+                </h4>
+            </template>
             <div v-if="askForTargetCloud">
                 <div class="form-group text-center">
                     <label>
                         <toggler v-model="ownCloud"
                             @input="error = undefined"></toggler>
-                        {{ $t('Connect to SUPLA Cloud instance hosted by myself') }}
+                        {{ $t('Connection with a private instance of the SUPLA cloud') }}
                     </label>
                 </div>
                 <div class="form-group form-group-lg"
@@ -28,13 +34,13 @@
                             required
                             autocorrect="off"
                             autocapitalize="none"
-                            :placeholder="$t('Your Cloud domain name')"
+                            :placeholder="$t('Private Cloud domain name')"
                             v-model="targetCloud"
                             name="targetCloud"
                             class="form-control">
                     </span>
                     <span class="help-block">
-                        {{ $t('Only domain name or IP address, port included, e.g. mysupla.org or 1.2.3.4:88. HTTPS is required.') }}
+                        {{ $t('Only domain names with an optional port number are allowed. E.g. mysupla.org or mysupla.org:88. HTTPS is required.') }}
                     </span>
                 </div>
                 <transition name="fade">
@@ -42,7 +48,7 @@
                         v-if="error == 'autodiscover_fail'">
                         <div v-if="ownCloud">
                             <strong>{{ $t('We could not connect to your SUPLA Cloud instance.') }}</strong>
-                            {{ $t('You either did not register your instance or you are trying to authorize an application that is not public.') }}
+                            {{ $t('Your instance is not registered or you are trying to authorize an application that is not public.') }}
                         </div>
                         <div v-else>
                             <strong>{{ $t('We were not able to find your account.') }}</strong>
@@ -61,7 +67,7 @@
     import LoginForm from "./login-form";
 
     export default {
-        props: ['lastUsername', 'error', 'askForTargetCloud', 'lastTargetCloud'],
+        props: ['lastUsername', 'error', 'askForTargetCloud', 'lastTargetCloud', 'clientName'],
         components: {LoginForm, LoginFooter},
         data() {
             return {
@@ -87,5 +93,10 @@
         .login-password {
             display: none;
         }
+    }
+
+    .client-name-prompt {
+        text-align: center;
+        margin-bottom: 25px;
     }
 </style>

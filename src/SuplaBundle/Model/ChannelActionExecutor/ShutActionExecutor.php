@@ -12,7 +12,13 @@ class ShutActionExecutor extends StopActionExecutor {
 
     public function validateActionParams(HasFunction $subject, array $actionParams): array {
         if ($actionParams) {
-            Assertion::count($actionParams, 1, 'Too many action parameters.');
+            Assertion::between(count($actionParams), 1, 2, 'Invalid number of action parameters');
+            Assertion::count(
+                array_intersect_key($actionParams, array_flip(['percent', 'percentage', 'alexaCorrelationToken', 'googleRequestId'])),
+                count($actionParams),
+                'Invalid action parameters'
+            );
+
             if (isset($actionParams['percent'])) {
                 $actionParams['percentage'] = $actionParams['percent'];
                 unset($actionParams['percent']);
@@ -26,7 +32,7 @@ class ShutActionExecutor extends StopActionExecutor {
     }
 
     protected function getCharValue(HasFunction $subject, array $actionParams = []): int {
-        $percent = $actionParams['percentage'] ?? 0;
+        $percent = $actionParams['percentage'] ?? 100;
         return $percent + 10;
     }
 }

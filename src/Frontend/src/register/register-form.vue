@@ -4,7 +4,7 @@
             <h1 class="page-title"
                 v-title>{{ $t('Create an account') }}</h1>
 
-            <div class="error"
+            <div class="alert error"
                 v-if="errorMessage">
                 {{ errorMessage }}
             </div>
@@ -93,7 +93,7 @@
             computedErrorMessage() {
                 let errorMessage = '';
                 if (this.username.indexOf('@') <= 0) {
-                    errorMessage = this.$t('Please fill a valid email address');
+                    errorMessage = this.$t('Please enter a valid email address');
                 } else if (this.password.length < 8) {
                     errorMessage = this.$t('The password should be 8 or more characters.');
                 } else if (this.password != this.confirmPassword) {

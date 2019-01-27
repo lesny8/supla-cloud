@@ -4,9 +4,11 @@
             <div class="row">
                 <div :class="'col-sm-' + (12 / possibleStates.length)"
                     v-for="(possibleState, stateIndex) in possibleStates">
+                    <!-- i18n:['state-on','state-off','state-opened','state-closed','state-partially_closed','state-default','state-empty','state-full'] -->
+                    <!-- i18n:['state-revealed','state-shut','state-rgb_on_dim_on','state-rgb_on_dim_off','state-rgb_off_dim_on','state-rgb_off_dim_off'] -->
                     <h5 class="no-margin-top"
                         v-if="possibleStates.length > 1">
-                        {{ $t('state-' + possibleState) }}
+                        {{ $t(`state-${possibleState}`) }}
                     </h5>
                     <div class="dropbox">
                         <input type="file"
@@ -18,18 +20,30 @@
                         <img v-if="previews[stateIndex]"
                             :src="previews[stateIndex]"
                             class="icon-preview">
-                        <p v-else>{{ $t('Drag your image(s) here or click to browse') }}</p>
+                        <p v-else>{{ $t('Drag your image(s) here or click to select from the disk') }}</p>
                     </div>
                 </div>
             </div>
         </div>
-        <p class="text-muted">{{ $t('We will do our best, but you will end up with the best icons if you upload PNG files with transparent background and size {width}px (width) and {height}px (height).', {width: 210, height: 156}) }}</p>
+        <div class="checkbox checkbox-green">
+            <label>
+                <input type="checkbox"
+                    v-model="fileCopyrightConfirmed">
+                <span class="checkmark"></span>
+                {{ $t('Uploaded files do not contain any inappropriate or copyrighted content, nor do they violate Third Party Rights and I have the right to use them.') }}
+            </label>
+        </div>
+        <p class="text-muted">{{ $t('We will try to display the received icons the best possible way, however you will obtain the greatest results by sending us over a PNG file with a transparent background, width {width}px and height {height}.', {width: 210, height: 156}) }}</p>
+        <p class="text-danger"
+            v-if="filesTooBig">{{ $t('The set of icons you have chosen is too large. Maximum upload limit is {limit}.', {limit: maxUploadSizeTotalPretty}) }}</p>
         <div class="row">
             <div class="col-xs-12">
-                <a class="btn btn-green"
+                <button class="btn btn-green"
+                    type="button"
+                    :disabled="!fileCopyrightConfirmed || filesTooBig"
                     @click="uploadIcons()">
                     {{ $t(icon ? 'Save' : 'Add') }}
-                </a>
+                </button>
                 <a class="btn btn-red"
                     v-if="icon"
                     @click="deleteConfirm = true">
@@ -46,14 +60,15 @@
             @cancel="deleteConfirm = false"
             :header="$t('Are you sure you want to delete this icon?')"
             :loading="uploading">
-            <p>{{ $t('All channels or channel groups that use this icon will return to the default icon after deletion.') }}</p>
+            <p>{{ $t('After deletion of this icon all channels and channel groups that use this icon, will receive default icons.') }}</p>
         </modal-confirm>
     </loading-cover>
 </template>
 
 <script>
     import {errorNotification} from "../common/notifier";
-    import {withDownloadAccessToken} from "../common/filters";
+    import {prettyBytes, withDownloadAccessToken} from "../common/filters";
+    import Vue from "vue";
 
     export default {
         props: ['model', 'icon'],
@@ -63,6 +78,10 @@
                 images: [],
                 previews: [],
                 uploading: false,
+                fileCopyrightConfirmed: false,
+                maxUploadSizePerFile: Vue.config.external.max_upload_size.file || 0,
+                maxUploadSizeTotal: Vue.config.external.max_upload_size.total || 0,
+                filesTooBig: false,
             };
         },
         mounted() {
@@ -75,14 +94,23 @@
         methods: {
             onFileChosen(files, index) {
                 for (let file of files) {
-                    if (file.type.indexOf('image/') === 0) {
-                        this.images[index] = file;
-                        this.loadImagePreview(index);
-                        if (++index >= this.possibleStates.length) {
-                            break;
+                    if (['image/jpg', 'image/jpeg', 'image/png', 'image/gif'].indexOf(file.type.toLowerCase()) >= 0) {
+                        if (this.maxUploadSizePerFile && file.size > this.maxUploadSizePerFile) {
+                            errorNotification(
+                                this.$t('File is too large'),
+                                this.$t('Maximum filesize limit is {limit}.', {limit: prettyBytes(this.maxUploadSizePerFile)})
+                            );
+                        } else {
+                            this.images[index] = file;
+                            this.loadImagePreview(index);
+                            if (++index >= this.possibleStates.length) {
+                                break;
+                            }
                         }
                     }
                 }
+                const totalSize = this.images.map(i => i.size).reduce((s, a) => s + a, 0);
+                this.filesTooBig = totalSize > this.maxUploadSizeTotal;
             },
             loadImagePreview(index) {
                 const reader = new FileReader();
@@ -99,7 +127,7 @@
                     }
                 }
                 if (!this.icon && addedImages < this.possibleStates.length) {
-                    return errorNotification(this.$t('Error'), 'You need to choose icons for all states.');
+                    return errorNotification(this.$t('Error'), this.$t('You need to provide icons for all states.'));
                 }
                 this.uploading = true;
                 formData.append('function', this.model.function.name);
@@ -120,6 +148,9 @@
         computed: {
             possibleStates() {
                 return this.model.function.possibleVisualStates;
+            },
+            maxUploadSizeTotalPretty() {
+                return prettyBytes(this.maxUploadSizeTotal);
             }
         }
     };

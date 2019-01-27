@@ -17,11 +17,15 @@
 
 namespace SuplaBundle\Tests\Integration\Command;
 
+use SuplaBundle\Entity\AuditEntry;
 use SuplaBundle\Entity\Schedule;
 use SuplaBundle\Entity\User;
+use SuplaBundle\Enums\AuditedEvent;
 use SuplaBundle\Enums\ChannelFunction;
 use SuplaBundle\Enums\ChannelType;
+use SuplaBundle\Enums\ScheduleActionExecutionResult;
 use SuplaBundle\Enums\ScheduleMode;
+use SuplaBundle\Model\Audit\Audit;
 use SuplaBundle\Model\Schedule\ScheduleManager;
 use SuplaBundle\Tests\Integration\IntegrationTestCase;
 use SuplaBundle\Tests\Integration\Traits\SuplaApiHelper;
@@ -33,6 +37,9 @@ class DisableBrokenSchedulesCommandIntegrationTest extends IntegrationTestCase {
     private $user;
     /** @var Schedule */
     private $schedule;
+
+    private $resultSuccess = ScheduleActionExecutionResult::SUCCESS;
+    private $resultFailure = ScheduleActionExecutionResult::DEVICE_UNREACHABLE;
 
     protected function setUp() {
         $this->user = $this->createConfirmedUser();
@@ -50,7 +57,7 @@ class DisableBrokenSchedulesCommandIntegrationTest extends IntegrationTestCase {
     }
 
     public function testDisablingScheduleIfALotOfFailedExecutions() {
-        $this->getEntityManager()->getConnection()->executeQuery('UPDATE supla_scheduled_executions SET result=1');
+        $this->getEntityManager()->getConnection()->executeQuery("UPDATE supla_scheduled_executions SET result=$this->resultFailure");
         $output = $this->executeCommand('supla:clean:disable-broken-schedules');
         $this->assertContains('Disabled 1 schedules', $output);
         $this->getEntityManager()->refresh($this->schedule);
@@ -58,19 +65,44 @@ class DisableBrokenSchedulesCommandIntegrationTest extends IntegrationTestCase {
     }
 
     public function testDoNotDisablingScheduleIfAtLeastOneSuccessful() {
-        $this->getEntityManager()->getConnection()->executeQuery('UPDATE supla_scheduled_executions SET result=1');
-        $this->getEntityManager()->getConnection()->executeQuery('UPDATE supla_scheduled_executions SET result=0 WHERE id=100');
+        $this->getEntityManager()->getConnection()->executeQuery("UPDATE supla_scheduled_executions SET result=$this->resultFailure");
+        $this->getEntityManager()->getConnection()->executeQuery(
+            "UPDATE supla_scheduled_executions SET result=$this->resultSuccess WHERE id=100"
+        );
+        $output = $this->executeCommand('supla:clean:disable-broken-schedules');
+        $this->assertContains('Disabled 0 schedules', $output);
+    }
+
+    public function testDoNotDisablingScheduleIfAllExecutedWithoutConfirmation() {
+        $this->getEntityManager()->getConnection()->executeQuery(
+            'UPDATE supla_scheduled_executions SET result=' . ScheduleActionExecutionResult::EXECUTED_WITHOUT_CONFIRMATION
+        );
         $output = $this->executeCommand('supla:clean:disable-broken-schedules');
         $this->assertContains('Disabled 0 schedules', $output);
     }
 
     public function testDisablingScheduleSuccessfulEntryLongTimeAgo() {
         $fiveWeeksAgo = date('Y-m-d H:i:s', strtotime('-5weeks'));
-        $this->getEntityManager()->getConnection()->executeQuery('UPDATE supla_scheduled_executions SET result=1');
+        $this->getEntityManager()->getConnection()->executeQuery("UPDATE supla_scheduled_executions SET result=$this->resultFailure");
         $this->getEntityManager()->getConnection()->executeQuery(
-            'UPDATE supla_scheduled_executions SET result=0, planned_timestamp="' . $fiveWeeksAgo . '" WHERE id=100'
+            "UPDATE supla_scheduled_executions SET result=$this->resultSuccess, planned_timestamp='$fiveWeeksAgo' WHERE id=100"
         );
         $output = $this->executeCommand('supla:clean:disable-broken-schedules');
         $this->assertContains('Disabled 1 schedules', $output);
+    }
+
+    public function testSavesDisablingBrokenScheduleInAUdit() {
+        $this->testDisablingScheduleIfALotOfFailedExecutions();
+        $entry = $this->getLatestAuditEntry();
+        $this->assertEquals(AuditedEvent::SCHEDULE_BROKEN_DISABLED(), $entry->getEvent());
+        $this->assertEquals($this->schedule->getId(), $entry->getIntParam());
+    }
+
+    private function getLatestAuditEntry(): AuditEntry {
+        $entries = $this->container->get(Audit::class)->getRepository()->findAll();
+        $this->assertGreaterThanOrEqual(1, count($entries));
+        /** @var AuditEntry $entry */
+        $entry = end($entries);
+        return $entry;
     }
 }

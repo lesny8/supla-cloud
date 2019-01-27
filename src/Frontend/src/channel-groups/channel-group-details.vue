@@ -4,7 +4,7 @@
             class="channel-group-details">
             <div v-if="channelGroup">
                 <div class="container">
-                    <pending-changes-page :header="$t(channelGroup.id ? 'Channel group' : 'New channel group') + (channelGroup.id ? ' ID'+ channelGroup.id : '')"
+                    <pending-changes-page :header="channelGroup.id ? $t('Channel group') : $t('New channel group') + (channelGroup.id ? ' ID'+ channelGroup.id : '')"
                         @cancel="cancelChanges()"
                         @save="saveChannelGroup()"
                         :deletable="!isNewGroup"
@@ -78,6 +78,13 @@
                                 @remove="removeChannel(channel)"></channel-group-channel-tile>
                         </div>
                     </square-links-grid>
+                    <modal-confirm v-if="deleteConfirm"
+                        class="modal-warning"
+                        @confirm="deleteGroup()"
+                        @cancel="deleteConfirm = false"
+                        :header="$t('Are you sure you want to delete this channel group?')"
+                        :loading="loading">
+                    </modal-confirm>
                 </div>
             </div>
             <channel-group-details-tabs :channel-group="channelGroup"
@@ -133,12 +140,11 @@
                 if (this.id && this.id != 'new') {
                     this.loading = true;
                     this.error = false;
-                    this.$http.get(`channel-groups/${this.id}?include=channels,iodevice,location`, {skipErrorHandler: [403, 404]})
+                    this.$http.get(`channel-groups/${this.id}?include=channels,iodevice,location,relationsCount`, {skipErrorHandler: [403, 404]})
                         .then(response => this.channelGroup = response.body)
                         .catch(response => this.error = response.status)
                         .finally(() => this.loading = false);
-                }
-                else {
+                } else {
                     this.channelGroup = {};
                     if (!this.channelGroup.channels) {
                         this.$set(this.channelGroup, 'channels', []);

@@ -62,7 +62,7 @@ class ChannelGroupController extends RestController {
      */
     public function getChannelGroupAction(Request $request, IODeviceChannelGroup $channelGroup) {
         $view = $this->view($channelGroup, Response::HTTP_OK);
-        $this->setSerializationGroups($view, $request, ['channels', 'iodevice', 'location', 'state']);
+        $this->setSerializationGroups($view, $request, ['channels', 'iodevice', 'location', 'state', 'relationsCount']);
         return $view;
     }
 
@@ -72,17 +72,22 @@ class ChannelGroupController extends RestController {
      */
     public function postChannelGroupAction(IODeviceChannelGroup $channelGroup) {
         $user = $this->getUser();
-        Assertion::lessThan($user->getChannelGroups()->count(), $user->getLimitChannelGroup(), 'Channel group limit has been exceeded');
+        Assertion::lessThan(
+            $user->getChannelGroups()->count(),
+            $user->getLimitChannelGroup(),
+            'Channel group limit has been exceeded' // i18n
+        );
         Assertion::lessOrEqualThan(
             $channelGroup->getChannels()->count(),
             $user->getLimitChannelPerGroup(),
-            'Too many channels in this group'
+            'Too many channels in this group' // i18n
         );
-        return $this->transactional(function (EntityManagerInterface $em) use ($channelGroup) {
+        $result = $this->transactional(function (EntityManagerInterface $em) use ($channelGroup) {
             $em->persist($channelGroup);
-            $this->suplaServer->reconnect();
             return $this->view($channelGroup, Response::HTTP_CREATED);
         });
+        $this->suplaServer->reconnect();
+        return $result;
     }
 
     /**
@@ -91,8 +96,12 @@ class ChannelGroupController extends RestController {
      */
     public function putChannelGroupAction(IODeviceChannelGroup $channelGroup, IODeviceChannelGroup $updated) {
         $user = $this->getUser();
-        Assertion::lessOrEqualThan($updated->getChannels()->count(), $user->getLimitChannelPerGroup(), 'Too many channels in this group');
-        return $this->transactional(function (EntityManagerInterface $em) use ($channelGroup, $updated) {
+        Assertion::lessOrEqualThan(
+            $updated->getChannels()->count(),
+            $user->getLimitChannelPerGroup(),
+            'Too many channels in this group' // i18n
+        );
+        $result = $this->transactional(function (EntityManagerInterface $em) use ($channelGroup, $updated) {
             $channelGroup->setCaption($updated->getCaption());
             $channelGroup->setAltIcon($updated->getAltIcon());
             $channelGroup->setUserIcon($updated->getUserIcon());
@@ -100,9 +109,10 @@ class ChannelGroupController extends RestController {
             $channelGroup->setHidden($updated->getHidden());
             $channelGroup->setLocation($updated->getLocation());
             $em->persist($channelGroup);
-            $this->suplaServer->reconnect();
             return $this->view($channelGroup, Response::HTTP_OK);
         });
+        $this->suplaServer->reconnect();
+        return $result;
     }
 
     /**
@@ -110,11 +120,12 @@ class ChannelGroupController extends RestController {
      * @Security("channelGroup.belongsToUser(user) and has_role('ROLE_CHANNELGROUPS_RW') and is_granted('accessIdContains', channelGroup)")
      */
     public function deleteChannelGroupAction(IODeviceChannelGroup $channelGroup) {
-        return $this->transactional(function (EntityManagerInterface $em) use ($channelGroup) {
+        $result = $this->transactional(function (EntityManagerInterface $em) use ($channelGroup) {
             $em->remove($channelGroup);
-            $this->suplaServer->reconnect();
             return new Response('', Response::HTTP_NO_CONTENT);
         });
+        $this->suplaServer->reconnect();
+        return $result;
     }
 
     /**

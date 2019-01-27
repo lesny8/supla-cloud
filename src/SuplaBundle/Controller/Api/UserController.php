@@ -27,7 +27,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use SuplaBundle\Entity\User;
 use SuplaBundle\Enums\AuditedEvent;
 use SuplaBundle\Exception\ApiException;
+use SuplaBundle\Mailer\SuplaMailer;
 use SuplaBundle\Model\Audit\AuditAware;
+use SuplaBundle\Model\TargetSuplaCloudRequestForwarder;
 use SuplaBundle\Model\Transactional;
 use SuplaBundle\Model\UserManager;
 use SuplaBundle\Repository\AuditEntryRepository;
@@ -39,22 +41,38 @@ class UserController extends RestController {
     use Transactional;
     use AuditAware;
 
+    const AVAILABLE_LOCALES = ['en', 'pl', 'cs', 'sk', 'lt', 'de', 'ru', 'it', 'pt', 'es', 'fr'];
+
     /** @var UserManager */
     private $userManager;
     /** @var AuditEntryRepository */
     private $auditEntryRepository;
     /** @var SuplaAutodiscover */
     private $autodiscover;
+    /** @var SuplaMailer */
+    private $mailer;
+    /** @var TargetSuplaCloudRequestForwarder */
+    private $suplaCloudRequestForwarder;
 
-    public function __construct(UserManager $userManager, AuditEntryRepository $auditEntryRepository, SuplaAutodiscover $autodiscover) {
+    public function __construct(
+        UserManager $userManager,
+        AuditEntryRepository $auditEntryRepository,
+        SuplaAutodiscover $autodiscover,
+        SuplaMailer $mailer,
+        TargetSuplaCloudRequestForwarder $suplaCloudRequestForwarder
+    ) {
         $this->userManager = $userManager;
         $this->auditEntryRepository = $auditEntryRepository;
         $this->autodiscover = $autodiscover;
+        $this->mailer = $mailer;
+        $this->suplaCloudRequestForwarder = $suplaCloudRequestForwarder;
     }
 
     /** @Security("has_role('ROLE_ACCOUNT_R')") */
-    public function currentUserAction() {
-        return $this->view($this->getUser(), Response::HTTP_OK);
+    public function currentUserAction(Request $request) {
+        $view = $this->view($this->getUser(), Response::HTTP_OK);
+        $this->setSerializationGroups($view, $request, ['longUniqueId']);
+        return $view;
     }
 
     /** @Security("has_role('ROLE_ACCOUNT_RW')") */
@@ -86,18 +104,14 @@ class UserController extends RestController {
                     throw new ApiException('Bad timezone: ' . $data['timezone'], 400, $e);
                 }
             } elseif ($data['action'] == 'change:userLocale') {
-                Assertion::inArray(
-                    $data['locale'],
-                    ['en', 'pl', 'cs', 'lt', 'de', 'ru', 'it', 'pt', 'es', 'fr'],
-                    'Language is not available'
-                );
+                Assertion::inArray($data['locale'], self::AVAILABLE_LOCALES, 'Language is not available');
                 $user->setLocale($data['locale']);
             } elseif ($data['action'] == 'change:password') {
                 $this->assertNotApiUser();
                 $newPassword = $data['newPassword'] ?? '';
                 $oldPassword = $data['oldPassword'] ?? '';
-                Assertion::true($this->userManager->isPasswordValid($user, $oldPassword), 'Current password is incorrect');
-                Assertion::minLength($newPassword, 8, 'The password should be 8 or more characters.');
+                Assertion::true($this->userManager->isPasswordValid($user, $oldPassword), 'Current password is incorrect'); // i18n
+                Assertion::minLength($newPassword, 8, 'The password should be 8 or more characters.'); // i18n
                 $this->userManager->setPassword($newPassword, $user);
             } elseif ($data['action'] == 'agree:rules') {
                 $this->assertNotApiUser();
@@ -142,7 +156,7 @@ class UserController extends RestController {
         if ($server->isLocal()) {
             return $this->accountCreateAction($request);
         } else {
-            list($response, $status) = $server->registerUser($request);
+            list($response, $status) = $this->suplaCloudRequestForwarder->registerUser($server, $request);
             return $this->view($response, $status);
         }
     }
@@ -151,7 +165,6 @@ class UserController extends RestController {
      * @Rest\Post("/register")
      */
     public function accountCreateAction(Request $request) {
-
         $regulationsRequired = $this->container->getParameter('supla_require_regulations_acceptance');
         $recaptchaEnabled = $this->container->getParameter('recaptcha_enabled');
         if ($recaptchaEnabled) {
@@ -163,49 +176,53 @@ class UserController extends RestController {
         }
 
         $username = $request->get('email');
-        Assertion::email($username, 'Please fill a valid email address');
+        Assertion::email($username, 'Please fill a valid email address'); // i18n
 
         $remoteServer = '';
         $exists = $this->autodiscover->userExists($username, $remoteServer);
-        Assertion::false($exists, 'Email already exists');
+        Assertion::false($exists, 'Email already exists'); // i18n
 
         if ($exists === null) {
-            $mailer = $this->get('supla_mailer');
-            $mailer->sendServiceUnavailableMessage('createAction - remote server: ' . $remoteServer);
-
+            $this->mailer->sendServiceUnavailableMessage('createAction - remote server: ' . $remoteServer);
             return $this->view([
                 'status' => Response::HTTP_SERVICE_UNAVAILABLE,
                 'message' => 'Service temporarily unavailable',
             ], Response::HTTP_SERVICE_UNAVAILABLE);
         }
 
+        $user = new User();
+        $user->setEmail($username);
+
         $data = $request->request->all();
         Assert::that($data)
             ->notEmptyKey('password')
             ->notEmptyKey('timezone');
 
-        if ($regulationsRequired) {
-            Assert::that($data)->notEmptyKey('regulationsAgreed');
-            Assertion::true($data['regulationsAgreed'], 'You must agree to the Terms and Conditions.');
-        }
+        $user->setTimezone($data['timezone']);
 
         $newPassword = $data['password'];
-        Assertion::minLength($newPassword, 8, 'The password should be 8 or more characters.');
+        Assertion::minLength($newPassword, 8, 'The password should be 8 or more characters.'); // i18n
+        $user->setPlainPassword($newPassword);
 
-        $user = new User();
+        $locale = $data['locale'] ?? 'en';
+        Assertion::inArray($locale, self::AVAILABLE_LOCALES, 'Language is not available'); // i18n
+        $user->setLocale($locale);
+
         if ($regulationsRequired) {
+            Assert::that($data)->notEmptyKey('regulationsAgreed');
+            Assertion::true(
+                $data['regulationsAgreed'],
+                'You must agree to the Terms and Conditions.' // i18n
+            );
             $user->agreeOnRules();
         }
-        $user->fill($data);
 
         $this->userManager->create($user);
         if ($this->autodiscover->enabled()) {
             $this->autodiscover->registerUser($user);
         }
 
-        // send email
-        $mailer = $this->get('supla_mailer');
-        $sent = $mailer->sendConfirmationEmailMessage($user);
+        $sent = $this->mailer->sendConfirmationEmailMessage($user);
 
         $view = $this->view($user, Response::HTTP_CREATED);
         $view->setHeader('SUPLA-Email-Sent', $sent ? 'true' : 'false');
@@ -215,11 +232,10 @@ class UserController extends RestController {
     /**
      * @Rest\Patch("/confirm/{token}")
      */
-    public function confirmEmailAction($token) {
+    public function confirmEmailAction(string $token) {
         $user = $this->userManager->confirm($token);
         Assertion::notNull($user, 'Token does not exist');
-        $mailer = $this->get('supla_mailer');
-        $mailer->sendActivationEmailMessage($user);
+        $this->mailer->sendActivationEmailMessage($user);
         return $this->view(null, Response::HTTP_NO_CONTENT);
     }
 
@@ -235,21 +251,20 @@ class UserController extends RestController {
         if (preg_match('/@/', $username) || $token) {
             if ($request->getMethod() == Request::METHOD_PATCH) {
                 $server = $this->autodiscover->getAuthServerForUser($username);
-                list(, $status) = $server->resetPasswordToken($username, $request->getLocale());
-                Assertion::eq($status, Response::HTTP_OK, 'Could not reset the password.');
+                list(, $status) = $this->suplaCloudRequestForwarder->resetPasswordToken($server, $username);
+                Assertion::eq($status, Response::HTTP_OK, 'Could not reset the password.'); // i18n
             } elseif ($request->getMethod() == Request::METHOD_POST) {
                 $user = $this->userManager->userByEmail($username);
                 if ($user && $this->userManager->paswordRequest($user) === true) {
-                    $mailer = $this->get('supla_mailer');
-                    $mailer->sendResetPasswordEmailMessage($user);
+                    $this->mailer->sendResetPasswordEmailMessage($user);
                 }
             } else {
                 /** @var User $user */
                 $user = $this->userManager->userByPasswordToken($token);
-                Assertion::notNull($user, 'Token does not exist');
+                Assertion::notNull($user, 'Token does not exist'); // i18n
                 $password = $data['password'] ?? '';
                 if ($password) {
-                    Assertion::minLength($password, 8, 'The password should be 8 or more characters.');
+                    Assertion::minLength($password, 8, 'The password should be 8 or more characters.'); // i18n
                     $user->setToken(null);
                     $user->setPasswordRequestedAt(null);
                     $this->userManager->setPassword($password, $user, true);

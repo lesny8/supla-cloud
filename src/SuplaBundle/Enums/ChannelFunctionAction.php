@@ -34,6 +34,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @method static ChannelFunctionAction SET_RGBW_PARAMETERS()
  * @method static ChannelFunctionAction OPEN_CLOSE()
  * @method static ChannelFunctionAction STOP()
+ * @method static ChannelFunctionAction TOGGLE()
  */
 final class ChannelFunctionAction extends Enum {
     const READ = 1000;
@@ -47,6 +48,7 @@ final class ChannelFunctionAction extends Enum {
     const SET_RGBW_PARAMETERS = 80;
     const OPEN_CLOSE = 90;
     const STOP = 100;
+    const TOGGLE = 110;
 
     /** @Groups({"basic"}) */
     public function getId(): int {
@@ -70,17 +72,18 @@ final class ChannelFunctionAction extends Enum {
 
     public static function captions(): array {
         return [
-            self::READ => 'Read',
-            self::OPEN => 'Open',
-            self::CLOSE => 'Close',
-            self::SHUT => 'Shut',
-            self::REVEAL => 'Reveal',
-            self::REVEAL_PARTIALLY => 'Reveal partially',
-            self::TURN_ON => 'On',
-            self::TURN_OFF => 'Off',
-            self::SET_RGBW_PARAMETERS => 'Adjust parameters',
-            self::OPEN_CLOSE => 'Open / close',
-            self::STOP => 'Stop',
+            self::READ => 'Read', // i18n
+            self::OPEN => 'Open', // i18n
+            self::CLOSE => 'Close', // i18n
+            self::SHUT => 'Shut', // i18n
+            self::REVEAL => 'Reveal', // i18n
+            self::REVEAL_PARTIALLY => 'Reveal partially', // i18n
+            self::TURN_ON => 'On', // i18n
+            self::TURN_OFF => 'Off', // i18n
+            self::SET_RGBW_PARAMETERS => 'Adjust parameters', // i18n
+            self::OPEN_CLOSE => 'Open / close', // i18n
+            self::STOP => 'Stop', // i18n
+            self::TOGGLE => 'Toggle', // i18n
         ];
     }
 

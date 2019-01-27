@@ -63,13 +63,13 @@ class DirectLink {
 
     /**
      * @ORM\ManyToOne(targetEntity="IODeviceChannel", inversedBy="directLinks")
-     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="channel_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
     private $channel;
 
     /**
      * @ORM\ManyToOne(targetEntity="IODeviceChannelGroup", inversedBy="directLinks")
-     * @ORM\JoinColumn(name="channel_group_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="channel_group_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
     private $channelGroup;
 
@@ -101,7 +101,7 @@ class DirectLink {
     private $lastUsed;
 
     /**
-     * @ORM\Column(name="last_ipv4", type="integer", nullable=true)
+     * @ORM\Column(name="last_ipv4", type="integer", nullable=true, options={"unsigned"=true})
      * @Groups({"basic"})
      */
     private $lastIpv4;
@@ -110,7 +110,13 @@ class DirectLink {
      * @ORM\Column(name="enabled", type="boolean", nullable=false)
      * @Groups({"basic"})
      */
-    protected $enabled = true;
+    private $enabled = true;
+
+    /**
+     * @ORM\Column(name="disable_http_get", type="boolean", nullable=false, options={"default"=0})
+     * @Groups({"basic"})
+     */
+    private $disableHttpGet = false;
 
     public function __construct(HasFunction $subject) {
         if ($subject instanceof IODeviceChannel) {
@@ -233,6 +239,14 @@ class DirectLink {
         }, $actionIds) : [];
     }
 
+    public function getDisableHttpGet(): bool {
+        return $this->disableHttpGet;
+    }
+
+    public function setDisableHttpGet(bool $disableHttpGet) {
+        $this->disableHttpGet = $disableHttpGet;
+    }
+
     /** @Groups({"basic"}) */
     public function isActive(): bool {
         try {
@@ -245,19 +259,19 @@ class DirectLink {
 
     public function ensureIsActive() {
         if (!$this->isEnabled()) {
-            throw new InactiveDirectLinkException('Direct link is disabled.');
+            throw new InactiveDirectLinkException('Direct link is disabled.'); // i18n
         }
         if ($this->getActiveFrom() && $this->getActiveFrom() > new \DateTime()) {
-            throw new InactiveDirectLinkException('Direct link is not active yet.');
+            throw new InactiveDirectLinkException('Direct link is not active yet.'); // i18n
         }
         if ($this->getActiveTo() && $this->getActiveTo() < new \DateTime()) {
-            throw new InactiveDirectLinkException('Direct link has expired.');
+            throw new InactiveDirectLinkException('Direct link has expired.'); // i18n
         }
         if ($this->getExecutionsLimit() !== null && $this->getExecutionsLimit() <= 0) {
-            throw new InactiveDirectLinkException('Execution limit has been exceeded.');
+            throw new InactiveDirectLinkException('Execution limit has been exceeded.'); // i18n
         }
         if (!$this->getAllowedActions()) {
-            throw new InactiveDirectLinkException('No allowed actions have been chosen.');
+            throw new InactiveDirectLinkException('No allowed actions have been chosen.'); // i18n
         }
     }
 
@@ -270,7 +284,7 @@ class DirectLink {
     }
 
     public function markExecution(Request $request) {
-        $this->lastIpv4 = $request->getClientIp();
+        $this->lastIpv4 = ip2long($request->getClientIp());
         $this->lastUsed = new \DateTime();
         if ($this->executionsLimit > 0) {
             --$this->executionsLimit;

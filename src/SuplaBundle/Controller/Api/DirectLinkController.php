@@ -23,6 +23,7 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use SuplaBundle\Entity\DirectLink;
+use SuplaBundle\Enums\ActionableSubjectType;
 use SuplaBundle\Enums\AuditedEvent;
 use SuplaBundle\Model\Transactional;
 use SuplaBundle\Repository\AuditEntryRepository;
@@ -49,7 +50,13 @@ class DirectLinkController extends RestController {
      */
     public function getDirectLinksAction(Request $request) {
         $directLinks = $this->getUser()->getDirectLinks();
-        $view = $this->view($directLinks, Response::HTTP_OK);
+        if (($subjectType = $request->get('subjectType')) && ($subjectId = $request->get('subjectId'))) {
+            $type = ActionableSubjectType::fromString($subjectType);
+            $directLinks = $directLinks->filter(function (DirectLink $directLink) use ($subjectId, $type) {
+                return $directLink->getSubjectType() == $type && $directLink->getSubject()->getId() == $subjectId;
+            });
+        }
+        $view = $this->view($directLinks->getValues(), Response::HTTP_OK);
         $this->setSerializationGroups($view, $request, ['subject']);
         return $view;
     }
@@ -70,6 +77,10 @@ class DirectLinkController extends RestController {
      */
     public function postDirectLinkAction(Request $request, DirectLink $directLink) {
         $user = $this->getUser();
+        if (!$directLink->getCaption()) {
+            $caption = $this->get('translator')->trans('Direct link', [], null, $user->getLocale());
+            $directLink->setCaption($caption . ' #' . ($user->getDirectLinks()->count() + 1));
+        }
         Assertion::false($user->isLimitDirectLinkExceeded(), 'Direct links limit has been exceeded');
         $slug = $this->transactional(function (EntityManagerInterface $em) use ($directLink) {
             $slug = $directLink->generateSlug($this->encoderFactory->getEncoder($directLink));
@@ -95,6 +106,7 @@ class DirectLinkController extends RestController {
             $directLink->setActiveTo($updated->getActiveTo());
             $directLink->setExecutionsLimit($updated->getExecutionsLimit());
             $directLink->setEnabled($updated->isEnabled());
+            $directLink->setDisableHttpGet($updated->getDisableHttpGet());
             $em->persist($directLink);
             return $this->view($directLink, Response::HTTP_OK);
         });
@@ -120,19 +132,31 @@ class DirectLinkController extends RestController {
         $pageSize = $request->get('pageSize', 10);
         Assertion::greaterOrEqualThan($page, 1, 'Page should be at least 1.');
         Assertion::between($pageSize, 5, 100, 'Page size should be between 5 and 100.');
-        $query = $this->auditEntryRepository->createQueryBuilder('ae')
-            ->where('ae.event IN(:events)')
-            ->andWhere('ae.intParam = :directLinkId')
-            ->orderBy('ae.createdAt', 'DESC')
-            ->setFirstResult(($page - 1) * $pageSize)
-            ->setMaxResults($pageSize)
-            ->setParameters([
-                'events' => [AuditedEvent::DIRECT_LINK_EXECUTION, AuditedEvent::DIRECT_LINK_EXECUTION_FAILURE],
-                'directLinkId' => $directLink->getId(),
-            ]);
-        $entries = new Paginator($query);
-        $view = $this->view($entries, Response::HTTP_OK);
-        $view->setHeader('X-Total-Count', count($entries));
-        return $view;
+        return $this->transactional(function (EntityManagerInterface $em) use ($directLink, $pageSize, $page) {
+            $this->fixMysqlDistinctMode($em);
+            $query = $this->auditEntryRepository->createQueryBuilder('ae')
+                ->where('ae.event IN(:events)')
+                ->andWhere('ae.intParam = :directLinkId')
+                ->orderBy('ae.createdAt', 'DESC')
+                ->setFirstResult(($page - 1) * $pageSize)
+                ->setMaxResults($pageSize)
+                ->setParameters([
+                    'events' => [AuditedEvent::DIRECT_LINK_EXECUTION, AuditedEvent::DIRECT_LINK_EXECUTION_FAILURE],
+                    'directLinkId' => $directLink->getId(),
+                ]);
+            $entries = new Paginator($query);
+            $view = $this->view($entries, Response::HTTP_OK);
+            $view->setHeader('X-Total-Count', count($entries));
+            return $view;
+        });
+    }
+
+    /**
+     * Fixes "invalid syntax" error for correct SQL query with DISTINCT mode in MySQL 5.7+.
+     * @see https://stackoverflow.com/a/37508414/878514
+     * @see https://github.com/doctrine/doctrine2/issues/5622#issuecomment-231727355
+     */
+    private function fixMysqlDistinctMode(EntityManagerInterface $em) {
+        $em->getConnection()->exec("SET sql_mode=(SELECT REPLACE(@@sql_mode, 'ONLY_FULL_GROUP_BY', ''));");
     }
 }
