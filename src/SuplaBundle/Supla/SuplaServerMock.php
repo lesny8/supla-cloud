@@ -17,19 +17,22 @@
 
 namespace SuplaBundle\Supla;
 
+use Psr\Log\LoggerInterface;
 use SuplaBundle\Model\LocalSuplaCloud;
 
 /**
  * SuplaServer implementation to be used during development.
  */
 class SuplaServerMock extends SuplaServer {
-    private static $nextResponse;
+    public static $mockedResponses = [];
+
+    public static $executedCommands = [];
 
     /** @var SuplaServerMockCommandsCollector */
     private $commandsCollector;
 
-    public function __construct(SuplaServerMockCommandsCollector $commandsCollector) {
-        parent::__construct('', new LocalSuplaCloud('http://supla.local'));
+    public function __construct(SuplaServerMockCommandsCollector $commandsCollector, LoggerInterface $logger) {
+        parent::__construct('', new LocalSuplaCloud('http://supla.local'), $logger);
         $this->commandsCollector = $commandsCollector;
     }
 
@@ -43,14 +46,16 @@ class SuplaServerMock extends SuplaServer {
 
     protected function command($command) {
         $this->commandsCollector->addCommand($command);
+        self::$executedCommands[] = $command;
         return $this->tryToHandleCommand($command);
     }
 
     private function tryToHandleCommand($cmd) {
-        if (self::$nextResponse) {
-            $response = self::$nextResponse;
-            self::$nextResponse = null;
-            return $response;
+        foreach (self::$mockedResponses as $command => $response) {
+            if (preg_match("#$command#i", $cmd)) {
+                unset(self::$mockedResponses[$command]);
+                return $response;
+            }
         }
         if (preg_match('#^IS-(IODEV|CLIENT)-CONNECTED:(\d+),(\d+)$#', $cmd, $match)) {
             return "CONNECTED:$match[3]\n";
@@ -75,7 +80,11 @@ class SuplaServerMock extends SuplaServer {
         return false;
     }
 
-    public static function mockTheNextResponse($response) {
-        self::$nextResponse = $response;
+    public function isAlive(): bool {
+        return true;
+    }
+
+    public static function mockResponse(string $command, string $response) {
+        self::$mockedResponses[$command] = $response;
     }
 }

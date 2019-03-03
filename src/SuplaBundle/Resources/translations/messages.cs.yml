@@ -12,6 +12,8 @@ Access ID: Přístupové ID
 Access Identifier: Přístupový identifikátor
 Access Identifiers: Identifikátory přístupu
 Access identifier limit has been exceeded: Limit přístupových ID byl překročen
+Access identifier password must be at least 8 characters.: Heslo pro identifikátor přístupu musí mít délku alespoň 8 znaků.
+Access identifier password must be no longer than 32 characters.: Heslo pro identifikátor přístupu nesmí být delší než 32 znaků.
 Account: Ůčet
 Account access when you are unavailable: 'Přístup k účtu, pokud nejste dostupní'
 Account has been activated. You can Sign In now.: Účet byl aktivován. Můžete se přihlásit
@@ -32,6 +34,8 @@ All the above and many more can be done from your phone or tablet: 'To vše a mn
 Allowed actions: Dovolené akce
 Allows to perform an action only using the HTTP PATCH request.: Umožňuje provádět akci pouze pomocí žádosti HTTP PATCH.
 And more: a více
+'Any application or device that uses the {tokenName} token will not work anymore.': 'Všechny aplikace nebo zařízení, které používají token {tokenName}, přestanou fungovat.'
+Application name cannot be blank.: Název aplikace nesmí být prázdný
 Application requirements: Požadavky aplikace
 Are you lost?: Ztratili jste? Hledáte něco?
 Are you sure you want to change channel’s function?: Opravdu chcete změnit funkci kanálu?
@@ -72,6 +76,7 @@ Channel for the partial opening sensor: Kanál pro snímač nepřímého otevře
 Channel for the sensor: Kanál pro snímač
 Channel group: Skupina kanálů
 Channel group limit has been exceeded: Limit skupin kanálů byl překročen
+Channel group must consist of at least one channel.: Skupina kanálů musí obsahovat alespoň jeden kanál.
 Channel groups: Skupiny kanálů
 Channel is assigned to the I/O device location: Kanál je přiřazen k umístění zařízení
 Channel will be deleted from the channel group below: Kanál bude odstraněn z následujících skupin kanálů
@@ -79,6 +84,7 @@ Channels: Kanály
 Check your email box: Zkontrolujte e-mailovou schránku
 Choose: Vybrat
 Choose Access Identifiers to be assigned to this Location: 'Vyberte ID přístupu, které budou k tomuto místu přiřazeny'
+Choose client apps: Vyberte klientské aplikace
 Choose location: Vyberte umístění
 Chosen hour: Vybraný čas
 Client’s Apps: Klientské aplikace
@@ -96,6 +102,7 @@ Confirm if you want to remove Access Identifier: 'Potvrď, jestli chceš odstran
 Connected: Připojeno
 Connection with a private instance of the SUPLA cloud: Připojení k soukromé instanci cloudu SUPLA.
 Constraints: Omezení
+Could not reset the password.: Heslo se nepodařilo obnovit.
 Could not reset the password. Please try again later.: Heslo nelze obnovit. Zkuste to prosím znovu.
 Create New Access Identifier: Vytvoř nový přístupový identifikátor
 Create New Location: Vytvořte nové umístění
@@ -128,9 +135,6 @@ Dimmer & RGB led controller: Reostat a kontroler osvětlení RGB
 Dimmer and RGB lighting: Reostat a RGB osvětlení
 Direct link: Přímý odkaz
 Direct link has been created successfully!: Přímý odkaz byl úspěšně vytvořen!
-Direct link has expired.: Přímý odkaz je zastaralý
-Direct link is disabled.: Přímý odkaz je vypnutý
-Direct link is not active yet.: Přímý odkaz ještě není aktivní
 'Direct link is not working right now. Reason:': 'Přímý odkaz v tuto chvíli nefunguje. Důvod:'
 Direct links: Přímé odkazy
 Direct links below will be deleted: Přímý odkaz uvedené níže budou odstraněny
@@ -167,7 +171,6 @@ Executed action: Provedená akce
 Executed without confirmation: Provedeno bez potvrzení
 Execution history: Historie provedení
 Execution limit: Počet provedení
-Execution limit has been exceeded.: Limit výkonů byl překročen
 Executions: Výkony
 Existing schedules: Stávající plány
 Expired: Prošlý
@@ -223,7 +226,6 @@ Idle: Nečinný
 'If you wish to see the available integrations, go to [cloud.supla.org/apps].': 'Chcete-li zobrazit dostupné integrace, přejděte na stránku [cloud.supla.org/apps].'
 Impulse counter: Počítadlo implulzů
 Impulses: Impulzy
-Incorrect direct link parameters: Nesprávné parametry přímého odkazu
 Information: Informace
 Inherit I/O Device location: Použijte polohu zařízení
 Integrations: Integrace
@@ -232,6 +234,7 @@ Interval: Interval
 Invalid request: Nesprávná žádost
 Inverted logic: Obrácená logika
 Invisible: Neviditelný
+Language is not available: Jazyk není k dispozici
 Last access: Poslední hovor
 Last connection: Poslední připojení
 Last used: Poslední použití
@@ -243,7 +246,10 @@ Limit has been exceeded: Limit byl překročen
 Location: Lokalizace
 Location Identifier: Identifikátor lokalizace
 Location limit has been exceeded: Limit umístění byl překročen
+Location password must be at least 4 characters.: Heslo pro umístění musí mít délku alespoň 4 znaků.
+Location password must be no longer than 32 characters.: Heslo pro umístění nesmí být delší než 32 znaků.
 Locations: Lokalizace
+Login: Přihlášení
 Mail sensor: Poštovní snímač
 Make sure to save it in a secure place if you wish to access it in the future. The link won’t be again displayed after you leave this page.: 'Ujistěte se, že je uložen na bezpečném místě, pokud jej chcete v budoucnu použít. Po odchodu z této stránky již nebude odkaz zobrazen.'
 'Maximum filesize limit is {limit}.': 'Maksymalny rozmiar pliku to {limit}.'
@@ -263,7 +269,6 @@ New password: Nové heslo
 Newer: Novější
 Next run date: Nejbližší výkon
 'No access identifier enabled. Go to [access identifier list] or [add a new access identifier].': 'Nemáte aktivní identifikátory přístupu. Přejděte na [seznam přístupových ID] nebo [přidat přístupové ID].'
-No allowed actions have been chosen.: Nebyly vybrány žádné povolené akce
 No function: Bez funkce
 No future executions - schedule disabled: Žádné naplánované výkony - plán zakázán
 No limit: Bez omezení
@@ -286,6 +291,7 @@ Older: Starší
 On/Off switch: Síťový spínač
 'Only domain names with an optional port number are allowed. E.g. mysupla.org or mysupla.org:88. HTTPS is required.': 'Pouze názvy domén s volitelným číslem portu jsou povoleny. Například. mysupla.org nebo mysupla.org:88. Je vyžadován protokol HTTPS.'
 Open: Otevřít
+Open / close: Otevřít / zavřít
 Opening sensor: Snímač otevření
 Original location: Původní umístění
 'Otherwise go to [the homepage].': 'V opačném případě přejděte na [domovskou stránku].'
@@ -374,6 +380,7 @@ Staircase timer: Schodišťový automat
 Start Here: Začni tady
 Start date: Datum zahájení
 State: Stav
+Stop: Zastavit
 Subject: Předmět
 Subject type: Typ předmětu
 Success: Úspěch
@@ -389,7 +396,6 @@ Temperature and humidity sensor: Snímač teploty a vlhkosti
 'Thanks to integrations, you can easily add new features to your account using solutions provided by external suppliers, developers or by yourself.': 'Díky integrací můžete snadno přidávat nové funkce do svého účtu pomocí řešení poskytovaných externími dodavateli, programátory nebo sami.'
 The Terms and Conditions have changed: Podmínky se změnily
 The Terms and Conditions have changed – please read them and accept.: Podmínky servisu se změnily - vyžaduje se jejich přijetí.
-The action was prevented from being performed using an HTTP GET method that is not permitted.: Akci nebylo možné provést pomocí metody HTTP GET.
 The client will be automatically logged out when deleted.: Odstranění klienta bude mít za následek okamžité odhlášení.
 The device is disabled: Zařízení je vypnuté
 The gate sensor must function properly in order to execute the scheduled action.: K vykonání akce musí snímač otevření brány pracovat správně.
@@ -401,6 +407,7 @@ The password should be 8 or more characters.: Heslo musí mít ninimum 8 znaků.
 The server has returned an HTTP 400 Error. It means that the request you tried to perform is invalid.: 'Server signalizuje chybu 400, což znamená, že požadovaná žádost je nesprávná.'
 The server has returned an HTTP 403 Error. It means that you are not authorized to display the item you are looking for.: 'Server vrátil chybu HTTP 403. To znamená, že nemáte dostatečná oprávnění k zobrazení této položky.'
 The server has returned an HTTP 404 Error. It means that the item you are looking for does not exist.: 'Server vrátil chybu HTTP 404. To znamená, že položka, kterou hledáte, neexistuje.'
+'The server has returned an HTTP {statusCode} error.': 'Server vrátil chybu {statusCode}.'
 'The set of icons you have chosen is too large. Maximum upload limit is {limit}.': 'Wybrane przez Ciebie pliki ikon są zbyt duże. Maksymalny dopuszczony rozmiar uploadu to {limit}.'
 There are no more channels you can add to this group: K této skupině nejsou přidány žádné další kanály
 Thermometer: Teploměr
@@ -418,6 +425,7 @@ Unit: Jednotka
 Unknown: Neznámý
 'Uploaded files do not contain any inappropriate or copyrighted content, nor do they violate Third Party Rights and I have the right to use them.': 'Nahrané soubory neporušují dobré chování, autorská práva a práva třetích stran a mám právo je používat.'
 Visible: Viditelný
+Visit app webpage: Otevřete okno aplikace
 WELCOME_MESSAGE: |
   Připojení vašeho domova nebo kanceláře k SUPLI je snadné. Jediné, co musíte udělat, je
   přepište následující údaje do ovládacích.
@@ -450,6 +458,7 @@ Your account has been locked.: Váš účet byl zablokován.
 Your email: Váš e-mail
 Your instance is not registered or you are trying to authorize an application that is not public.: 'Vaše instance není registrována nebo se pokoušíte autorizovat aplikaci, která není veřejná.'
 Your private SUPLA Cloud is almost registered.: Váš soukromý cloud SUPLA je téměř registrován.
+Your private SUPLA Cloud is not registered.: Váš soukromý cloud SUPLA není registrován.
 after: po
 before: před
 choose: vybrat
@@ -460,6 +469,13 @@ choose the timezone: vyberte časové pásmo
 copied: kopírováno
 copy: kopíruj
 daily: Denní cyklus
+directLinkExecutionFailureReason_disabled: Přímý odkaz je vypnutý
+directLinkExecutionFailureReason_executionLimitExceeded: Limit výkonů byl překročen
+directLinkExecutionFailureReason_expired: Přímý odkaz je zastaralý
+directLinkExecutionFailureReason_httpGetForbidden: Akci nebylo možné provést pomocí metody HTTP GET.
+directLinkExecutionFailureReason_invalidActionParameters: Nesprávné parametry přímého odkazu
+directLinkExecutionFailureReason_noAllowedActions: Nebyly vybrány žádné povolené akce
+directLinkExecutionFailureReason_notActiveYet: Přímý odkaz ještě není aktivní
 from IP: z adresy IP
 from the IP: z adresy
 hourly: Hodinový cyklus
@@ -521,21 +537,21 @@ Your private SUPLA Cloud instance is not available. Make sure your server is onl
 #</editor-fold>
 #<editor-fold desc="Missing translations">
 # Translations below are missing. You want to translate them.
-Access identifier password must be at least 8 characters.: Heslo pro identifikátor přístupu musí mít délku alespoň 8 znaků.
-Access identifier password must be no longer than 32 characters.: Heslo pro identifikátor přístupu nesmí být delší než 32 znaků.
-'Any application or device that uses the {tokenName} token will not work anymore.': 'Všechny aplikace nebo zařízení, které používají token {tokenName}, přestanou fungovat.'
-Application name cannot be blank.: Název aplikace nesmí být prázdný
-Channel group must consist of at least one channel.: Skupina kanálů musí obsahovat alespoň jeden kanál.
-Choose client apps: Vyberte klientské aplikace
-Could not reset the password.: Heslo se nepodařilo obnovit.
-Language is not available: Jazyk není k dispozici
-Location password must be at least 4 characters.: Heslo pro umístění musí mít délku alespoň 4 znaků.
-Location password must be no longer than 32 characters.: Heslo pro umístění nesmí být delší než 32 znaků.
-Login: Přihlášení
-Open / close: Otevřít / zavřít
-Stop: Zastavit
-'The server has returned an HTTP {statusCode} error.': 'Server vrátil chybu {statusCode}.'
-Visit app webpage: Otevřete okno aplikace
-Your private SUPLA Cloud is not registered.: Váš soukromý cloud SUPLA není registrován.
+Check the direct link you used and try again.: Zkontrolujte zda-li se vytvořil odkaz a zkuste to ještě jednou.
+Direct link has been executed: Došlo k vytvoření přímého odkazu
+'If you want to use the link programmatically, add an appropriate request header to obtain an output you can easily parse.': 'Pokud chcete používat přímý odkaz v jiném programu, tak musíte dodat odpovědný nadpis požadavané akce , proto abyste mohli dostat odpověď, která se bude jednodušeji přetvářet. '
+Refresh: Obnovit
+See direct link possibilities: Prohlédněte si možnosti přímého linku
+'The link result is presented as a website respone, because you (or your browser) asked for HTML output.': 'Výsledek je prezentovaný ve formě internetové stránky, poněvadž Vy (nebo Váš prohlížeč) požádal o odpověď ve formátu HTML.'
+'When you execute the link with HTTP PATCH method, you can omit the random part of the link and send it in the request body. This is safer because such request will not be stored in any server or proxy logs, regardless of their configuration. Please find an cURL example request below.': 'Proces vytvoření přímého linku můžete vyvolat tím, že podáte jeho unikátní identifikátor v obsahu požadavku  HTTP PATCH. Tato cesta je bezpečnější, protože neumožňuje uložit celou Vaší adresu odkazu v loginech dostupných serverů, pomocí kterých přechází Tvůj požadavek. Níže se nacházejí příkladové požadované akce dostupné pomocí nástroje  cURL.'
+Where is the JSON?: Kde je JSON?
+YOUR LINK CODE: KÓD VAŠEHO ODKAZU
+directLinkExecutionFailureReason_forbiddenAction: Odkaz neumožňuje provedení této akce
+directLinkExecutionFailureReason_invalidSlug: Vyslaný ověřovací kód je nesprávný
+directLinkExecutionFailureReason_noSlugOrAction: Nesprávný požadavek, je nutné provést akci a zadat kód linku
+directLinkExecutionFailureReason_otherFailure: Chyba při provádění akce
+directLinkExecutionFailureReason_unsupportedAction: Vybraná akce byla špatně provedena
+execute: proveď
+executed: hotovo
 
 #</editor-fold>

@@ -1,56 +1,62 @@
 <template>
-    <div v-if="channel.state">
-        <dl v-if="channel.state.temperature !== undefined">
+    <div v-if="currentState">
+        <dl v-if="currentState.temperature !== undefined">
             <dd>{{ $t('Temperature') }}</dd>
-            <dt>{{ channel.state.temperature }}&deg;C</dt>
+            <dt>{{ currentState.temperature }}&deg;C</dt>
         </dl>
-        <dl v-if="channel.state.humidity !== undefined">
+        <dl v-if="currentState.humidity !== undefined">
             <dd>{{ $t('Humidity') }}</dd>
-            <dt>{{ channel.state.humidity }}%</dt>
+            <dt>{{ currentState.humidity }}%</dt>
         </dl>
-        <dl v-if="channel.state.depth !== undefined">
+        <dl v-if="currentState.depth !== undefined">
             <dd>{{ $t('Depth') }}</dd>
-            <dt>{{ channel.state.depth }}m</dt>
+            <dt>{{ currentState.depth }}m</dt>
         </dl>
-        <dl v-if="channel.state.distance !== undefined">
+        <dl v-if="currentState.distance !== undefined">
             <dd>{{ $t('Distance') }}</dd>
-            <dt>{{ channel.state.distance }}m</dt>
+            <dt>{{ currentState.distance }}m</dt>
         </dl>
-        <dl v-if="channel.state.color_brightness">
+        <dl v-if="currentState.color_brightness">
             <dd>{{ $t('Color') }}</dd>
             <dt>
                 <span class="rgb-color-preview"
-                    :style="{'background-color': cssColor(channel.state.color)}"></span>
+                    :style="{'background-color': cssColor(currentState.color)}"></span>
             </dt>
             <dd>{{ $t('Color brightness') }}</dd>
-            <dt>{{channel.state.color_brightness}}%</dt>
+            <dt>{{currentState.color_brightness}}%</dt>
         </dl>
-        <dl v-if="channel.state.brightness">
+        <dl v-if="currentState.brightness">
             <dd>{{ $t('Brightness') }}</dd>
-            <dt>{{channel.state.brightness}}%</dt>
+            <dt>{{currentState.brightness}}%</dt>
         </dl>
-        <dl v-if="channel.state.is_calibrating">
+        <dl v-if="currentState.is_calibrating">
             <dd>{{ $t('Calibration') }}</dd>
             <dt></dt>
         </dl>
-        <dl v-if="channel.state.shut !== undefined">
+        <dl v-if="currentState.shut !== undefined">
             <dd>{{ $t('Percentage of closing') }}</dd>
-            <dt>{{channel.state.shut}}%</dt>
+            <dt>{{currentState.shut}}%</dt>
         </dl>
+        <span class="label label-danger"
+            v-if="currentState.connected === false">
+            {{ $t('Disconnected') }}
+        </span>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['channel'],
+        props: ['channel', 'state'],
         data() {
             return {
                 timer: undefined,
             };
         },
         mounted() {
-            this.fetchState();
-            this.timer = setInterval(() => this.fetchState(), 7000);
+            if (!this.state) {
+                this.fetchState();
+                this.timer = setInterval(() => this.fetchState(), 7000);
+            }
         },
         methods: {
             fetchState() {
@@ -60,6 +66,11 @@
             },
             cssColor(hexStringColor) {
                 return hexStringColor.replace('0x', '#');
+            }
+        },
+        computed: {
+            currentState() {
+                return this.state || this.channel.state;
             }
         },
         beforeDestroy() {

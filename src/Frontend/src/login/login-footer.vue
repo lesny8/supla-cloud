@@ -15,10 +15,11 @@
                     class="brand nav-link">
                     {{ $t('Forgot your password?') }}
                 </router-link>
-                <router-link v-else
-                    :to="{name: 'login'}"
-                    class="nav-link">{{ $t('Sign In') }}
-                </router-link>
+                <a v-else
+                    :href="$router.resolve({name: 'login'}).href"
+                    class="nav-link">
+                    {{ $t('Sign In') }}
+                </a>
             </div>
         </div>
     </div>
@@ -49,6 +50,7 @@
         z-index: 10;
         @include on-and-down(500px) {
             position: static;
+            margin-top: 10px;
             .col-sm-4 {
                 padding-top: 5px;
                 text-align: center !important;
@@ -56,6 +58,7 @@
         }
         @media (max-height: 500px) {
             position: static;
+            margin-top: 10px;
             .col-sm-4 {
                 padding-top: 5px;
                 text-align: center !important;

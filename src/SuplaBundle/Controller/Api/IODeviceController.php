@@ -98,6 +98,9 @@ class IODeviceController extends RestController {
         }
         $view = $this->view($result, Response::HTTP_OK);
         $this->setSerializationGroups($view, $request, ['channels', 'location', 'originalLocation', 'connected', 'schedules', 'state']);
+        if (ApiVersions::V2_3()->isRequestedEqualOrGreaterThan($request)) {
+            $view->setHeader('SUPLA-Total-Devices', count($result));
+        }
         return $view;
     }
 
@@ -108,14 +111,8 @@ class IODeviceController extends RestController {
         if (ApiVersions::V2_2()->isRequestedEqualOrGreaterThan($request)) {
             $result = $ioDevice;
         } else {
-            $enabled = false;
-            $connected = false;
-
-            if ($ioDevice->getEnabled()) {
-                $enabled = true;
-                $cids = $this->suplaServer->checkDevicesConnection($this->getUser()->getId(), [$ioDevice->getId()]);
-                $connected = in_array($ioDevice->getId(), $cids);
-            }
+            $enabled = $ioDevice->getEnabled();
+            $connected = $this->suplaServer->isDeviceConnected($ioDevice);
 
             $channels = [];
 

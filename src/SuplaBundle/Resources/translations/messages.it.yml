@@ -12,6 +12,8 @@ Access ID: ID di accesso
 Access Identifier: Identificatore dell’Accesso
 Access Identifiers: Identificatori dell’accesso
 Access identifier limit has been exceeded: Il limite degli identificatori dell’accesso è stato superato
+Access identifier password must be at least 8 characters.: La password per l’identificatore d’accesso deve contenere almeno 8 caratteri.
+Access identifier password must be no longer than 32 characters.: La password per l’identificatore d’accesso non può contenere più di 32 caratteri.
 Account: Account
 Account access when you are unavailable: Accesso all’account mentre non sei disponibile
 Account has been activated. You can Sign In now.: L’account è stato attivato. Puoi effettuare il log in.
@@ -32,6 +34,8 @@ All the above and many more can be done from your phone or tablet: Puoi fare tut
 Allowed actions: Azioni ammesse
 Allows to perform an action only using the HTTP PATCH request.: Consente di  eseguire l'azione utilizzando solo la richiesta HTTP PATCH.
 And more: E molto di più
+'Any application or device that uses the {tokenName} token will not work anymore.': 'Tutte le applicazioni od i dispositivi che utilizzano il token {tokenName} smetteranno di funzionare.'
+Application name cannot be blank.: Il nome dell’applicazione non può rimanere vuoto.
 Application requirements: Requisiti dell’applicazione
 Are you lost?: Ti sei perso? Cerchi qualcosa?
 Are you sure you want to change channel’s function?: Sei sicuro di voler cambiare la funzione del canale?
@@ -72,6 +76,7 @@ Channel for the partial opening sensor: Canale per il sensore di apertura  parzi
 Channel for the sensor: Sensore per il canale
 Channel group: Gruppo di canali
 Channel group limit has been exceeded: Limite gruppi di canali è stato superato
+Channel group must consist of at least one channel.: Il gruppo dei canali deve contenere almeno un canale.
 Channel groups: Gruppi di canali
 Channel is assigned to the I/O device location: Il canale è assegnato alla localizzazione del dispositivo I/O
 Channel will be deleted from the channel group below: Il canale verrà eliminato dal seguente gruppo di canali
@@ -79,6 +84,7 @@ Channels: Canali
 Check your email box: Controlla la Tua posta email
 Choose: Seleziona
 Choose Access Identifiers to be assigned to this Location: Seleziona gli Identificatori dell’Accesso da assegnare a questa Localizzazione
+Choose client apps: Seleziona le applicazioni client
 Choose location: Scegli una localizzazione
 Chosen hour: Orario selezionato
 Client’s Apps: Applicazioni del cliente
@@ -96,6 +102,7 @@ Confirm if you want to remove Access Identifier: Conferma se vuoi rimuovere l’
 Connected: Connesso
 Connection with a private instance of the SUPLA cloud: Connessione con l’istanza privata della nuvola SUPLA
 Constraints: Restrizioni
+Could not reset the password.: Il reset della password è fallito.
 Could not reset the password. Please try again later.: Non è possibile resettare la password. Riprova tra poco.
 Create New Access Identifier: Crea un nuovo Identificatore dell’Accesso
 Create New Location: Crea una nuova Localizzazione
@@ -128,9 +135,6 @@ Dimmer & RGB led controller: Varialuce e controllore
 Dimmer and RGB lighting: Varialuce e illuminazione RGB
 Direct link: Link diretto
 Direct link has been created successfully!: Il link diretto è stato creato con successo!
-Direct link has expired.: Il link diretto è scaduto.
-Direct link is disabled.: Il link diretto è disabilitato
-Direct link is not active yet.: Il link diretto non è ancora attivo.
 'Direct link is not working right now. Reason:': 'In questo momento il link diretto non funziona. Causa. Powód:'
 Direct links: Link diretti
 Direct links below will be deleted: I link diretti di seguito elencati verranno rimossi
@@ -167,7 +171,6 @@ Executed action: Azione svolta
 Executed without confirmation: Eseguito senza confermare
 Execution history: Storico delle esecuzioni
 Execution limit: Limite delle esecuzioni
-Execution limit has been exceeded.: l limite delle esecuzioni è stato superato.
 Executions: Esecuzioni
 Existing schedules: Scadenzari esistenti
 Expired: Scaduto
@@ -223,7 +226,6 @@ Idle: Inattivi
 'If you wish to see the available integrations, go to [cloud.supla.org/apps].': 'Se vuoi vedere le integrazioni disponibili, passa a [cloud.supla.org/apps].'
 Impulse counter: Contatore di impulsi
 Impulses: Impulsi
-Incorrect direct link parameters: Parametri del link diretto non corretti
 Information: Informazione
 Inherit I/O Device location: Utilizza la localizzazione del dispositivo I/O
 Integrations: Integrazioni
@@ -232,6 +234,7 @@ Interval: Intervallo
 Invalid request: Richiesta non corretta
 Inverted logic: Logica invertita
 Invisible: Non visibile
+Language is not available: La lingua non è disponibile
 Last access: Ultimo collegamento
 Last connection: Ultima connessione
 Last used: Recentemente usato
@@ -243,7 +246,10 @@ Limit has been exceeded: Il limite è stato superato
 Location: Localizzazione
 Location Identifier: Identificatore della Localizzazione
 Location limit has been exceeded: Il limite della localizzazione è stato superato
+Location password must be at least 4 characters.: La password per la localizzazione deve contenere almeno 4 caratteri.
+Location password must be no longer than 32 characters.: La password per la localizzazione non può contenere più di 32 caratteri.
 Locations: Localizzazioni
+Login: Log in
 Mail sensor: Rilevatore di posta
 Make sure to save it in a secure place if you wish to access it in the future. The link won’t be again displayed after you leave this page.: 'Assicurati di averlo salvato in un posto sicuro se vuoi usarlo ancora in futuro. Una volta uscito dalla pagina, il link non verrà più visualizzato.'
 'Maximum filesize limit is {limit}.': 'La dimensione massima del file è {limit}.'
@@ -263,7 +269,6 @@ New password: Nuova password
 Newer: Più recenti
 Next run date: Prossima esecuzione
 'No access identifier enabled. Go to [access identifier list] or [add a new access identifier].': 'Nessun identificatore di accesso abilitato. Vai alla [Lista di identificatori di accesso] o [aggiungi un nuovo identificatore di accesso].'
-No allowed actions have been chosen.: Nessuna azione ammessa è stata selezionata.
 No function: Nessuna funzione
 No future executions - schedule disabled: Nessuna esecuzione programmata - scadenzario disabilitato
 No limit: Bez limitu
@@ -286,6 +291,7 @@ Older: Meno recenti
 On/Off switch: Sensore di alimentazione
 'Only domain names with an optional port number are allowed. E.g. mysupla.org or mysupla.org:88. HTTPS is required.': 'Sono ammessi solo i nomi dei domini con un numero opzionale della porta. Ad esempio. mysupla.org oppure mysupla.org:88. L’HTTPS è obbligatorio.'
 Open: Apri
+Open / close: Apri/chiudi
 Opening sensor: Sensore di apertura
 Original location: Localizzazione originale
 'Otherwise go to [the homepage].': 'Altrimenti passa a [home page].'
@@ -374,6 +380,7 @@ Staircase timer: Temporizzatore luce scale
 Start Here: Comincia qui
 Start date: Data dell’inizio
 State: Stato
+Stop: Ferma
 Subject: Soggetto
 Subject type: Tipo del soggetto
 Success: Successo
@@ -389,7 +396,6 @@ Temperature and humidity sensor: Sensore di temperatura e umidità
 'Thanks to integrations, you can easily add new features to your account using solutions provided by external suppliers, developers or by yourself.': 'Grazie alle integrazioni, puoi aggiungere facilmente le nuove funzioni al Tuo account, sfruttando le soluzioni fornite dai provider esterni, dai programmatori o da Te stesso.'
 The Terms and Conditions have changed: Il regolamento ha subito una modifica
 The Terms and Conditions have changed – please read them and accept.: Il regolamento ha subito una modifica – è richiesta la sua accettazione.
-The action was prevented from being performed using an HTTP GET method that is not permitted.: È stata impedita l'esecuzione dell'azione utilizzando il metodo  HTTP GET non autorizzato.
 The client will be automatically logged out when deleted.: Eliminare il cliente causerà la sua immediata disconnessione.
 The device is disabled: Il dispositivo è spento
 The gate sensor must function properly in order to execute the scheduled action.: 'Per effettuare un’azione programmata, il sensore di apertura del cancello deve funzionare correttamente.'
@@ -401,6 +407,7 @@ The password should be 8 or more characters.: La password deve contenere almeno 
 The server has returned an HTTP 400 Error. It means that the request you tried to perform is invalid.: 'Il server ha restituito un errore 400, ciò significa che la richiesta trasmessa non è corretta.'
 The server has returned an HTTP 403 Error. It means that you are not authorized to display the item you are looking for.: Il server ha restituito l’errore HTTP 403. Ciò significa che non sei autorizzato a visualizzare questo elemento.
 The server has returned an HTTP 404 Error. It means that the item you are looking for does not exist.: Il server ha restituito l’errore HTTP 404. Ciò significa che l’elemento che stai cercando non esiste.
+'The server has returned an HTTP {statusCode} error.': 'Il server ha restituito un errore {statusCode}.'
 'The set of icons you have chosen is too large. Maximum upload limit is {limit}.': 'I file delle icone che hai selezionato sono troppo grandi. La dimensione massima consentita di upload è {limit}.'
 There are no more channels you can add to this group: Non ci sono altri canali da aggiungere a questo gruppo
 Thermometer: Termometro
@@ -418,6 +425,7 @@ Unit: Unità
 Unknown: Sconosciuto
 'Uploaded files do not contain any inappropriate or copyrighted content, nor do they violate Third Party Rights and I have the right to use them.': 'I file inviati non contengono contenuti inappropriati, non violano i diritti d’autore od i diritti di terzi, ed io ho il diritto di utilizzarli.'
 Visible: Visibile
+Visit app webpage: Apri il sito web dell’applicazione
 WELCOME_MESSAGE: |
   Connettere la Tua casa o l’ufficio con SUPLA è molto semplice.
   Tutto quello che devi fare è riscrivere nei Tuoi dispositivi di controllo (entrate/uscite) e nei smartphone i seguenti dati.
@@ -450,6 +458,7 @@ Your account has been locked.: Il Tuo account è stato bloccato.
 Your email: Tua email
 Your instance is not registered or you are trying to authorize an application that is not public.: La Tua istanza non è registrata oppure stai cercando di autorizzare un’applicazione che non è pubblica.
 Your private SUPLA Cloud is almost registered.: La Tua nuvola privata SUPLA è quasi registrata.
+Your private SUPLA Cloud is not registered.: Il tuo cloud privato SUPLA non è registrato.
 after: dopo
 before: prima
 choose: scegli
@@ -460,6 +469,13 @@ choose the timezone: seleziona il fusorario
 copied: copiato
 copy: copia
 daily: Ogni giorno
+directLinkExecutionFailureReason_disabled: Il link diretto è disabilitato
+directLinkExecutionFailureReason_executionLimitExceeded: l limite delle esecuzioni è stato superato.
+directLinkExecutionFailureReason_expired: Il link diretto è scaduto.
+directLinkExecutionFailureReason_httpGetForbidden: È stata impedita l'esecuzione dell'azione utilizzando il metodo  HTTP GET non autorizzato.
+directLinkExecutionFailureReason_invalidActionParameters: Parametri del link diretto non corretti
+directLinkExecutionFailureReason_noAllowedActions: Nessuna azione ammessa è stata selezionata.
+directLinkExecutionFailureReason_notActiveYet: Il link diretto non è ancora attivo.
 from IP: dall’indirizzo IP
 from the IP: dall’indirizzo
 hourly: Ogni ora
@@ -521,21 +537,21 @@ Your private SUPLA Cloud instance is not available. Make sure your server is onl
 #</editor-fold>
 #<editor-fold desc="Missing translations">
 # Translations below are missing. You want to translate them.
-Access identifier password must be at least 8 characters.: La password per l’identificatore d’accesso deve contenere almeno 8 caratteri.
-Access identifier password must be no longer than 32 characters.: La password per l’identificatore d’accesso non può contenere più di 32 caratteri.
-'Any application or device that uses the {tokenName} token will not work anymore.': 'Tutte le applicazioni od i dispositivi che utilizzano il token {tokenName} smetteranno di funzionare.'
-Application name cannot be blank.: Il nome dell’applicazione non può rimanere vuoto.
-Channel group must consist of at least one channel.: Il gruppo dei canali deve contenere almeno un canale.
-Choose client apps: Seleziona le applicazioni client
-Could not reset the password.: Il reset della password è fallito.
-Language is not available: La lingua non è disponibile
-Location password must be at least 4 characters.: La password per la localizzazione deve contenere almeno 4 caratteri.
-Location password must be no longer than 32 characters.: La password per la localizzazione non può contenere più di 32 caratteri.
-Login: Log in
-Open / close: Apri/chiudi
-Stop: Ferma
-'The server has returned an HTTP {statusCode} error.': 'Il server ha restituito un errore {statusCode}.'
-Visit app webpage: Apri il sito web dell’applicazione
-Your private SUPLA Cloud is not registered.: Il tuo cloud privato SUPLA non è registrato.
+Check the direct link you used and try again.: Controlla link diretto richiesto e riprova.
+Direct link has been executed: Link diretto è stato eseguito
+'If you want to use the link programmatically, add an appropriate request header to obtain an output you can easily parse.': 'Se vuoi usare link diretto in un altro software, aggiungi un adeguato titolo della richiesta per ricevere la risposta più facile da elaborare.'
+Refresh: Aggiorna
+See direct link possibilities: Scopri le possibilità di link diretto
+'The link result is presented as a website respone, because you (or your browser) asked for HTML output.': 'Il risultato dell`esecuzione è presentato come un sito web, perché la risposta in formato HTML è stata richiesta da te (o dal tuo browser).'
+'When you execute the link with HTTP PATCH method, you can omit the random part of the link and send it in the request body. This is safer because such request will not be stored in any server or proxy logs, regardless of their configuration. Please find an cURL example request below.': 'Puoi eseguire l`azione di link ditretto inserendo il suo identificatore unico nel contenuto della richiesta HTTP PATCH. Risulta più sicuro, perché impedisce di memorizzare l`indirizzo completo di tuo link nei log di accesso dei server, attraverso i quali passa la tua richiesta. Di seguito trovi un esempio di esecuzione tramite lo strumento cURL.'
+Where is the JSON?: Dove è JSON?
+YOUR LINK CODE: CODICE DEL TUO LINK
+directLinkExecutionFailureReason_forbiddenAction: Link non consente di eseguire tale azione
+directLinkExecutionFailureReason_invalidSlug: Il codice di verifica inviato non è corretto
+directLinkExecutionFailureReason_noSlugOrAction: Richiesta non valida - richiesto codice del link e azione
+directLinkExecutionFailureReason_otherFailure: Errore nell'esecuzione dell'azione
+directLinkExecutionFailureReason_unsupportedAction: Azione selezionata non è corretta
+execute: esegui
+executed: eseguito
 
 #</editor-fold>
