@@ -23,6 +23,7 @@ use SuplaBundle\Exception\ApiException;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
+ * @method static ChannelFunction UNSUPPORTED()
  * @method static ChannelFunction NONE()
  * @method static ChannelFunction CONTROLLINGTHEGATEWAYLOCK()
  * @method static ChannelFunction CONTROLLINGTHEGATE()
@@ -58,6 +59,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @method static ChannelFunction WATERMETER()
  */
 final class ChannelFunction extends Enum {
+    const UNSUPPORTED = -1;
     const NONE = 0;
     const CONTROLLINGTHEGATEWAYLOCK = 10;
     const CONTROLLINGTHEGATE = 20;
@@ -92,9 +94,11 @@ final class ChannelFunction extends Enum {
     const GASMETER = 320;
     const WATERMETER = 330;
 
+    private $unsupportedFunctionId;
+
     /** @Groups({"basic"}) */
     public function getId(): int {
-        return $this->value;
+        return $this->value == self::UNSUPPORTED ? $this->unsupportedFunctionId : $this->value;
     }
 
     /** @Groups({"basic"}) */
@@ -187,6 +191,7 @@ final class ChannelFunction extends Enum {
 
     public static function captions(): array {
         return [
+            self::UNSUPPORTED => 'Unsupported function', // i18n
             self::NONE => 'None', // i18n
             self::CONTROLLINGTHEGATEWAYLOCK => 'Gateway lock operation', // i18n
             self::CONTROLLINGTHEGATE => 'Gate operation', // i18n
@@ -235,6 +240,7 @@ final class ChannelFunction extends Enum {
 
     public static function possibleVisualStates(): array {
         return [
+            self::UNSUPPORTED => [],
             self::NONE => [],
             self::CONTROLLINGTHEGATEWAYLOCK => ['opened', 'closed'],
             self::CONTROLLINGTHEGATE => ['opened', 'closed', 'partially_closed'],
@@ -247,14 +253,14 @@ final class ChannelFunction extends Enum {
             self::CONTROLLINGTHEDOORLOCK => ['opened', 'closed'],
             self::OPENINGSENSOR_DOOR => ['opened', 'closed'],
             self::CONTROLLINGTHEROLLERSHUTTER => ['revealed', 'shut'],
-            self::OPENINGSENSOR_ROLLERSHUTTER => ['revealted', 'shut'],
-            self::POWERSWITCH => ['on', 'off'],
-            self::LIGHTSWITCH => ['on', 'off'],
+            self::OPENINGSENSOR_ROLLERSHUTTER => ['revealed', 'shut'],
+            self::POWERSWITCH => ['off', 'on'],
+            self::LIGHTSWITCH => ['off', 'on'],
             self::HUMIDITY => ['default'],
-            self::HUMIDITYANDTEMPERATURE => ['default'],
-            self::DIMMER => ['on', 'off'],
-            self::RGBLIGHTING => ['on', 'off'],
-            self::DIMMERANDRGBLIGHTING => ['rgb_on_dim_on', 'rgb_on_dim_off', 'rgb_off_dim_on', 'rgb_off_dim_off'],
+            self::HUMIDITYANDTEMPERATURE => ['humidity', 'temperature'],
+            self::DIMMER => ['off', 'on'],
+            self::RGBLIGHTING => ['off', 'on'],
+            self::DIMMERANDRGBLIGHTING => ['rgb_off_dim_off', 'rgb_off_dim_on', 'rgb_on_dim_off', 'rgb_on_dim_on'],
             self::DISTANCESENSOR => ['default'],
             self::DEPTHSENSOR => ['default'],
             self::OPENINGSENSOR_WINDOW => ['opened', 'closed'],
@@ -264,7 +270,7 @@ final class ChannelFunction extends Enum {
             self::RAINSENSOR => ['empty', 'full'],
             self::WEIGHTSENSOR => ['default'],
             self::WEATHER_STATION => ['default'],
-            self::STAIRCASETIMER => ['on', 'off'],
+            self::STAIRCASETIMER => ['off', 'on'],
             self::ELECTRICITYMETER => ['default'],
             self::GASMETER => ['default'],
             self::WATERMETER => ['default'],
@@ -291,5 +297,16 @@ final class ChannelFunction extends Enum {
      */
     public static function fromStrings(array $functionNames): array {
         return array_map(self::class . '::fromString', $functionNames);
+    }
+
+    public static function safeInstance($functionId): self {
+        $functionId = intval($functionId);
+        try {
+            return new self($functionId);
+        } catch (\UnexpectedValueException $e) {
+            $function = self::UNSUPPORTED();
+            $function->unsupportedFunctionId = $functionId;
+            return $function;
+        }
     }
 }

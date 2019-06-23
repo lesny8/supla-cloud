@@ -4,9 +4,13 @@
         <img :src="`/api/user-icons/${model.userIconId}/${stateIndex}?` | withDownloadAccessToken"
             v-if="model.userIconId"
             :class="`icon-size-${width}`">
+        <!-- Double icon display for HUMIDITYANDTEMPERATURE function. -->
+        <img :src="`/api/user-icons/${model.userIconId}/1?` | withDownloadAccessToken"
+            v-if="model.userIconId && functionId == 45"
+            :class="`icon-size-${width}`">
         <img :src="'/assets/img/functions/' + functionId + alternativeSuffix + stateSuffix + '.svg' | withBaseUrl"
             :width="width"
-            v-else>
+            v-if="!model.userIconId">
     </span>
 </template>
 
@@ -17,7 +21,7 @@
             functionId() {
                 if (this.model) {
                     if (this.model.function) {
-                        return this.model.function.id;
+                        return this.model.function.name === 'UNSUPPORTED' ? 0 : this.model.function.id;
                     } else if (this.model.functionId) {
                         return this.model.functionId;
                     } else if (this.model.id) {
@@ -49,22 +53,22 @@
                     }
                     if (this.model.state.color_brightness !== undefined && this.model.state.brightness !== undefined) {
                         return '-' + (this.model.state.brightness ? 'on' : 'off') + (this.model.state.color_brightness ? 'on' : 'off');
-                    } else if (this.model.state.color_brightness === 0 || this.model.state.brightness === 0) {
-                        return '-off';
+                    } else if (this.model.state.color_brightness > 0 || this.model.state.brightness > 0) {
+                        return '-on';
                     }
-                    if (this.model.state.on === false) {
-                        return '-off';
+                    if (this.model.state.on === true) {
+                        return '-on';
                     }
                 }
                 return '';
             },
             stateIndex() {
                 const suffix = this.stateSuffix;
-                if (['-closed', '-off', '-onoff'].indexOf(suffix) !== -1) {
+                if (['-closed', '-on', '-onoff'].indexOf(suffix) !== -1) {
                     return 1;
                 } else if (['-offon', '-partial'].indexOf(suffix) !== -1) {
                     return 2;
-                } else if ('-offoff' === suffix) {
+                } else if ('-onon' === suffix) {
                     return 3;
                 } else {
                     return 0;

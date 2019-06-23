@@ -78,8 +78,15 @@ class UserController extends RestController {
     /** @Security("has_role('ROLE_ACCOUNT_RW')") */
     public function patchUsersCurrentAction(Request $request) {
         $data = $request->request->all();
-        $user = $this->transactional(function (EntityManagerInterface $em) use ($data) {
-            $user = $this->getUser();
+        $user = $this->getUser();
+        if ($data['action'] == 'delete') {
+            $this->assertNotApiUser();
+            $password = $data['password'] ?? '';
+            Assertion::true($this->userManager->isPasswordValid($user, $password), 'Incorrect password'); // i18n
+            $this->userManager->deleteAccount($user);
+            return $this->view(null, Response::HTTP_NO_CONTENT);
+        }
+        $user = $this->transactional(function (EntityManagerInterface $em) use ($user, $data) {
             if ($data['action'] == 'change:clientsRegistrationEnabled') {
                 $enable = $data['enable'] ?? false;
                 if ($enable) {

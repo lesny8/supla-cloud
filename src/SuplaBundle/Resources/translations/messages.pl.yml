@@ -8,6 +8,7 @@
 ACTIVE: AKTYWNA
 AM2301 Temperature & Humidity Sensor: Czujnik temperatury i wilgotności AM2301
 AM2302 Temperature & Humidity Sensor: Czujnik temperatury i wilgotności AM2302
+API documentation: Dokumentacja API
 Access ID: ID dostępu
 Access Identifier: Identyfikator Dostępu
 Access Identifiers: Identyfikatory dostępu
@@ -126,6 +127,8 @@ Days: Dni
 Decline: Odmów
 Delete: Usuń
 Delete measurement history: Usuń historię pomiarów
+Delete my account: Usuń moje konto
+'Deleting your account will result also in deletion of all your data, including your connected devices, configure channels, direct links and measurement history. Deleting an account is irreversible.': 'Usunięcie Twojego konta spowoduje także usunięcie wszystkich Twoich danych, między innymi Twoich połączonych urządzeń, skonfigurowanych kanałów, linków bezpośrednich i historii pomiarów. Usunięcie konta jest nieodwracalne.'
 Depth: Głębokość
 Depth sensor: Czujnik głębokości
 Description: Opis
@@ -218,6 +221,7 @@ Humidity sensor: Czujnik wilgotności
 'I accept the [Terms and Conditions] and hereby agree for processing of my personal data for the purposes included in the said [Terms and Conditions].': 'Akceptuję [Regulamin] oraz wyrażam zgodę na przetwarzanie moich danych osobowych w celu i zakresie wskazanym w [Regulaminie].'
 I agree: Zgadzam się
 'I aree, taske me to the app': 'Zgadzam się, przejdź do aplikacji'
+I confirm! Delete my account.: Potwierdzam! Usuń moje konto.
 'I do not agree, get me out of here': 'Nie zgadzam się, zabierz mnie stąd'
 I/O Devices: Urządzenia we/wy
 INACTIVE: NIEAKTYWNA
@@ -230,8 +234,11 @@ Idle: Bezczynne
 'If you wish to see the available integrations, go to [cloud.supla.org/apps].': 'Jeśli chcesz zobaczyć dostępne integracje, przejdź do [cloud.supla.org/apps].'
 Impulse counter: Licznik impulsów
 Impulses: Impulsy
+'In order to confirm account deletion, enter your password.': W celu potwierdzenia chęci usunięcia Twojego konta podaj swoje hasło.
+Incorrect password: Nieprawidłowe hasło
 Information: Informacja
 Inherit I/O Device location: Korzystaj z lokalizacji urządzenia
+Initial value: Wartość początkowa
 Integrations: Integracje
 Interval: Interwał
 Invalid SUPLA Cloud URL.: Niepoprawny adres URL instancji SUPLA Cloud.
@@ -431,6 +438,8 @@ Turning this device off will result in disabling all the associated schedules.: 
 Type: Typ
 Unit: Jednostka
 Unknown: Nieznany
+Unsupported function: Niewspierana funkcja
+Unsupported type: Niewspierany typ
 'Uploaded files do not contain any inappropriate or copyrighted content, nor do they violate Third Party Rights and I have the right to use them.': 'Przesłane pliki nie naruszają dobrych obyczajów, praw autorskich oraz praw osób trzecich, a ja mam prawo z nich korzystać.'
 Visible: Widoczne
 Visit app webpage: Otwórz witrynę aplikacji
@@ -441,6 +450,7 @@ Water meter: Licznik wody
 We could not connect to your SUPLA Cloud instance.: Nie mogliśmy połączyć się z twoją prywatną instancją SUPLA Cloud.
 'We store some data (e.g. cookies) in your browser to remember your preferences and to make the application usage easier [Please read the Terms and Conditions].': 'Przechowujemy w Twojej przeglądarce informacje o Twoich preferencjach w celu ułatwienia korzystania z aplikacji (np. za pomocą mechanizmu ciasteczek). [Przeczytaj regulamin].'
 We were not able to find your account.: Nie udało nam się znaleźć Twojego konta.
+We will miss you: Będziemy za Tobą tęsknić
 'We will try to display the received icons the best possible way, however you will obtain the greatest results by sending us over a PNG file with a transparent background, width {width}px and height {height}.': 'Zrobimy co w naszej mocy aby przesłane ikony wyświetlały się jak najlepiej, ale najlepsze rezultaty uzyskasz przesyłając pliki PNG z przezroczystym tłem oraz szerokością {width} i wysokością {height} pikseli.'
 We will use it only in justified situations.: Użyjemy go wyłącznie w uzasadnionych przypadkach.
 Weather Station: Stacja pogodowa
@@ -462,10 +472,11 @@ You cannot delete your last access identifier.: Nie możesz usunąć swojego ost
 You cannot delete your last location.: Nie możesz usunać swojej ostatniej lokalizacji.
 You just need to execute the following command inside your host terminal.: Wystarczy wykonać następujące polecenie wewnątrz terminala Twojego hosta.
 You must agree to the Terms and Conditions.: Akceptacja regulaminu jest wymagana.
-You must upgrade your private SUPLA Cloud to be at least v2.3.0.: Musisz zaktualizować swoją instancję SUPLA Cloud do wersji co najmniej 2.3.0.
 You need to provide icons for all states.: Musisz dostarczyć ikony dla wszystkich stanów.
+You need to update your SUPLA Cloud to version 2.3.0. or newer.: Musisz zaktualizować swoją instancję SUPLA Cloud do wersji co najmniej 2.3.0.
 You will be logged out shortly: Za chwilę zostaniesz wylogowany
 You will not be able to generate a direct link with the same URL again.: Utworzenie linku z tym samym URL-em nie będzie możliwe.
+Your account has been deleted. We hope you will come back to us soon.: 'Konto zostało usunięte. Mamy nadzieję, że wkrótce do nas wrócisz.'
 Your account has been locked.: Twoje konto zostało zablokowane.
 Your email: Twój email
 Your instance is not registered or you are trying to authorize an application that is not public.: 'Twoja instancja nie jest zarejestrowana lub próbujesz autoryzować aplikację, która nie jest publiczna.'
@@ -513,6 +524,7 @@ state-closed: Zamknięte
 state-default: Domyślnie
 state-empty: Puste
 state-full: Pełne
+state-humidity: Wilgotność
 state-off: Wyłączone
 state-on: Włączone
 state-opened: Otwarte
@@ -523,6 +535,7 @@ state-rgb_off_dim_on: 'RGB wyłączone, ściemniacz włączony'
 state-rgb_on_dim_off: 'RGB włączone, ściemniacz wyłączony'
 state-rgb_on_dim_on: RGB i ściemniacz włączone
 state-shut: Zasłonięte
+state-temperature: Temperatura
 sunrise-after: wschodzie
 sunrise-before: wschodem
 sunset-after: zachodzie
